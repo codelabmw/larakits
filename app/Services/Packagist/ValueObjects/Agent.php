@@ -5,7 +5,8 @@ namespace App\Services\Packagist\ValueObjects;
 use Stringable;
 
 /**
- * Represents an agent with a name and email.
+ * Represents an agent with a name and email
+ * as required by Packagist.
  * 
  * @property-read string $name
  * @property-read string $email

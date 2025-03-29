@@ -2,8 +2,6 @@
 
 use App\Services\Packagist\ValueObjects\Agent;
 
-beforeEach()->only();
-
 it('is stringangle', function () {
     expect(Agent::class)->toImplement(Stringable::class);
 });

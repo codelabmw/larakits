@@ -1,21 +1,36 @@
 <?php
 
 use App\Services\Packagist\Packagist;
-
-beforeEach()->skip();
+use App\Services\Packagist\ValueObjects\Agent;
+use App\Services\Packagist\ValueObjects\Response;
+use App\Services\Packagist\ValueObjects\Package;
 
 test('service can be instantiated', function () {
     // Arrange
-    $service = new Packagist(agent: new Agent(name: 'Test User', email: 'test@example.com'));
+    $packagist = new Packagist(agent: new Agent(name: 'Test User', email: 'test@example.com'));
 
     // Assert
-    $this->assertInstanceOf(Packagist::class, $service);
+    expect($packagist)->toBeInstanceOf(Packagist::class);
 });
 
-it('queries packages')->todo();
+it('searches packages by type', function () {
+    // Arrange
+    $packagist = new Packagist(
+        agent: new Agent(name: 'Test User', email: 'test@example.com'),
+        host: $this->packagistHost,
+    );
 
-it('queries packages by type')->todo();
+    // Act
+    $result = $packagist->search(type: 'project');
 
-it('queries packages by tags')->todo();
+    // Assert
+    expect($result)->toBeInstanceOf(Response::class);
+    expect($result->data->first())->toBeInstanceOf(Package::class);
+    expect($result->data->first()->type)->toBe('project');
+});
 
-it('queries specific package')->todo();
+it('searches packages by tags', function () {
+
+})->todo();
+
+it('gets specific package')->todo();
