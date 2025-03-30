@@ -1,14 +1,15 @@
 <?php
 
 use App\Models\Kit;
-use App\Models\Stack;
+use App\Models\Tag;
+
 
 test('to array', function () {
     // Arrange
-    $stack = Stack::factory()->create();
+    $tag = Tag::factory()->create();
 
     // Act
-    $fields = $stack->toArray();
+    $fields = $tag->toArray();
 
     // Assert
     expect(array_keys($fields))->toEqual([
@@ -21,12 +22,12 @@ test('to array', function () {
 
 it('has kits', function () {
     // Arrange
+    $tag = Tag::factory()->create();
     $kit = Kit::factory()->create();
-    $stack = Stack::factory()->create();
 
     // Act
-    $stack->kits()->attach($kit);
+    $tag->kits()->attach($kit);
 
     // Assert
-    expect($stack->kits()->first()->slug)->toEqual($kit->slug);
-});
+    expect($tag->kits()->first()->slug)->toEqual($kit->slug);
+})->only();

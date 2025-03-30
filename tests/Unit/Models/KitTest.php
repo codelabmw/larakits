@@ -38,6 +38,6 @@ it('has stacks', function () {
 
     // Assert
     expect($kit->stacks()->first()->slug)->toEqual($stack->slug);
-})->only();
+});
 
 it('has tags')->todo();
