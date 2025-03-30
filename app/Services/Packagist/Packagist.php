@@ -30,11 +30,11 @@ final class Packagist
     {
         $parameters = [];
 
-        if ($type) {
+        if ($type !== null) {
             $parameters['type'] = $type;
         }
 
-        if ($tags) {
+        if ($tags !== null) {
             $parameters['tags'] = $tags;
         }
 
@@ -53,5 +53,22 @@ final class Packagist
         $items = array_map(fn($item) => Package::fromArray($item), $data['results']);
 
         return new Paginator(items: $items, total: $data['total'], next: $data['next']);
+    }
+
+    /**
+     * Gets a specific package.
+     */
+    public function get(string $name): Package
+    {
+        $response = $this->client->get(
+            url: $this->baseUrl . '/packages/' . $name . '.json',
+            headers: ['User-Agent' => (string) $this->agent],
+        );
+
+        if ($response->status !== 200) {
+            throw new ConnectionException(response: $response);
+        }
+
+        return Package::fromArray($response->json());
     }
 }

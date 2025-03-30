@@ -8,8 +8,24 @@ use App\Services\Packagist\ValueObjects\Agent;
 use App\Services\Packagist\ValueObjects\Package;
 use Illuminate\Support\Collection;
 
-beforeEach(function () {
-    $this->response = new Response(
+beforeEach()->only();
+
+test('service can be instantiated', function () {
+    // Arrange
+    $client = Mockery::mock(Client::class);
+
+    $packagist = new Packagist(
+        client: $client,
+        agent: new Agent(name: 'Test User', email: 'test@example.com')
+    );
+
+    // Assert
+    expect($packagist)->toBeInstanceOf(Packagist::class);
+});
+
+it('searches packages by type', function () {
+    // Arrange
+    $response = new Response(
         status: 200,
         body: json_encode([
             'results' => [
@@ -29,30 +45,14 @@ beforeEach(function () {
             'Content-Type' => 'application/json',
         ],
     );
-})->only();
 
-test('service can be instantiated', function () {
-    // Arrange
-    $client = Mockery::mock(Client::class);
-
-    $packagist = new Packagist(
-        client: $client,
-        agent: new Agent(name: 'Test User', email: 'test@example.com')
-    );
-
-    // Assert
-    expect($packagist)->toBeInstanceOf(Packagist::class);
-});
-
-it('searches packages by type', function () {
-    // Arrange
     $client = Mockery::mock(Client::class);
 
     $client->shouldReceive('get')->with(
         'https://packagist.org/search.json',                // URL
         ['type' => 'project'],                              // Parameters
         ['User-Agent' => 'Test User (test@example.com)']    // Headers
-    )->andReturn($this->response);
+    )->andReturn($response);
 
     $packagist = new Packagist(
         client: $client,
@@ -70,13 +70,34 @@ it('searches packages by type', function () {
 
 it('searches packages by tags', function () {
     // Arrange
+    $response = new Response(
+        status: 200,
+        body: json_encode([
+            'results' => [
+                [
+                    "name" => "[vendor]/[package]",
+                    "description" => "[description]",
+                    "url" => "https://packagist.org/packages/[vendor]/[package]",
+                    "repository" => '[repository url]',
+                    "downloads" => 1,
+                    "favers" => 1,
+                ],
+            ],
+            'total' => 1,
+            'next' => null,
+        ]),
+        headers: [
+            'Content-Type' => 'application/json',
+        ],
+    );
+
     $client = Mockery::mock(Client::class);
 
     $client->shouldReceive('get')->with(
         'https://packagist.org/search.json',                // URL
         ['tags' => ['project']],                            // Parameters
         ['User-Agent' => 'Test User (test@example.com)']    // Headers
-    )->andReturn($this->response);
+    )->andReturn($response);
 
     $packagist = new Packagist(
         client: $client,
@@ -92,4 +113,39 @@ it('searches packages by tags', function () {
     expect($result->items->first())->toBeInstanceOf(Package::class);
 });
 
-it('gets specific package')->todo();
+it('gets specific package', function () {
+    // Arrange
+    $response = new Response(
+        status: 200,
+        body: json_encode([
+            'name' => 'laravel/laravel',
+            'description' => 'The Laravel framework',
+            'url' => 'https://packagist.org/packages/laravel/laravel',
+            'repository' => 'https://github.com/laravel/laravel',
+            'downloads' => 1,
+            'favers' => 1,
+        ]),
+        headers: [
+            'Content-Type' => 'application/json',
+        ],
+    );
+
+    $client = Mockery::mock(Client::class);
+
+    $client->shouldReceive('get')->with(
+        'https://packagist.org/packages/laravel/laravel.json',
+        [],
+        ['User-Agent' => 'Test User (test@example.com)']
+    )->andReturn($response);
+
+    $packagist = new Packagist(
+        client: $client,
+        agent: new Agent(name: 'Test User', email: 'test@example.com')
+    );
+
+    // Act
+    $result = $packagist->get('laravel/laravel');
+
+    // Assert
+    expect($result)->toBeInstanceOf(Package::class);
+});
