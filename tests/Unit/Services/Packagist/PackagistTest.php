@@ -8,8 +8,6 @@ use App\Services\Packagist\ValueObjects\Agent;
 use App\Services\Packagist\ValueObjects\Package;
 use Illuminate\Support\Collection;
 
-beforeEach()->only();
-
 test('service can be instantiated', function () {
     // Arrange
     $client = Mockery::mock(Client::class);

@@ -7,8 +7,8 @@ use App\Services\Packagist\Http\Response;
 final class ConnectionException extends \Exception
 {
     public function __construct(
-        string $message = 'Failed to connect to packagist server.',
         public readonly Response $response,
+        string $message = 'Failed to connect to packagist server.',
     ) {
         parent::__construct($message);
     }
