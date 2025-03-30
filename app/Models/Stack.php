@@ -13,8 +13,10 @@ use Carbon\CarbonInterface;
  * @property-read int $id
  * @property-read string $slug
  * @property-read string $name
+ * 
  * @property-read CarbonInterface $updated_at
  * @property-read CarbonInterface $created_at
+ * 
  * @property-read Collection<Kit> $kits
  * 
  * @method BelongsToMany<Kit, Stack> kits()
