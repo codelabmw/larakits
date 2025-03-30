@@ -23,13 +23,24 @@ final class Packagist
     /**
      * Searches for packages and returns a pagination object.
      * 
+     * @param array<int, string>|null $tags
      * @return Paginator<Package>
      */
-    public function search(?string $type): Paginator
+    public function search(?string $type = null, ?array $tags = null): Paginator
     {
+        $parameters = [];
+
+        if ($type) {
+            $parameters['type'] = $type;
+        }
+
+        if ($tags) {
+            $parameters['tags'] = $tags;
+        }
+
         $response = $this->client->get(
             url: $this->baseUrl . '/search.json',
-            parameters: ['type' => $type],
+            parameters: $parameters,
             headers: ['User-Agent' => (string) $this->agent],
         );
 

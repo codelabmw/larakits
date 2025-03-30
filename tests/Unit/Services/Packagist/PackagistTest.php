@@ -69,7 +69,27 @@ it('searches packages by type', function () {
 });
 
 it('searches packages by tags', function () {
+    // Arrange
+    $client = Mockery::mock(Client::class);
 
-})->todo();
+    $client->shouldReceive('get')->with(
+        'https://packagist.org/search.json',                // URL
+        ['tags' => ['project']],                            // Parameters
+        ['User-Agent' => 'Test User (test@example.com)']    // Headers
+    )->andReturn($this->response);
+
+    $packagist = new Packagist(
+        client: $client,
+        agent: new Agent(name: 'Test User', email: 'test@example.com')
+    );
+
+    // Act
+    $result = $packagist->search(tags: ['project']);
+
+    // Assert
+    expect($result)->toBeInstanceOf(Paginator::class);
+    expect($result->items)->toBeInstanceOf(Collection::class);
+    expect($result->items->first())->toBeInstanceOf(Package::class);
+});
 
 it('gets specific package')->todo();
