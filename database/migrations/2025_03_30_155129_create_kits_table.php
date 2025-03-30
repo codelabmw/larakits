@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('source_type')->nullable();
             $table->integer('stars')->default(0);
             $table->integer('downloads')->default(0);
+            $table->json('maintainers')->nullable();
             $table->json('authors')->nullable();
             $table->json('licenses')->nullable();
             $table->timestamps();

@@ -25,6 +25,7 @@ class KitFactory extends Factory
             'source_type' => fake()->word(),
             'stars' => fake()->numberBetween(0, 1000),
             'downloads' => fake()->numberBetween(0, 1000),
+            'maintainers' => [],
             'authors' => [],
             'licenses' => [],
         ];

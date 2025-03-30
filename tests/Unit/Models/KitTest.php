@@ -19,6 +19,7 @@ test('to array', function () {
         'source_type',
         'stars',
         'downloads',
+        'maintainers',
         'authors',
         'licenses',
         'updated_at',

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  *  @property-read string $source_type
  *  @property-read int $stars
  *  @property-read int $downloads
+ *  @property-read array $maintainers
  *  @property-read array $authors
  *  @property-read array $licenses
  *  @property-read \Carbon\Carbon $created_at
@@ -39,6 +40,7 @@ class Kit extends Model
         'source_type',
         'stars',
         'downloads',
+        'maintainers',
         'authors',
         'licenses',
     ];
@@ -51,6 +53,7 @@ class Kit extends Model
     protected $casts = [
         'stars' => 'integer',
         'downloads' => 'integer',
+        'maintainers' => 'array',
         'authors' => 'array',
         'licenses' => 'array',
     ];
