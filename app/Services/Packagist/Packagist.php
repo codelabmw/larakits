@@ -69,6 +69,8 @@ final class Packagist
             throw new ConnectionException(response: $response);
         }
 
-        return Package::fromArray($response->json());
+        $data = $response->json();
+
+        return Package::fromArray($data['package']);
     }
 }

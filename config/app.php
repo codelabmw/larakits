@@ -123,4 +123,17 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Agent
+    |--------------------------------------------------------------------------
+    |
+    | This configuration option determines the user agent used to fetch kits
+    | from Packagist.
+    |
+    */
+    'agent' => [
+        'name' => env('APP_AGENT_NAME', 'Larakits'),
+        'email' => env('APP_AGENT_EMAIL', 'info@larakits.dev'),
+    ],
 ];
