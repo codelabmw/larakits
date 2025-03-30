@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Collection;
 use Carbon\CarbonInterface;
 
 /**
@@ -12,6 +14,9 @@ use Carbon\CarbonInterface;
  * @property-read string $name
  * @property-read CarbonInterface $updated_at
  * @property-read CarbonInterface $created_at
+ * @property-read Collection<Kit, Tag> $kits
+ * 
+ * @method BelongsToMany<Kit, Tag> kits()
  */
 class Tag extends Model
 {
@@ -36,4 +41,14 @@ class Tag extends Model
     protected $hidden = [
         'id',
     ];
+
+    /**
+     * The kits that belong to the tag.
+     * 
+     * @return BelongsToMany<Kit, Tag>
+     */
+    public function kits(): BelongsToMany
+    {
+        return $this->belongsToMany(Kit::class);
+    }
 }

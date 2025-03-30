@@ -2,6 +2,7 @@
 
 use App\Models\Kit;
 use App\Models\Stack;
+use App\Models\Tag;
 
 test('to array', function () {
     // Arrange
@@ -40,4 +41,14 @@ it('has stacks', function () {
     expect($kit->stacks()->first()->slug)->toEqual($stack->slug);
 });
 
-it('has tags')->todo();
+it('has tags', function () {
+    // Arrange
+    $kit = Kit::factory()->create();
+    $tag = Tag::factory()->create();
+
+    // Act
+    $kit->tags()->attach($tag);
+
+    // Assert
+    expect($kit->tags()->first()->slug)->toEqual($tag->slug);
+});

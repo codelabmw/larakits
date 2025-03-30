@@ -30,4 +30,4 @@ it('has kits', function () {
 
     // Assert
     expect($tag->kits()->first()->slug)->toEqual($kit->slug);
-})->only();
+});

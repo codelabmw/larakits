@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Collection;
+use Carbon\CarbonInterface;
 
 /**
  * @property-read int $id
@@ -20,11 +21,15 @@ use Illuminate\Database\Eloquent\Collection;
  * @property-read array $maintainers
  * @property-read array $authors
  * @property-read array $licenses
- * @property-read \Carbon\Carbon $created_at
- * @property-read \Carbon\Carbon $updated_at
+ * 
+ * @property-read CarbonInterface $created_at
+ * @property-read CarbonInterface $updated_at
+ * 
  * @property-read Collection<Stack> $stacks
+ * @property-read Collection<Tag, Kit> $tags
  * 
  * @method BelongsToMany<Stack, Kit> stacks()
+ * @method BelongsToMany<Tag, Kit> tags()
  */
 class Kit extends Model
 {
@@ -80,5 +85,15 @@ class Kit extends Model
     public function stacks(): BelongsToMany
     {
         return $this->belongsToMany(Stack::class);
+    }
+
+    /**
+     * The tags that belong to the kit.
+     * 
+     * @return BelongsToMany<Tag, Kit>
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
     }
 }
