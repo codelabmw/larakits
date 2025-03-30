@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Kit;
 use App\Models\Stack;
 
 test('to array', function () {
@@ -16,6 +17,16 @@ test('to array', function () {
         'updated_at',
         'created_at',
     ]);
-})->only();
+});
 
-it('belongs to a kit')->todo();
+it('belongs to a kit', function () {
+    // Arrange
+    $kit = Kit::factory()->create();
+    $stack = Stack::factory()->create();
+
+    // Act
+    $stack->kits()->attach($kit);
+
+    // Assert
+    expect($stack->kits()->first()->slug)->toEqual($kit->slug);
+});

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Kit;
+use App\Models\Stack;
 
 test('to array', function () {
     // Arrange
@@ -27,6 +28,16 @@ test('to array', function () {
     ]);
 });
 
-it('has stack')->todo();
+it('has stacks', function () {
+    // Arrange
+    $kit = Kit::factory()->create();
+    $stack = Stack::factory()->create();
+
+    // Act
+    $kit->stacks()->attach($stack);
+
+    // Assert
+    expect($kit->stacks()->first()->slug)->toEqual($stack->slug);
+})->only();
 
 it('has tags')->todo();

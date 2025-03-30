@@ -4,22 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
- *  @property-read int $id
- *  @property-read string $slug
- *  @property-read string $name
- *  @property-read string $vendor
- *  @property-read string $description
- *  @property-read string $source_url
- *  @property-read string $source_type
- *  @property-read int $stars
- *  @property-read int $downloads
- *  @property-read array $maintainers
- *  @property-read array $authors
- *  @property-read array $licenses
- *  @property-read \Carbon\Carbon $created_at
- *  @property-read \Carbon\Carbon $updated_at
+ * @property-read int $id
+ * @property-read string $slug
+ * @property-read string $name
+ * @property-read string $vendor
+ * @property-read string $description
+ * @property-read string $source_url
+ * @property-read string $source_type
+ * @property-read int $stars
+ * @property-read int $downloads
+ * @property-read array $maintainers
+ * @property-read array $authors
+ * @property-read array $licenses
+ * @property-read \Carbon\Carbon $created_at
+ * @property-read \Carbon\Carbon $updated_at
+ * @property-read Collection<Stack> $stacks
+ * 
+ * @method BelongsToMany<Stack, Kit> stacks()
  */
 class Kit extends Model
 {
@@ -66,4 +71,14 @@ class Kit extends Model
     protected $hidden = [
         'id',
     ];
+
+    /**
+     * The kits that belong to the kit.
+     *
+     * @return BelongsToMany<Stack, Kit>
+     */
+    public function stacks(): BelongsToMany
+    {
+        return $this->belongsToMany(Stack::class);
+    }
 }
