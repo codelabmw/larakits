@@ -116,12 +116,14 @@ it('gets specific package', function () {
     $response = new Response(
         status: 200,
         body: json_encode([
-            'name' => 'laravel/laravel',
+            'package' => [
+                'name' => 'laravel/laravel',
             'description' => 'The Laravel framework',
             'url' => 'https://packagist.org/packages/laravel/laravel',
             'repository' => 'https://github.com/laravel/laravel',
             'downloads' => 1,
             'favers' => 1,
+            ]
         ]),
         headers: [
             'Content-Type' => 'application/json',
