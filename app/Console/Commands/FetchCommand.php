@@ -3,14 +3,17 @@
 namespace App\Console\Commands;
 
 use App\Models\Kit;
+use App\Models\Tag;
 use App\Services\Packagist\Packagist;
 use App\Strategies\DescriptionStrategy;
 use App\Strategies\KeywordStrategy;
 use App\Strategies\NameStrategy;
 use App\ValueObjects\Payload;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Pipeline;
 use App\Contracts\Strategy;
+use Illuminate\Support\Str;
 
 class FetchCommand extends Command
 {
@@ -38,7 +41,7 @@ class FetchCommand extends Command
             tags: ['laravel', 'starter', 'kit', 'starter-kit', 'starter kit', 'laravel starter kit'],
         );
 
-        foreach ($paginator->items as $package) {
+        $paginator->items->each(function ($package) use ($packagist) {
             $package = $packagist->get($package->name);
 
             $payload = new Payload(package: $package, isKit: false);
@@ -50,20 +53,27 @@ class FetchCommand extends Command
                 DescriptionStrategy::class,
             ];
 
-            Pipeline::send(passable: $payload)
-                ->through(pipes: $strategies)
-                ->finally(callback: function (Payload $payload): void {
+            Pipeline::send($payload)
+                ->through($strategies)
+                ->finally(function (Payload $payload): void {
                     if ($payload->isKit) {
                         [$vendor, $name] = explode('/', $payload->package->name);
 
-                        Kit::create(attributes: [
-                            'slug' => str($payload->package->name)->slug()->value(),
-                            'name' => $name,
-                            'vendor' => $vendor,
-                            'description' => $payload->package->description,
-                        ]);
+                        DB::transaction(function () use ($payload, $vendor, $name): void {
+                            $kit = Kit::create(attributes: [
+                                'slug' => Str::slug($payload->package->name),
+                                'name' => $name,
+                                'vendor' => $vendor,
+                                'description' => $payload->package->description,
+                            ]);
+
+                            foreach ($payload->package->keywords as $keyword) {
+                                $tag = Tag::firstOrCreate(['slug' => Str::slug($keyword), 'name' => $keyword]);
+                                $kit->tags()->attach($tag);
+                            }
+                        });
                     }
                 })->thenReturn();
-        }
+        });
     }
 }
