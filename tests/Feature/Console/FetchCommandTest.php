@@ -1,10 +1,11 @@
 <?php
 
 use App\Models\Kit;
+use App\Models\Stack;
+use App\Models\Tag;
 use App\Services\Packagist\Contracts\Client;
 use App\Services\Packagist\Http\Response;
 use App\Services\Packagist\Packagist;
-use App\Services\Packagist\Paginator;
 use App\Services\Packagist\ValueObjects\Agent;
 use Tests\Fixtures\Packages;
 
@@ -60,4 +61,6 @@ it('fetches & stores kits', function () {
 
     // Assert
     expect(Kit::count())->toBe(4);
+    // expect(Stack::count())->toBeGreaterThan(0);
+    expect(Tag::count())->toBe(4);
 });
