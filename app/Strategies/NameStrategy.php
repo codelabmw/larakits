@@ -15,7 +15,7 @@ class NameStrategy implements Strategy
     public function handle(Payload $payload, Closure $next): mixed
     {
         $packageName = $payload->package->name;
-        $needles = ['starter-kit', 'starter kit', 'laravel starter kit'];
+        $needles = ['starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'];
 
         $nameQualifies = Str::contains($packageName, $needles, false);
         $isLaravelProject = in_array('laravel', $payload->package->keywords);
