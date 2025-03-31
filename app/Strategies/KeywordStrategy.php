@@ -6,31 +6,32 @@ use App\Contracts\Strategy;
 use App\ValueObjects\Payload;
 use Closure;
 
-final class TagStrategy implements Strategy
+final class KeywordStrategy implements Strategy
 {
-    private array $tags = [
+    private array $keywords = [
         'starter-kit',
         'starter kit',
+        'laravel-starter-kit',
         'laravel starter kit',
     ];
 
     public function handle(Payload $payload, Closure $next): mixed
     {
-        $hasKitKeyword = false;
+        $hasKeyword = false;
 
         foreach ($payload->package->keywords as $keyword) {
             $keywordFound = in_array(
                 $keyword,
-                $this->tags,
+                $this->keywords,
             );
 
             if ($keywordFound) {
-                $hasKitKeyword = true;
+                $hasKeyword = true;
                 break;
             }
         }
 
-        if ($hasKitKeyword && in_array('laravel', $payload->package->keywords)) {
+        if ($hasKeyword && in_array('laravel', $payload->package->keywords)) {
             $payload->isKit = true;
 
             return null;

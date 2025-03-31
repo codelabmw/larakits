@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Kit;
 use App\Services\Packagist\Packagist;
-use App\Strategies\TagStrategy;
+use App\Strategies\KeywordStrategy;
 use App\ValueObjects\Payload;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Pipeline;
@@ -43,7 +43,7 @@ class FetchCommand extends Command
 
             /** @var array<class-string<Strategy>> */
             $strategies = [
-                TagStrategy::class,
+                KeywordStrategy::class,
             ];
 
             Pipeline::send(passable: $payload)
