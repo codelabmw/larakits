@@ -9,8 +9,6 @@ use App\Services\Packagist\Packagist;
 use App\Services\Packagist\ValueObjects\Agent;
 use Tests\Fixtures\Packages;
 
-beforeEach()->only();
-
 it('fetches & stores kits', function () {
     // Arrange
     $client = Mockery::mock(Client::class);
@@ -64,3 +62,5 @@ it('fetches & stores kits', function () {
     // expect(Stack::count())->toBeGreaterThan(0);
     expect(Tag::count())->toBe(4);
 });
+
+it('updates existing kits')->todo();

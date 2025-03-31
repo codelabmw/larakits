@@ -58,16 +58,24 @@ class FetchCommand extends Command
                 ->finally(function (Payload $payload): void {
                     if ($payload->isKit) {
                         [$vendor, $name] = explode('/', $payload->package->name);
+                        $package = $payload->package;
 
-                        DB::transaction(function () use ($payload, $vendor, $name): void {
+                        DB::transaction(function () use ($package, $vendor, $name): void {
                             $kit = Kit::create(attributes: [
-                                'slug' => Str::slug($payload->package->name),
+                                'slug' => Str::slug($package->name),
                                 'name' => $name,
                                 'vendor' => $vendor,
-                                'description' => $payload->package->description,
+                                'description' => $package->description,
+                                'source_url' => $package->source['url'],
+                                'source_type' => $package->source['type'],
+                                'stars' => $package->stars,
+                                'downloads' => $package->downloads,
+                                'maintainers' => $package->maintainers,
+                                'authors' => $package->authors,
+                                'licenses' => $package->licenses,
                             ]);
 
-                            foreach ($payload->package->keywords as $keyword) {
+                            foreach ($package->keywords as $keyword) {
                                 $tag = Tag::firstOrCreate(['slug' => Str::slug($keyword), 'name' => $keyword]);
                                 $kit->tags()->attach($tag);
                             }
