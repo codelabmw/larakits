@@ -9,8 +9,6 @@ use Closure;
 final class TagStrategy implements Strategy
 {
     private array $tags = [
-        'kit',
-        'starter',
         'starter-kit',
         'starter kit',
         'laravel starter kit',
@@ -18,7 +16,7 @@ final class TagStrategy implements Strategy
 
     public function handle(Payload $payload, Closure $next): mixed
     {
-        $qualified = false;
+        $hasKitKeyword = false;
 
         foreach ($payload->package->keywords as $keyword) {
             $keywordFound = in_array(
@@ -27,12 +25,12 @@ final class TagStrategy implements Strategy
             );
 
             if ($keywordFound) {
-                $qualified = true;
+                $hasKitKeyword = true;
                 break;
             }
         }
 
-        if ($qualified) {
+        if ($hasKitKeyword && in_array('laravel', $payload->package->keywords)) {
             $payload->isKit = true;
 
             return null;
