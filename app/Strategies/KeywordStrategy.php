@@ -31,7 +31,9 @@ final class KeywordStrategy implements Strategy
             }
         }
 
-        if ($hasKeyword && in_array('laravel', $payload->package->keywords)) {
+        $isLaravelProject = in_array('laravel', $payload->package->keywords);
+
+        if ($hasKeyword && $isLaravelProject) {
             $payload->isKit = true;
 
             return null;

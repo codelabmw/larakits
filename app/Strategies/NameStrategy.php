@@ -18,8 +18,9 @@ class NameStrategy implements Strategy
         $needles = ['starter-kit', 'starter kit', 'laravel starter kit'];
 
         $nameQualifies = Str::contains($packageName, $needles, false);
+        $isLaravelProject = in_array('laravel', $payload->package->keywords);
 
-        if ($nameQualifies && in_array('laravel', $payload->package->keywords)) {
+        if ($nameQualifies && $isLaravelProject) {
             $payload->isKit = true;
             return null;
         }
