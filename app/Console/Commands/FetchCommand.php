@@ -59,10 +59,11 @@ class FetchCommand extends Command
                     ->through($strategies)
                     ->finally(function (Payload $payload): void {
                         if ($payload->isKit) {
-                            [$vendor, $name] = explode('/', $payload->package->name);
                             $package = $payload->package;
 
-                            DB::transaction(function () use ($package, $vendor, $name): void {
+                            DB::transaction(function () use ($package): void {
+                                [$vendor, $name] = explode('/', $package->name);
+
                                 $kit = Kit::create(attributes: [
                                     'slug' => Str::slug($package->name),
                                     'name' => $name,

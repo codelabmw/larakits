@@ -35,4 +35,7 @@ return [
         ],
     ],
 
+    'packagist' => [
+        'retry' => env('PACKAGIST_RETRY', 5),
+    ],
 ];
