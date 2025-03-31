@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Kit;
 use App\Services\Packagist\Packagist;
+use App\Strategies\DescriptionStrategy;
 use App\Strategies\KeywordStrategy;
 use App\Strategies\NameStrategy;
 use App\ValueObjects\Payload;
@@ -46,6 +47,7 @@ class FetchCommand extends Command
             $strategies = [
                 KeywordStrategy::class,
                 NameStrategy::class,
+                DescriptionStrategy::class,
             ];
 
             Pipeline::send(passable: $payload)
