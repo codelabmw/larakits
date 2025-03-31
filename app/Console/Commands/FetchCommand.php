@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Actions\EnsureIsLaravelProject;
 use App\Models\Kit;
 use App\Models\Tag;
 use App\Services\Packagist\Packagist;
@@ -34,53 +35,56 @@ class FetchCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(Packagist $packagist)
+    public function handle(Packagist $packagist, EnsureIsLaravelProject $isLaravelProject)
     {
         $paginator = $packagist->search(
             type: 'project',
             tags: ['laravel', 'starter', 'kit', 'starter-kit', 'starter kit', 'laravel starter kit'],
         );
 
-        $paginator->items->each(function ($package) use ($packagist) {
+        $paginator->items->each(function ($package) use ($packagist, $isLaravelProject) {
             $package = $packagist->get($package->name);
-            $payload = new Payload(package: $package, isKit: false);
 
-            /** @var array<class-string<Strategy>> */
-            $strategies = [
-                KeywordStrategy::class,
-                NameStrategy::class,
-                DescriptionStrategy::class,
-            ];
+            if ($isLaravelProject($package)) {
+                $payload = new Payload(package: $package, isKit: false);
 
-            Pipeline::send($payload)
-                ->through($strategies)
-                ->finally(function (Payload $payload): void {
-                    if ($payload->isKit) {
-                        [$vendor, $name] = explode('/', $payload->package->name);
-                        $package = $payload->package;
+                /** @var array<class-string<Strategy>> */
+                $strategies = [
+                    KeywordStrategy::class,
+                    NameStrategy::class,
+                    DescriptionStrategy::class,
+                ];
 
-                        DB::transaction(function () use ($package, $vendor, $name): void {
-                            $kit = Kit::create(attributes: [
-                                'slug' => Str::slug($package->name),
-                                'name' => $name,
-                                'vendor' => $vendor,
-                                'description' => $package->description,
-                                'source_url' => $package->source['url'],
-                                'source_type' => $package->source['type'],
-                                'stars' => $package->stars,
-                                'downloads' => $package->downloads,
-                                'maintainers' => $package->maintainers,
-                                'authors' => $package->authors,
-                                'licenses' => $package->licenses,
-                            ]);
+                Pipeline::send($payload)
+                    ->through($strategies)
+                    ->finally(function (Payload $payload): void {
+                        if ($payload->isKit) {
+                            [$vendor, $name] = explode('/', $payload->package->name);
+                            $package = $payload->package;
 
-                            foreach ($package->keywords as $keyword) {
-                                $tag = Tag::firstOrCreate(['slug' => Str::slug($keyword), 'name' => $keyword]);
-                                $kit->tags()->attach($tag);
-                            }
-                        });
-                    }
-                })->thenReturn();
+                            DB::transaction(function () use ($package, $vendor, $name): void {
+                                $kit = Kit::create(attributes: [
+                                    'slug' => Str::slug($package->name),
+                                    'name' => $name,
+                                    'vendor' => $vendor,
+                                    'description' => $package->description,
+                                    'source_url' => $package->source['url'],
+                                    'source_type' => $package->source['type'],
+                                    'stars' => $package->stars,
+                                    'downloads' => $package->downloads,
+                                    'maintainers' => $package->maintainers,
+                                    'authors' => $package->authors,
+                                    'licenses' => $package->licenses,
+                                ]);
+
+                                foreach ($package->keywords as $keyword) {
+                                    $tag = Tag::firstOrCreate(['slug' => Str::slug($keyword), 'name' => $keyword]);
+                                    $kit->tags()->attach($tag);
+                                }
+                            });
+                        }
+                    })->thenReturn();
+            }
         });
     }
 }
