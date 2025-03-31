@@ -43,7 +43,6 @@ class FetchCommand extends Command
 
         $paginator->items->each(function ($package) use ($packagist) {
             $package = $packagist->get($package->name);
-
             $payload = new Payload(package: $package, isKit: false);
 
             /** @var array<class-string<Strategy>> */

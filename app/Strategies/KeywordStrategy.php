@@ -8,6 +8,9 @@ use Closure;
 
 final class KeywordStrategy implements Strategy
 {
+    /**
+     * The keywords to look for.
+     */
     private array $keywords = [
         'starter-kit',
         'starter kit',
@@ -15,6 +18,9 @@ final class KeywordStrategy implements Strategy
         'laravel starter kit',
     ];
 
+    /**
+     * Determines if the package is a kit based on its keywords.
+     */
     public function handle(Payload $payload, Closure $next): mixed
     {
         $hasKeyword = false;
@@ -31,12 +37,10 @@ final class KeywordStrategy implements Strategy
             }
         }
 
-        $isLaravelProject = in_array('laravel', $payload->package->keywords);
-
-        if ($hasKeyword && $isLaravelProject) {
+        if ($hasKeyword) {
             $payload->isKit = true;
 
-            return null;
+            return $next($payload);
         }
 
         return $next($payload);

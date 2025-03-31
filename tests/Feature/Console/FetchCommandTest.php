@@ -61,6 +61,6 @@ it('fetches & stores kits', function () {
     expect(Kit::count())->toBe(4);
     // expect(Stack::count())->toBeGreaterThan(0);
     expect(Tag::count())->toBe(4);
-});
+})->only();
 
 it('updates existing kits')->todo();

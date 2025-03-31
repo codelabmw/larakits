@@ -10,19 +10,28 @@ use Closure;
 class NameStrategy implements Strategy
 {
     /**
+     * The keywords to look for.
+     */
+    private array $keywords = [
+        'starter-kit',
+        'starter kit',
+        'laravel-starter-kit',
+        'laravel starter kit',
+    ];
+
+    /**
      * Determines if the package is a kit based on its name.
      */
     public function handle(Payload $payload, Closure $next): mixed
     {
         $packageName = $payload->package->name;
-        $needles = ['starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'];
 
-        $nameQualifies = Str::contains($packageName, $needles, true);
-        $isLaravelProject = in_array('laravel', $payload->package->keywords);
+        $nameQualifies = Str::contains($packageName, $this->keywords, true);
 
-        if ($nameQualifies && $isLaravelProject) {
+        if ($nameQualifies) {
             $payload->isKit = true;
-            return null;
+
+            return $next($payload);
         }
 
         return $next($payload);
