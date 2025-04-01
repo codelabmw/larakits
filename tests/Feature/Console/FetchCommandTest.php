@@ -59,7 +59,7 @@ it('fetches & stores kits', function () {
 
     // Assert
     expect(Kit::count())->toBe(4);
-    // expect(Stack::count())->toBeGreaterThan(0);
+    expect(Stack::count())->toBeGreaterThan(0);
     expect(Tag::count())->toBe(4);
 });
 

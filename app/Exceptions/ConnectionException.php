@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Services\Packagist\Exceptions;
+namespace App\Exceptions;
 
-use App\Services\Packagist\Http\Response;
+use App\Contracts\Http\Response;
 
 final class ConnectionException extends \Exception
 {
     public function __construct(
         public readonly Response $response,
-        string $message = 'Failed to connect to packagist server.',
+        string $message = 'Failed to connect to server.',
     ) {
         parent::__construct($message);
     }
