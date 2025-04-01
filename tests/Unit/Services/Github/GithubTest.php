@@ -4,8 +4,6 @@ use App\Contracts\Http\Client;
 use App\Contracts\Http\Response;
 use App\Services\Github\Github;
 
-beforeEach()->only();
-
 test('service can be instantiated', function () {
     // Arrange
     $github = new Github(client: Mockery::mock(Client::class));

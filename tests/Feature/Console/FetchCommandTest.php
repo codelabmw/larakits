@@ -1,9 +1,9 @@
 <?php
 
+use App\Contracts\Http\Client;
 use App\Models\Kit;
 use App\Models\Stack;
 use App\Models\Tag;
-use App\Services\Packagist\Contracts\Client;
 use App\Services\Packagist\Http\Response;
 use App\Services\Packagist\Packagist;
 use App\Services\Packagist\ValueObjects\Agent;

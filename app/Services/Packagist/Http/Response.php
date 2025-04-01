@@ -2,17 +2,43 @@
 
 namespace App\Services\Packagist\Http;
 
-final class Response
+use App\Contracts\Http\Response as ResponseContract;
+
+final class Response implements ResponseContract
 {
     /**
      * Creates a new instance of the Response class.
      */
     public function __construct(
-        public readonly int $status,
-        public readonly string $body,
-        public readonly array $headers,
+        private readonly int $status,
+        private readonly string $body,
+        private readonly array $headers,
     ) {
         //
+    }
+
+    /**
+     * Returns the status code of the response.
+     */
+    public function status(): int
+    {
+        return $this->status;
+    }
+
+    /**
+     * Returns the body of the response.
+     */
+    public function body(): string
+    {
+        return $this->body;
+    }
+
+    /**
+     * Returns the headers of the response.
+     */
+    public function headers(): array
+    {
+        return $this->headers;
     }
 
     /**

@@ -2,8 +2,8 @@
 
 namespace App\Services\Packagist;
 
-use App\Services\Packagist\Contracts\Client;
-use App\Services\Packagist\Exceptions\ConnectionException;
+use App\Contracts\Http\Client;
+use App\Exceptions\ConnectionException;
 use App\Services\Packagist\ValueObjects\Agent;
 use App\Services\Packagist\ValueObjects\Package;
 
@@ -40,11 +40,11 @@ final class Packagist
 
         $response = $this->client->get(
             url: $this->baseUrl . '/search.json',
-            parameters: $parameters,
+            query: $parameters,
             headers: ['User-Agent' => (string) $this->agent],
         );
 
-        if ($response->status !== 200) {
+        if ($response->status() !== 200) {
             throw new ConnectionException(response: $response);
         }
 
@@ -65,7 +65,7 @@ final class Packagist
             headers: ['User-Agent' => (string) $this->agent],
         );
 
-        if ($response->status !== 200) {
+        if ($response->status() !== 200) {
             throw new ConnectionException(response: $response);
         }
 
