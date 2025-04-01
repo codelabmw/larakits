@@ -21,8 +21,10 @@ class ByDescription implements Guessor
 
     /**
      * Determines if the package is a kit based on its description.
+     * 
+     * @param Payload $payload 
      */
-    public function handle(Payload $payload, Closure $next): mixed
+    public function handle(mixed $payload, Closure $next): mixed
     {
         $description = $payload->package->description;
 

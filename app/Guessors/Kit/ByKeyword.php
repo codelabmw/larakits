@@ -20,8 +20,10 @@ final class ByKeyword implements Guessor
 
     /**
      * Determines if the package is a kit based on its keywords.
+     * 
+     * @param Payload $payload 
      */
-    public function handle(Payload $payload, Closure $next): mixed
+    public function handle(mixed $payload, Closure $next): mixed
     {
         $hasKeyword = false;
 

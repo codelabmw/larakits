@@ -2,7 +2,6 @@
 
 namespace App\Contracts;
 
-use App\ValueObjects\Payload;
 use Closure;
 
 interface Guessor
@@ -10,5 +9,5 @@ interface Guessor
     /**
      * Determine if the package in the payload is a kit.
      */
-    public function handle(Payload $payload, Closure $next): mixed;
+    public function handle(mixed $payload, Closure $next): mixed;
 }

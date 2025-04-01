@@ -21,8 +21,10 @@ class ByName implements Guessor
 
     /**
      * Determines if the package is a kit based on its name.
+     * 
+     * @param Payload $payload 
      */
-    public function handle(Payload $payload, Closure $next): mixed
+    public function handle(mixed $payload, Closure $next): mixed
     {
         $packageName = $payload->package->name;
 
