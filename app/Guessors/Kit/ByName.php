@@ -3,7 +3,7 @@
 namespace App\Guessors\Kit;
 
 use App\Contracts\Guessor;
-use App\ValueObjects\Payload;
+use App\ValueObjects\KitPayload;
 use Illuminate\Support\Str;
 use Closure;
 
@@ -22,7 +22,7 @@ class ByName implements Guessor
     /**
      * Determines if the package is a kit based on its name.
      * 
-     * @param Payload $payload 
+     * @param KitPayload $payload 
      */
     public function handle(mixed $payload, Closure $next): mixed
     {

@@ -4,7 +4,7 @@ namespace App\ValueObjects;
 
 use App\Services\Packagist\ValueObjects\Package;
 
-class Payload
+class KitPayload
 {
     /**
      * Creates a new Payload instance.

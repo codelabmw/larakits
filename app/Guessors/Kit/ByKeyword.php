@@ -3,7 +3,7 @@
 namespace App\Guessors\Kit;
 
 use App\Contracts\Guessor;
-use App\ValueObjects\Payload;
+use App\ValueObjects\KitPayload;
 use Closure;
 
 final class ByKeyword implements Guessor
@@ -21,7 +21,7 @@ final class ByKeyword implements Guessor
     /**
      * Determines if the package is a kit based on its keywords.
      * 
-     * @param Payload $payload 
+     * @param KitPayload $payload 
      */
     public function handle(mixed $payload, Closure $next): mixed
     {
