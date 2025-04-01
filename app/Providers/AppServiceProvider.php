@@ -2,10 +2,11 @@
 
 namespace App\Providers;
 
-use App\Services\Packagist\Contracts\Client as ClientContract;
-use App\Services\Packagist\Http\Client;
+use App\Http\Client;
+use App\Services\Github\Github;
 use App\Services\Packagist\Packagist;
 use App\Services\Packagist\ValueObjects\Agent;
+use App\Contracts\Http\Client as ClientContract;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +26,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(Packagist::class, fn() => new Packagist(
             client: $this->app->make(Client::class),
             agent: $this->app->make(Agent::class),
+        ));
+
+        $this->app->bind(Github::class, fn() => new Github(
+            client: $this->app->make(Client::class),
         ));
     }
 

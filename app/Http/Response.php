@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Github\Http;
+namespace App\Http;
 
 use App\Contracts\Http\Response as ResponseContract;
 

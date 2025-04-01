@@ -1,7 +1,7 @@
 <?php
 
 use App\Contracts\Http\Client;
-use App\Services\Packagist\Http\Response;
+use App\Http\Response;
 use App\Services\Packagist\Packagist;
 use App\Services\Packagist\Paginator;
 use App\Services\Packagist\ValueObjects\Agent;

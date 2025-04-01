@@ -11,10 +11,12 @@ use App\Strategies\KeywordStrategy;
 use App\Strategies\NameStrategy;
 use App\ValueObjects\Payload;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Pipeline;
 use App\Contracts\Strategy;
 use Illuminate\Support\Str;
+use App\Services\Github\Github;
 
 class FetchCommand extends Command
 {
@@ -59,6 +61,9 @@ class FetchCommand extends Command
                     ->through($strategies)
                     ->finally(function (Payload $payload): void {
                         if ($payload->isKit) {
+                            /** @var Github */
+                            $github = App::make(Github::class);
+
                             $package = $payload->package;
 
                             DB::transaction(function () use ($package): void {
