@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Strategies;
+namespace App\Guessors\Kit;
 
-use App\Contracts\Strategy;
+use App\Contracts\Guessor;
 use App\ValueObjects\Payload;
 use Closure;
 
-final class KeywordStrategy implements Strategy
+final class ByKeyword implements Guessor
 {
     /**
      * The keywords to look for.

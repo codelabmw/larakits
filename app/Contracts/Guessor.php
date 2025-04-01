@@ -5,7 +5,7 @@ namespace App\Contracts;
 use App\ValueObjects\Payload;
 use Closure;
 
-interface Strategy
+interface Guessor
 {
     /**
      * Determine if the package in the payload is a kit.

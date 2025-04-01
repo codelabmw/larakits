@@ -3,19 +3,19 @@
 namespace App\Console\Commands;
 
 use App\Actions\EnsureIsLaravelProject;
+use App\Guessors\Kit\ByDescription;
+use App\Guessors\Kit\ByKeyword;
+use App\Guessors\Kit\ByName;
 use App\Models\Kit;
 use App\Models\Stack;
 use App\Models\Tag;
 use App\Services\Packagist\Packagist;
-use App\Strategies\DescriptionStrategy;
-use App\Strategies\KeywordStrategy;
-use App\Strategies\NameStrategy;
 use App\ValueObjects\Payload as KitPayload;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Pipeline;
-use App\Contracts\Strategy;
+use App\Contracts\Guessor;
 use Illuminate\Support\Str;
 use App\Services\Github\Github;
 
@@ -51,11 +51,11 @@ class FetchCommand extends Command
             if ($isLaravelProject($package)) {
                 $payload = new KitPayload(package: $package, isKit: false);
 
-                /** @var array<class-string<Strategy>> */
+                /** @var array<class-string<Guessor>> */
                 $strategies = [
-                    KeywordStrategy::class,
-                    NameStrategy::class,
-                    DescriptionStrategy::class,
+                    ByKeyword::class,
+                    ByName::class,
+                    ByDescription::class,
                 ];
 
                 Pipeline::send($payload)
@@ -87,7 +87,7 @@ class FetchCommand extends Command
 
                             $stackPayload = new StackPayload(dependencies: $dependencies);
 
-                            /** @var array<class-string<Strategy>> */
+                            /** @var array<class-string<Guessor>> */
                             $strategies = [];
 
                             Pipeline::send($stackPayload)

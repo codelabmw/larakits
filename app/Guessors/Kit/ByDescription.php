@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Strategies;
+namespace App\Guessors\Kit;
 
-use App\Contracts\Strategy;
+use App\Contracts\Guessor;
 use App\ValueObjects\Payload;
-use Illuminate\Support\Str;
 use Closure;
+use Illuminate\Support\Str;
 
-class NameStrategy implements Strategy
+class ByDescription implements Guessor
 {
     /**
      * The keywords to look for.
@@ -20,15 +20,15 @@ class NameStrategy implements Strategy
     ];
 
     /**
-     * Determines if the package is a kit based on its name.
+     * Determines if the package is a kit based on its description.
      */
     public function handle(Payload $payload, Closure $next): mixed
     {
-        $packageName = $payload->package->name;
+        $description = $payload->package->description;
 
-        $nameQualifies = Str::contains($packageName, $this->keywords, true);
+        $descriptionQualifies = Str::contains($description, $this->keywords, true);
 
-        if ($nameQualifies) {
+        if ($descriptionQualifies) {
             $payload->isKit = true;
 
             return $next($payload);
