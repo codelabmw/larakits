@@ -38,4 +38,8 @@ return [
     'packagist' => [
         'retry' => env('PACKAGIST_RETRY', 5),
     ],
+
+    'github' => [
+        'retry' => env('GITHUB_RETRY', 5),
+    ],
 ];
