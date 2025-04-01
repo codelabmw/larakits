@@ -756,4 +756,171 @@ abstract class Packages
             ]
         ]
     ];
+
+    public static array $starterKitRepos = [
+        "https://github.com/laravel/vue-starter-kit.git",
+        "https://github.com/laravel/react-starter-kit.git",
+        "https://github.com/laravel/livewire-starter-kit.git",
+        'https://github.com/thedevdojo/wave.git',
+    ];
+
+    public static array $packageJsons = [
+        [
+            "private" => true,
+            "type" => "module",
+            "scripts" => [
+                "build" => "vite build",
+                "build:ssr" => "vite build && vite build --ssr",
+                "dev" => "vite",
+                "format" => "prettier --write resources/",
+                "format:check" => "prettier --check resources/",
+                "lint" => "eslint . --fix"
+            ],
+            "devDependencies" => [
+                "@eslint/js" => "^9.19.0",
+                "@types/node" => "^22.13.5",
+                "@vue/eslint-config-typescript" => "^14.3.0",
+                "eslint" => "^9.17.0",
+                "eslint-config-prettier" => "^10.0.1",
+                "eslint-plugin-vue" => "^9.32.0",
+                "prettier" => "^3.4.2",
+                "prettier-plugin-organize-imports" => "^4.1.0",
+                "prettier-plugin-tailwindcss" => "^0.6.9",
+                "typescript-eslint" => "^8.23.0",
+                "vue-tsc" => "^2.2.4"
+            ],
+            "dependencies" => [
+                "@inertiajs/vue3" => "^2.0.0-beta.3",
+                "@vitejs/plugin-vue" => "^5.2.1",
+                "@vueuse/core" => "^12.0.0",
+                "autoprefixer" => "^10.4.20",
+                "class-variance-authority" => "^0.7.1",
+                "clsx" => "^2.1.1",
+                "concurrently" => "^9.0.1",
+                "laravel-vite-plugin" => "^1.0",
+                "lucide" => "^0.468.0",
+                "lucide-vue-next" => "^0.468.0",
+                "radix-vue" => "^1.9.11",
+                "tailwind-merge" => "^2.5.5",
+                "tailwindcss" => "^3.4.1",
+                "tailwindcss-animate" => "^1.0.7",
+                "typescript" => "^5.2.2",
+                "vite" => "^6.2.0",
+                "vue" => "^3.5.13",
+                "ziggy-js" => "^2.4.2"
+            ],
+            "optionalDependencies" => [
+                "@rollup/rollup-linux-x64-gnu" => "4.9.5",
+                "@tailwindcss/oxide-linux-x64-gnu" => "^4.0.1",
+                "lightningcss-linux-x64-gnu" => "^1.29.1"
+            ]
+        ],
+
+        [
+            "private" => true,
+            "type" => "module",
+            "scripts" => [
+                "build" => "vite build",
+                "build:ssr" => "vite build && vite build --ssr",
+                "dev" => "vite",
+                "format" => "prettier --write resources/",
+                "format:check" => "prettier --check resources/",
+                "lint" => "eslint . --fix",
+                "types" => "tsc --noEmit"
+            ],
+            "devDependencies" => [
+                "@eslint/js" => "^9.19.0",
+                "@types/node" => "^22.13.5",
+                "eslint" => "^9.17.0",
+                "eslint-config-prettier" => "^10.0.1",
+                "eslint-plugin-react" => "^7.37.3",
+                "eslint-plugin-react-hooks" => "^5.1.0",
+                "prettier" => "^3.4.2",
+                "prettier-plugin-organize-imports" => "^4.1.0",
+                "prettier-plugin-tailwindcss" => "^0.6.11",
+                "typescript-eslint" => "^8.23.0"
+            ],
+            "dependencies" => [
+                "@headlessui/react" => "^2.2.0",
+                "@inertiajs/react" => "^2.0.0",
+                "@radix-ui/react-avatar" => "^1.1.3",
+                "@radix-ui/react-checkbox" => "^1.1.4",
+                "@radix-ui/react-collapsible" => "^1.1.3",
+                "@radix-ui/react-dialog" => "^1.1.6",
+                "@radix-ui/react-dropdown-menu" => "^2.1.6",
+                "@radix-ui/react-label" => "^2.1.2",
+                "@radix-ui/react-navigation-menu" => "^1.2.5",
+                "@radix-ui/react-select" => "^2.1.6",
+                "@radix-ui/react-separator" => "^1.1.2",
+                "@radix-ui/react-slot" => "^1.1.2",
+                "@radix-ui/react-toggle" => "^1.1.2",
+                "@radix-ui/react-toggle-group" => "^1.1.2",
+                "@radix-ui/react-tooltip" => "^1.1.8",
+                "@tailwindcss/vite" => "^4.0.6",
+                "@types/react" => "^19.0.3",
+                "@types/react-dom" => "^19.0.2",
+                "@vitejs/plugin-react" => "^4.3.4",
+                "class-variance-authority" => "^0.7.1",
+                "clsx" => "^2.1.1",
+                "concurrently" => "^9.0.1",
+                "globals" => "^15.14.0",
+                "laravel-vite-plugin" => "^1.0",
+                "lucide-react" => "^0.475.0",
+                "react" => "^19.0.0",
+                "react-dom" => "^19.0.0",
+                "tailwind-merge" => "^3.0.1",
+                "tailwindcss" => "^4.0.0",
+                "tailwindcss-animate" => "^1.0.7",
+                "typescript" => "^5.7.2",
+                "vite" => "^6.0"
+            ],
+            "optionalDependencies" => [
+                "@rollup/rollup-linux-x64-gnu" => "4.9.5",
+                "@tailwindcss/oxide-linux-x64-gnu" => "^4.0.1",
+                "lightningcss-linux-x64-gnu" => "^1.29.1"
+            ]
+        ],
+        [
+            "private" => true,
+            "type" => "module",
+            "scripts" => [
+                "build" => "vite build",
+                "dev" => "vite"
+            ],
+            "dependencies" => [
+                "@tailwindcss/vite" => "^4.0.7",
+                "autoprefixer" => "^10.4.20",
+                "axios" => "^1.7.4",
+                "concurrently" => "^9.0.1",
+                "laravel-vite-plugin" => "^1.0",
+                "tailwindcss" => "^4.0.7",
+                "vite" => "^6.0"
+            ],
+            "optionalDependencies" => [
+                "@rollup/rollup-linux-x64-gnu" => "4.9.5",
+                "@tailwindcss/oxide-linux-x64-gnu" => "^4.0.1",
+                "lightningcss-linux-x64-gnu" => "^1.29.1"
+            ]
+        ],
+        [
+            "private" => true,
+            "type" => "module",
+            "scripts" => [
+                "dev" => "vite",
+                "build" => "vite build"
+            ],
+            "devDependencies" => [
+                "@tailwindcss/forms" => "^0.5.7",
+                "@tailwindcss/typography" => "^0.5.12",
+                "alpinejs" => "^3.4.2",
+                "autoprefixer" => "^10.4.19",
+                "axios" => "^1.8.2",
+                "laravel-vite-plugin" => "^1.0",
+                "postcss" => "^8.4.38",
+                "postcss-nesting" => "^12.1.1",
+                "tailwindcss" => "^3.4.3",
+                "vite" => "^6.2"
+            ]
+        ]
+    ];
 }

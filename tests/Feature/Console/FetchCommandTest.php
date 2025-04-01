@@ -4,10 +4,13 @@ use App\Contracts\Http\Client;
 use App\Models\Kit;
 use App\Models\Stack;
 use App\Models\Tag;
-use App\Services\Packagist\Http\Response;
+use App\Http\Response;
+use App\Services\Github\Github;
 use App\Services\Packagist\Packagist;
 use App\Services\Packagist\ValueObjects\Agent;
 use Tests\Fixtures\Packages;
+
+beforeEach()->only();
 
 it('fetches & stores kits', function () {
     // Arrange
@@ -50,9 +53,28 @@ it('fetches & stores kits', function () {
             );
     }
 
+    foreach (Packages::$starterKitRepos as $key => $respository) {
+        [$owner, $repo] = Github::ownerAndRepo($respository);
+
+        $client->shouldReceive('get')->with(
+            "https://api.github.com/repos/{$owner}/{$repo}/contents/package.json",
+            [],
+            ['Accept' => 'application/vnd.github.v3+json']
+        )->andReturn(
+                new Response(
+                    status: 200,
+                    body: base64_encode(json_encode(Packages::$packageJsons[$key])),
+                    headers: [
+                        'Content-Type' => 'application/json',
+                    ],
+                )
+            );
+    }
+
     $packagist = new Packagist($client, new Agent(name: 'Larakits', email: 'info@larakits.dev'));
 
     $this->instance(Packagist::class, $packagist);
+    $this->instance(Github::class, new Github($client));
 
     // Act
     $this->artisan('fetch:kits');

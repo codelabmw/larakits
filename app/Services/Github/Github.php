@@ -10,7 +10,10 @@ final class Github
     /**
      * Creates a new Github instance.
      */
-    public function __construct(private readonly Client $client)
+    public function __construct(
+        private readonly Client $client,
+        private readonly string $baseUrl = 'https://api.github.com'
+    )
     {
         //
     }
@@ -21,7 +24,7 @@ final class Github
     public function contents(string $owner, string $repo, string $path): string
     {
         $response = $this->client->get(
-            url: "https://api.github.com/repos/{$owner}/{$repo}/contents/{$path}",
+            url: "{$this->baseUrl}/repos/{$owner}/{$repo}/contents/{$path}",
             headers: [
                 'Accept' => 'application/vnd.github.v3+json',
             ]
@@ -42,5 +45,20 @@ final class Github
         $base64Data = $this->contents($owner, $repo, $path);
 
         return json_decode(base64_decode($base64Data), true);
+    }
+
+    /**
+     * Returns the owner and repository name from a repository URL.
+     */
+    public static function ownerAndRepo(string $url): array
+    {
+
+        preg_match('/^https?:\/\/github\.com\/([^\/]+)\/([^\/]+)\/?$/', $url, $matches);
+
+        if (count($matches) !== 3) {
+            throw new \InvalidArgumentException('Invalid repository URL');
+        }
+
+        return [$matches[1], $matches[2]];
     }
 }

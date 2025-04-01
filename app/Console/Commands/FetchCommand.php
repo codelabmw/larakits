@@ -4,12 +4,13 @@ namespace App\Console\Commands;
 
 use App\Actions\EnsureIsLaravelProject;
 use App\Models\Kit;
+use App\Models\Stack;
 use App\Models\Tag;
 use App\Services\Packagist\Packagist;
 use App\Strategies\DescriptionStrategy;
 use App\Strategies\KeywordStrategy;
 use App\Strategies\NameStrategy;
-use App\ValueObjects\Payload;
+use App\ValueObjects\Payload as KitPayload;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -48,7 +49,7 @@ class FetchCommand extends Command
             $package = $packagist->get($package->name);
 
             if ($isLaravelProject($package)) {
-                $payload = new Payload(package: $package, isKit: false);
+                $payload = new KitPayload(package: $package, isKit: false);
 
                 /** @var array<class-string<Strategy>> */
                 $strategies = [
@@ -59,14 +60,43 @@ class FetchCommand extends Command
 
                 Pipeline::send($payload)
                     ->through($strategies)
-                    ->finally(function (Payload $payload): void {
-                        if ($payload->isKit) {
-                            /** @var Github */
-                            $github = App::make(Github::class);
+                    ->finally(function (KitPayload $kitPayload): void {
+                        if ($kitPayload->isKit) {
+                            $package = $kitPayload->package;
 
-                            $package = $payload->package;
+                            /** @var array{composer: array<int, string>, npm: array<int, string>} */
+                            $dependencies = [
+                                'composer' => array_keys(array_merge(
+                                    $package->require ?? [],
+                                    $package->requireDev ?? [],
+                                )),
+                            ];
 
-                            DB::transaction(function () use ($package): void {
+                            if ($package->source['type'] === 'git') {
+                                /** @var Github */
+                                $github = App::make(Github::class);
+
+                                [$owner, $repo] = Github::ownerAndRepo($package->source['url']);
+                                $packageJson = $github->jsonContent($owner, $repo, 'package.json');
+
+                                $dependencies['npm'] = array_keys(array_merge(
+                                    $packageJson['dependencies'] ?? [],
+                                    $packageJson['devDependencies'] ?? [],
+                                ));
+                            }
+
+                            $stackPayload = new StackPayload(dependencies: $dependencies);
+
+                            /** @var array<class-string<Strategy>> */
+                            $strategies = [];
+
+                            Pipeline::send($stackPayload)
+                                ->through($strategies)
+                                ->thenReturn();
+
+                            $stacks = $stackPayload->getStacks();
+
+                            DB::transaction(function () use ($package, $stacks): void {
                                 [$vendor, $name] = explode('/', $package->name);
 
                                 $kit = Kit::create(attributes: [
@@ -86,6 +116,11 @@ class FetchCommand extends Command
                                 foreach ($package->keywords as $keyword) {
                                     $tag = Tag::firstOrCreate(['slug' => Str::slug($keyword), 'name' => $keyword]);
                                     $kit->tags()->attach($tag);
+                                }
+
+                                foreach ($stacks as $stack) {
+                                    $stack = Stack::firstOrCreate(['slug' => Str::slug($stack), 'name' => $stack]);
+                                    $kit->stacks()->attach($stack);
                                 }
                             });
                         }
