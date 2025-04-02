@@ -6,6 +6,7 @@ use App\Actions\EnsureIsLaravelProject;
 use App\Guessors\Kit\ByDescription;
 use App\Guessors\Kit\ByKeyword;
 use App\Guessors\Kit\ByName;
+use App\Guessors\Stack\Livewire;
 use App\Guessors\Stack\React;
 use App\Guessors\Stack\Vue;
 use App\Models\Kit;
@@ -104,6 +105,7 @@ class FetchCommand extends Command
             $guessors = [
                 React::class,
                 Vue::class,
+                Livewire::class,
             ];
 
             Pipeline::send($stackPayload)
