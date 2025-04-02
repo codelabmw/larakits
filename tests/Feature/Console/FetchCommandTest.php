@@ -10,8 +10,6 @@ use App\Services\Packagist\Packagist;
 use App\Services\Packagist\ValueObjects\Agent;
 use Tests\Fixtures\Packages;
 
-beforeEach()->only();
-
 it('fetches & stores kits', function () {
     // Arrange
     $client = Mockery::mock(Client::class);

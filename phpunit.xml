@@ -19,6 +19,14 @@
         <include>
             <directory>app</directory>
         </include>
+        <exclude>
+            <directory>./vendor</directory>
+            <directory>./tests</directory>
+            <directory>./app/Http/Controllers/Auth</directory>
+            <directory>./app/Http/Controllers/Settings</directory>
+            <directory>./app/Http/Requests/Auth</directory>
+            <directory>./app/Http/Requests/Settings</directory>
+        </exclude>
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
