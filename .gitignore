@@ -12,6 +12,7 @@
 .env.production
 .phpactor.json
 .phpunit.result.cache
+.windsurf-prompt
 Homestead.json
 Homestead.yaml
 npm-debug.log

@@ -40,3 +40,37 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+// Custom types
+interface Tag {
+    slug: string;
+    name: string;
+}
+
+interface Stack {
+    slug: string;
+    name: string;
+}
+
+interface Author {
+    name?: string;
+    email?: string;
+    role?: string
+}
+
+interface Kit {
+    slug: string;
+    name: string;
+    vendor: string;
+    description: string;
+    stars: number;
+    downloads: number;
+    tags: Tag[];
+    stacks: Stack[];
+    maintainers: Array<{
+        name: string;
+        avatar: string;
+    }>;
+    authors: Author[];
+    licenses: string[];
+}
