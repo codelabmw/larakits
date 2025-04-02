@@ -1,6 +1,7 @@
 <?php
 
 use App\Guessors\Stack\React;
+use App\Guessors\Stack\Tailwindcss;
 use App\Guessors\Stack\Vue;
 use App\Guessors\Stack\Livewire;
 use App\ValueObjects\StackPayload;
@@ -42,4 +43,17 @@ test('it guesses livewire stack', function () {
 
     // Assert
     expect($payload->getStacks())->toBe(['laravel/livewire']);
+});
+
+test('it guesses tailwindcss stack', function () {
+    // Arrange
+    $payload = new StackPayload([
+        'npm' => ['tailwindcss', 'vue', 'react', 'react-dom'],
+    ]);
+
+    // Act
+    (new Tailwindcss)->handle($payload, fn($payload) => null);
+
+    // Assert
+    expect($payload->getStacks())->toBe(['tailwindcss']);
 });
