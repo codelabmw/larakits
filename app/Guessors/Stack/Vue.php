@@ -6,15 +6,15 @@ use App\Contracts\Guessor;
 use App\ValueObjects\StackPayload;
 use Closure;
 
-final class React implements Guessor
+final class Vue implements Guessor
 {
     /**
      * The name of the stack.
      */
-    const NAME = 'react';
+    const NAME = 'vue';
 
     /**
-     * Guesses if payload has react dependencies.
+     * Guesses if payload has vue dependencies.
      * 
      * @param StackPayload $payload
      */

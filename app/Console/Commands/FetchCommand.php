@@ -7,6 +7,7 @@ use App\Guessors\Kit\ByDescription;
 use App\Guessors\Kit\ByKeyword;
 use App\Guessors\Kit\ByName;
 use App\Guessors\Stack\React;
+use App\Guessors\Stack\Vue;
 use App\Models\Kit;
 use App\Models\Stack;
 use App\Models\Tag;
@@ -102,6 +103,7 @@ class FetchCommand extends Command
             /** @var array<class-string<Guessor>> */
             $guessors = [
                 React::class,
+                Vue::class,
             ];
 
             Pipeline::send($stackPayload)
