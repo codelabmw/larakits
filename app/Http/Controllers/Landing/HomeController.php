@@ -13,8 +13,8 @@ class HomeController extends Controller
     {
         $kits = Kit::query()->with('tags', 'stacks');
 
-        $trendingKits = $kits->latest('stars')->take(10)->get();
-        $recentKits = $kits->latest('created_at')->take(10)->get();
+        $trendingKits = $kits->latest('stars')->take(6)->get();
+        $recentKits = $kits->latest('created_at')->take(6)->get();
 
         return Inertia::render('welcome', [
             'trendingKits' => $trendingKits,

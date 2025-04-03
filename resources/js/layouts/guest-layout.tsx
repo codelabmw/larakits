@@ -41,7 +41,7 @@ const navigation = [
 
 const footerNavigation = {
     product: [
-        { name: 'Browse Kits', href: '/kits' },
+        { name: 'Browse kits', href: '/kits' },
         { name: 'Documentation', href: '/docs' },
     ],
     company: [
@@ -68,7 +68,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
         <div className="relative min-h-screen">
             {/* Header */}
             <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
-                <div className="container mx-auto flex h-16 items-center justify-between">
+                <div className="mx-auto flex h-16 max-w-7xl items-center justify-between">
                     <div className="flex items-center gap-4">
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-2 font-bold">
@@ -146,7 +146,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
 
             {/* Footer */}
             <footer className="bg-muted/40 border-t">
-                <div className="container mx-auto">
+                <div className="mx-auto max-w-7xl">
                     {/* App Info */}
                     <div className="grid gap-8 py-12 lg:grid-cols-12 lg:gap-12">
                         <div className="lg:col-span-4">
@@ -214,7 +214,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
 
                     {/* Copyright */}
                     <div className="flex flex-col items-center justify-between gap-4 border-t py-6 sm:flex-row">
-                        <p className="text-muted-foreground text-sm">&copy; {new Date().getFullYear()} LaraKits. All rights reserved.</p>
+                        <p className="text-muted-foreground text-sm">&copy; {new Date().getFullYear()} Larakits. All rights reserved.</p>
                         <div className="flex items-center gap-4">
                             <Link href="/terms" className="text-muted-foreground hover:text-foreground text-sm">
                                 Terms

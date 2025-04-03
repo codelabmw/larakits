@@ -1,14 +1,16 @@
+import KitCard from '@/components/kit-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import useClipboard from '@/hooks/use-clipboard';
 import { GuestLayout } from '@/layouts/guest-layout';
-import type { Paginator } from '@/types';
+import type { Kit, Paginator, Stack, Tag } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import {
     ChevronLeftIcon,
@@ -19,34 +21,23 @@ import {
     GitHubLogoIcon,
     MagnifyingGlassIcon,
 } from '@radix-ui/react-icons';
-import { Filter } from 'lucide-react';
+import { Check, Copy, Filter, Scale } from 'lucide-react';
 import { useState } from 'react';
-
-interface Kit {
-    id: number;
-    name: string;
-    description: string;
-    stars: number;
-    downloads: number;
-    tags: string[];
-    stacks: string[];
-    maintainers: Array<{
-        name: string;
-        avatar: string;
-    }>;
-}
 
 interface Props {
     kits: Paginator<Kit>;
-    tags: string[];
-    stacks: string[];
+    tags: Tag[];
+    stacks: Stack[];
 }
+
+
 
 export default function Index({ kits: initialKits, tags, stacks }: Props) {
     const [selectedKit, setSelectedKit] = useState<Kit | null>(null);
     const [search, setSearch] = useState('');
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
-    const [selectedStacks, setSelectedStacks] = useState<string[]>([]);
+    const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+    const [selectedStacks, setSelectedStacks] = useState<Stack[]>([]);
+    const { copy, recentlyCopied } = useClipboard();
 
     // Filter kits based on search and selected filters
     const filteredKits = initialKits.data.filter((kit) => {
@@ -63,16 +54,16 @@ export default function Index({ kits: initialKits, tags, stacks }: Props) {
         <GuestLayout>
             <Head title="Browse Starter Kits" />
 
-            <div className="container py-8">
+            <div className="mx-auto max-w-7xl py-8">
                 {/* Header */}
-                <div className="mb-8">
-                    <h1 className="mb-2 text-3xl font-bold tracking-tight">Browse Starter Kits</h1>
+                <div className="mb-8 py-8 text-center">
+                    <h1 className="mb-2 text-3xl font-bold tracking-wider">Browse starter kits</h1>
                     <p className="text-muted-foreground">Find the perfect Laravel starter kit for your next project</p>
                 </div>
 
                 {/* Search and Filters */}
-                <div className="mb-8 flex items-center gap-4">
-                    <div className="relative flex-1">
+                <div className="mb-8 flex items-center justify-between gap-4">
+                    <div className="relative w-[30%]">
                         <MagnifyingGlassIcon className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
                         <Input
                             type="search"
@@ -95,15 +86,15 @@ export default function Index({ kits: initialKits, tags, stacks }: Props) {
                             </Button>
                         </SheetTrigger>
                         <SheetContent>
-                            <div className="space-y-8">
+                            <div className="space-y-8 p-8">
                                 {/* Tags Filter */}
                                 <div>
                                     <h4 className="mb-4 text-sm font-medium">Tags</h4>
                                     <div className="space-y-4">
                                         {tags.map((tag) => (
-                                            <div key={tag} className="flex items-center space-x-2">
+                                            <div key={tag.slug} className="flex items-center space-x-2">
                                                 <Checkbox
-                                                    id={`tag-${tag}`}
+                                                    id={`tag-${tag.slug}`}
                                                     checked={selectedTags.includes(tag)}
                                                     onCheckedChange={(checked) => {
                                                         if (checked) {
@@ -113,7 +104,7 @@ export default function Index({ kits: initialKits, tags, stacks }: Props) {
                                                         }
                                                     }}
                                                 />
-                                                <Label htmlFor={`tag-${tag}`}>{tag}</Label>
+                                                <Label htmlFor={`tag-${tag.slug}`}>{tag.name}</Label>
                                             </div>
                                         ))}
                                     </div>
@@ -126,9 +117,9 @@ export default function Index({ kits: initialKits, tags, stacks }: Props) {
                                     <h4 className="mb-4 text-sm font-medium">Tech Stack</h4>
                                     <div className="space-y-4">
                                         {stacks.map((stack) => (
-                                            <div key={stack} className="flex items-center space-x-2">
+                                            <div key={stack.slug} className="flex items-center space-x-2">
                                                 <Checkbox
-                                                    id={`stack-${stack}`}
+                                                    id={`stack-${stack.slug}`}
                                                     checked={selectedStacks.includes(stack)}
                                                     onCheckedChange={(checked) => {
                                                         if (checked) {
@@ -138,7 +129,7 @@ export default function Index({ kits: initialKits, tags, stacks }: Props) {
                                                         }
                                                     }}
                                                 />
-                                                <Label htmlFor={`stack-${stack}`}>{stack}</Label>
+                                                <Label htmlFor={`stack-${stack.slug}`}>{stack.name}</Label>
                                             </div>
                                         ))}
                                     </div>
@@ -148,60 +139,10 @@ export default function Index({ kits: initialKits, tags, stacks }: Props) {
                     </Sheet>
                 </div>
 
-                {/* Results Summary */}
-                <div className="text-muted-foreground mb-6 text-sm">
-                    Showing {initialKits.from}-{initialKits.to} of {initialKits.total} kits
-                </div>
-
                 {/* Kits Grid */}
                 <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {filteredKits.map((kit) => (
-                        <Card
-                            key={kit.id}
-                            className="hover:bg-muted/50 flex cursor-pointer flex-col p-6 transition-colors"
-                            onClick={() => setSelectedKit(kit)}
-                        >
-                            <div className="mb-4 flex items-center gap-4">
-                                <div className="flex -space-x-2">
-                                    {kit.maintainers.slice(0, 3).map((maintainer) => (
-                                        <img
-                                            key={maintainer.name}
-                                            src={maintainer.avatar}
-                                            alt={maintainer.name}
-                                            className="border-background h-8 w-8 rounded-full border-2"
-                                            title={maintainer.name}
-                                        />
-                                    ))}
-                                    {kit.maintainers.length > 3 && (
-                                        <div className="border-background bg-muted flex h-8 w-8 items-center justify-center rounded-full border-2 text-xs font-medium">
-                                            +{kit.maintainers.length - 3}
-                                        </div>
-                                    )}
-                                </div>
-                                <h3 className="font-semibold">{kit.name}</h3>
-                            </div>
-                            <p className="text-muted-foreground mb-4 flex-1 text-sm">{kit.description}</p>
-                            <div className="flex items-center justify-between">
-                                <div className="text-muted-foreground flex items-center space-x-4 text-sm">
-                                    <span className="flex items-center">
-                                        <GitHubLogoIcon className="mr-1 h-4 w-4" />
-                                        {kit.stars}
-                                    </span>
-                                    <span className="flex items-center">
-                                        <DownloadIcon className="mr-1 h-4 w-4" />
-                                        {kit.downloads}
-                                    </span>
-                                </div>
-                                <div className="flex gap-1">
-                                    {kit.tags.slice(0, 3).map((tag) => (
-                                        <Badge key={tag} variant="secondary">
-                                            {tag}
-                                        </Badge>
-                                    ))}
-                                    {kit.tags.length > 3 && <Badge variant="outline">+{kit.tags.length - 3}</Badge>}
-                                </div>
-                            </div>
-                        </Card>
+                        <KitCard key={kit.slug} kit={kit} onClick={() => setSelectedKit(kit)} />
                     ))}
                 </div>
 
@@ -245,18 +186,57 @@ export default function Index({ kits: initialKits, tags, stacks }: Props) {
 
                 {/* Kit Details Sheet */}
                 <Sheet open={!!selectedKit} onOpenChange={() => setSelectedKit(null)}>
-                    <SheetContent className="sm:max-w-xl">
+                    <SheetContent className="p-8 sm:max-w-xl">
                         {selectedKit && (
                             <ScrollArea className="h-full pr-6">
                                 <div className="space-y-8">
                                     {/* Header */}
                                     <div>
                                         <h2 className="mb-2 text-2xl font-bold tracking-tight">{selectedKit.name}</h2>
-                                        <p className="text-muted-foreground">{selectedKit.description}</p>
+                                        <p className="text-muted-foreground">{selectedKit.description ?? 'This starter kit does not have a description.'}</p>
+                                    </div>
+
+                                    {/* Installation */}
+                                    <div className="flex items-center gap-4">
+                                        <Button asChild variant="destructive">
+                                            <Link href={`https://herd.laravel.com/new?starter-kit=${selectedKit.vendor}/${selectedKit.name}`}>
+                                                <span>Laravel Herd</span>
+                                            </Link>
+                                        </Button>
+                                        <div className="text-muted-foreground bg-muted relative flex-1 rounded p-2 text-sm">
+                                            <code className="line-clamp-1">
+                                                laravel new --using={selectedKit.vendor}/{selectedKit.name}
+                                            </code>
+                                            <Button
+                                                onClick={() => copy(`laravel new --using=${selectedKit.vendor}/${selectedKit.name}`)}
+                                                variant="ghost"
+                                                size="icon"
+                                                className="absolute top-1/2 right-2 -translate-y-1/2"
+                                            >
+                                                {
+                                                    recentlyCopied ? (
+                                                        <Check className="h-4 w-4" />
+                                                    ) : (
+                                                        <Copy className="h-4 w-4" />
+                                                    )
+                                                }
+                                            </Button>
+                                        </div>
                                     </div>
 
                                     {/* Stats */}
                                     <div className="flex items-center gap-4">
+                                        {selectedKit.licenses.length > 0 && (
+                                            <div className="flex items-center">
+                                                <div className="text-muted-foreground flex items-center text-sm">
+                                                    <Scale className="mr-1 h-4 w-4" />
+                                                    {selectedKit.licenses[0]}
+                                                </div>
+                                                {selectedKit.licenses.length > 1 && (
+                                                    <span className="text-muted-foreground ml-1 text-xs">+{selectedKit.licenses.length - 1}</span>
+                                                )}
+                                            </div>
+                                        )}
                                         <div className="text-muted-foreground flex items-center text-sm">
                                             <GitHubLogoIcon className="mr-1 h-4 w-4" />
                                             {selectedKit.stars} stars
@@ -267,30 +247,63 @@ export default function Index({ kits: initialKits, tags, stacks }: Props) {
                                         </div>
                                     </div>
 
-                                    {/* Tech Stack */}
+                                    <Separator />
+
+                                    {/* Maintainers */}
                                     <div>
-                                        <h3 className="mb-3 text-sm font-medium">Tech Stack</h3>
+                                        <Tabs defaultValue="maintainers">
+                                            <TabsList className="bg-transparent">
+                                                <TabsTrigger value="maintainers">Maintainers</TabsTrigger>
+                                                <TabsTrigger value="authors">Authors</TabsTrigger>
+                                            </TabsList>
+                                            <div className="mt-4 px-2">
+                                                <TabsContent value="maintainers">
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {selectedKit.maintainers.map((maintainer) => (
+                                                            <img
+                                                                key={maintainer.name}
+                                                                src={maintainer.avatar_url}
+                                                                alt={maintainer.name}
+                                                                className="border-background h-8 w-8 rounded-full border-2"
+                                                                title={maintainer.name}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                </TabsContent>
+                                                <TabsContent value="authors">
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {selectedKit.authors.map((author) => (
+                                                            <Badge key={author.name} variant="outline" className="border-none">
+                                                                {author.name}
+                                                            </Badge>
+                                                        ))}
+                                                    </div>
+                                                </TabsContent>
+                                            </div>
+                                        </Tabs>
+                                    </div>
+
+                                    {/* Tech Stack */}
+                                    <div className="px-3">
+                                        <h3 className="mb-3 text-sm font-medium">Stack</h3>
                                         <div className="flex flex-wrap gap-2">
                                             {selectedKit.stacks.map((stack) => (
-                                                <Badge key={stack} variant="outline">
-                                                    {stack}
+                                                <Badge key={stack.slug} variant="outline">
+                                                    {stack.name}
                                                 </Badge>
                                             ))}
                                         </div>
                                     </div>
 
-                                    {/* Maintainers */}
+                                    <Separator />
+
+                                    {/* Tags */}
                                     <div>
-                                        <h3 className="mb-3 text-sm font-medium">Maintainers</h3>
-                                        <div className="flex -space-x-2">
-                                            {selectedKit.maintainers.map((maintainer) => (
-                                                <img
-                                                    key={maintainer.name}
-                                                    src={maintainer.avatar}
-                                                    alt={maintainer.name}
-                                                    className="border-background h-8 w-8 rounded-full border-2"
-                                                    title={maintainer.name}
-                                                />
+                                        <div className="flex flex-wrap gap-2">
+                                            {selectedKit.tags.map((tag) => (
+                                                <Badge key={tag.slug} variant="secondary">
+                                                    {tag.name}
+                                                </Badge>
                                             ))}
                                         </div>
                                     </div>

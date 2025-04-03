@@ -19,7 +19,7 @@ class KitController extends Controller
     {
         $kits = Kit::query()
             ->with(['stacks', 'tags'])
-            ->get();
+            ->paginate();
 
         $tags = Tag::all();
         $stacks = Stack::all();
