@@ -69,8 +69,31 @@ interface Kit {
     stacks: Stack[];
     maintainers: Array<{
         name: string;
-        avatar: string;
+        avatar_url: string;
     }>;
     authors: Author[];
     licenses: string[];
+}
+
+export type Paginator<T> = {
+    data: Array<T>;
+    from: number;
+    links: Array<Link>;
+    path: string;
+    to: number;
+    total: number;
+
+    current_page: number;
+    first_page_url: string;
+    last_page: number;
+    last_page_url: string;
+    next_page_url: string | null;
+    per_page: number;
+    prev_page_url: string | null;
+};
+
+export type PaginatorLink = {
+    url: string | null;
+    label: string;
+    active: boolean;
 }

@@ -1,210 +1,280 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { GuestLayout } from '@/layouts/guest-layout';
-import type { Kit } from '@/types';
-import { Head, Link } from '@inertiajs/react';
-import { DownloadIcon, GitHubLogoIcon, LightningBoltIcon, MixIcon, RocketIcon, UpdateIcon } from '@radix-ui/react-icons';
+import { useState, useEffect } from 'react'
+import { Head, Link } from '@inertiajs/react'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+  GitHubLogoIcon,
+  DownloadIcon,
+  ArrowRightIcon,
+  LightningBoltIcon,
+  RocketIcon,
+  GearIcon,
+  HeartIcon,
+} from '@radix-ui/react-icons'
+import { GuestLayout } from '@/layouts/guest-layout'
+import type { Kit } from '@/types'
 
 interface Props {
-    trendingKits: Kit[];
-    recentKits: Kit[];
+  trendingKits: Kit[]
+  recentKits: Kit[]
 }
 
 export default function Welcome({ trendingKits, recentKits }: Props) {
-    return (
-        <GuestLayout>
-            <Head title="Welcome" />
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
-            {/* Hero Section */}
-            <section className="bg-background relative overflow-hidden py-20">
-                <div className="relative z-10 container mx-auto">
-                    <div className="mx-auto max-w-2xl text-center">
-                        <Badge variant="secondary" className="mb-4">
-                            v1.0.0 is now live 🎉
-                        </Badge>
-                        <h1 className="from-foreground to-foreground/70 mb-4 bg-gradient-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl">
-                            Discover and Install Laravel Starter Kits
-                        </h1>
-                        <p className="text-muted-foreground mb-8 text-lg">
-                            Find the perfect Laravel starter kit for your next project. Curated from the community, for the community.
-                        </p>
-                        <div className="flex items-center justify-center space-x-4">
-                            <Button asChild size="lg" className="group">
-                                <Link href="/kits">
-                                    Browse Kits
-                                    <RocketIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                                </Link>
-                            </Button>
-                            <Button asChild variant="outline" size="lg">
-                                <a href="https://github.com/larakits/larakits" target="_blank" rel="noopener noreferrer" className="group">
-                                    <GitHubLogoIcon className="mr-2 h-4 w-4" />
-                                    Star on GitHub
-                                </a>
-                            </Button>
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+
+  const features = [
+    {
+      icon: LightningBoltIcon,
+      title: 'Quick Setup',
+      description:
+        'Get your Laravel project up and running in minutes with our curated starter kits.',
+    },
+    {
+      icon: RocketIcon,
+      title: 'Modern Stack',
+      description:
+        'Access kits built with the latest technologies and best practices.',
+    },
+    {
+      icon: GearIcon,
+      title: 'Customizable',
+      description:
+        'Each kit is designed to be easily customized to match your needs.',
+    },
+    {
+      icon: HeartIcon,
+      title: 'Community-Driven',
+      description:
+        'Join a thriving community of Laravel developers sharing their work.',
+    },
+  ]
+
+  return (
+    <GuestLayout>
+      <Head title="Welcome" />
+
+      {/* Glow Effect */}
+      <div
+        className="pointer-events-none fixed inset-0 z-30 transition duration-300"
+        style={{
+          background: `radial-gradient(600px at ${mousePosition.x}px ${mousePosition.y}px, rgba(29, 78, 216, 0.15), transparent 80%)`,
+        }}
+      />
+
+      {/* Hero Section */}
+      <section className="relative flex min-h-[calc(100vh-4rem)] items-center">
+        <div className="container mx-auto">
+          <div className="mx-auto max-w-2xl text-center">
+            <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-6xl">
+              one more reason{' '}
+              <span className="text-gradient">
+                to ship faster then ever
+              </span>
+            </h1>
+            <p className="mb-8 text-lg text-muted-foreground sm:text-xl">
+              Discover community-maintained starter kits that help you build better
+              Laravel applications faster.
+            </p>
+            <div className="flex items-center justify-center gap-4">
+              <Button asChild size="lg">
+                <Link href="/kits">Browse Kits</Link>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <Link href="/how-to">Learn More</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Kits Section */}
+      <section className="border-t bg-muted/40 py-16">
+        <div className="container mx-auto">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="mb-8 text-3xl font-bold tracking-tight">
+              Featured Starter Kits
+            </h2>
+            <Tabs defaultValue="trending" className="mx-auto">
+              <TabsList className="mb-8">
+                <TabsTrigger value="trending">Trending</TabsTrigger>
+                <TabsTrigger value="recent">Recently Added</TabsTrigger>
+              </TabsList>
+              <TabsContent value="trending">
+                <div className="grid gap-6 sm:grid-cols-2">
+                  {trendingKits.map((kit) => (
+                    <Card
+                      key={kit.slug}
+                      className="flex cursor-pointer flex-col p-6 transition-colors hover:bg-muted/50"
+                    >
+                      <div className="mb-4 flex items-center gap-4">
+                        <div className="flex -space-x-2">
+                          {kit.maintainers.slice(0, 3).map((maintainer) => (
+                            <img
+                              key={maintainer.name}
+                              src={maintainer.avatar_url}
+                              alt={maintainer.name}
+                              className="h-8 w-8 rounded-full border-2 border-background"
+                              title={maintainer.name}
+                            />
+                          ))}
+                          {kit.maintainers.length > 3 && (
+                            <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-muted text-xs font-medium">
+                              +{kit.maintainers.length - 3}
+                            </div>
+                          )}
                         </div>
-                    </div>
+                        <h3 className="font-semibold">{kit.name}</h3>
+                      </div>
+                      <p className="mb-4 flex-1 text-sm text-muted-foreground">
+                        {kit.description}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                          <span className="flex items-center">
+                            <GitHubLogoIcon className="mr-1 h-4 w-4" />
+                            {kit.stars}
+                          </span>
+                          <span className="flex items-center">
+                            <DownloadIcon className="mr-1 h-4 w-4" />
+                            {kit.downloads}
+                          </span>
+                        </div>
+                        <div className="flex gap-1">
+                          {kit.tags.slice(0, 3).map((tag) => (
+                            <Badge key={tag.slug} variant="secondary">
+                              {tag.name}
+                            </Badge>
+                          ))}
+                          {kit.tags.length > 3 && (
+                            <Badge variant="outline">
+                              +{kit.tags.length - 3}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
                 </div>
-
-                {/* Background Pattern */}
-                <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black">
-                    <div className="absolute h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)]" />
+              </TabsContent>
+              <TabsContent value="recent">
+                <div className="grid gap-6 sm:grid-cols-2">
+                  {recentKits.map((kit) => (
+                    <Card
+                      key={kit.slug}
+                      className="flex cursor-pointer flex-col p-6 transition-colors hover:bg-muted/50"
+                    >
+                      <div className="mb-4 flex items-center gap-4">
+                        <div className="flex -space-x-2">
+                          {kit.maintainers.slice(0, 3).map((maintainer) => (
+                            <img
+                              key={maintainer.name}
+                              src={maintainer.avatar_url}
+                              alt={maintainer.name}
+                              className="h-8 w-8 rounded-full border-2 border-background"
+                              title={maintainer.name}
+                            />
+                          ))}
+                          {kit.maintainers.length > 3 && (
+                            <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-muted text-xs font-medium">
+                              +{kit.maintainers.length - 3}
+                            </div>
+                          )}
+                        </div>
+                        <h3 className="font-semibold">{kit.name}</h3>
+                      </div>
+                      <p className="mb-4 flex-1 text-sm text-muted-foreground">
+                        {kit.description}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                          <span className="flex items-center">
+                            <GitHubLogoIcon className="mr-1 h-4 w-4" />
+                            {kit.stars}
+                          </span>
+                          <span className="flex items-center">
+                            <DownloadIcon className="mr-1 h-4 w-4" />
+                            {kit.downloads}
+                          </span>
+                        </div>
+                        <div className="flex gap-1">
+                          {kit.tags.slice(0, 3).map((tag) => (
+                            <Badge key={tag.slug} variant="secondary">
+                              {tag.name}
+                            </Badge>
+                          ))}
+                          {kit.tags.length > 3 && (
+                            <Badge variant="outline">
+                              +{kit.tags.length - 3}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
                 </div>
-            </section>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </section>
 
-            {/* Features Section */}
-            <section className="border-t py-20">
-                <div className="container mx-auto">
-                    <div className="mx-auto max-w-2xl text-center">
-                        <h2 className="mb-4 text-3xl font-bold tracking-tight">Everything you need to get started</h2>
-                        <p className="text-muted-foreground">LaraKits helps you find and install Laravel starter kits with ease.</p>
-                    </div>
-
-                    <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                        {/* Feature 1 */}
-                        <Card className="relative overflow-hidden p-6">
-                            <div className="bg-primary/10 text-primary mb-4 flex h-12 w-12 items-center justify-center rounded-lg">
-                                <MixIcon className="h-6 w-6" />
-                            </div>
-                            <h3 className="mb-2 text-lg font-semibold">Curated Collection</h3>
-                            <p className="text-muted-foreground text-sm">
-                                Discover high-quality Laravel starter kits, hand-picked from the community.
-                            </p>
-                        </Card>
-
-                        {/* Feature 2 */}
-                        <Card className="relative overflow-hidden p-6">
-                            <div className="bg-primary/10 text-primary mb-4 flex h-12 w-12 items-center justify-center rounded-lg">
-                                <LightningBoltIcon className="h-6 w-6" />
-                            </div>
-                            <h3 className="mb-2 text-lg font-semibold">Quick Installation</h3>
-                            <p className="text-muted-foreground text-sm">Install any kit with a single command using Herd or Composer.</p>
-                        </Card>
-
-                        {/* Feature 3 */}
-                        <Card className="relative overflow-hidden p-6">
-                            <div className="bg-primary/10 text-primary mb-4 flex h-12 w-12 items-center justify-center rounded-lg">
-                                <UpdateIcon className="h-6 w-6" />
-                            </div>
-                            <h3 className="mb-2 text-lg font-semibold">Always Updated</h3>
-                            <p className="text-muted-foreground text-sm">Stay up to date with the latest Laravel starter kits and trends.</p>
-                        </Card>
-                    </div>
+      {/* Features Section */}
+      <section className="py-16">
+        <div className="container mx-auto">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="mb-8 text-3xl font-bold tracking-tight">
+              Why Choose LaraKits?
+            </h2>
+            <div className="grid gap-8 sm:grid-cols-2">
+              {features.map((feature) => (
+                <div
+                  key={feature.title}
+                  className="group relative overflow-hidden rounded-lg border bg-background p-6"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-cyan-50 opacity-0 transition-opacity duration-300 group-hover:opacity-10 dark:from-blue-950 dark:to-cyan-950" />
+                  <feature.icon className="mb-4 h-8 w-8 text-primary" />
+                  <h3 className="mb-2 text-lg font-semibold">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {feature.description}
+                  </p>
                 </div>
-            </section>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Trending Kits Section */}
-            {trendingKits.length > 0 && (
-                <section className="border-t py-20">
-                    <div className="container mx-auto">
-                        <div className="mb-12 flex items-center justify-between">
-                            <div>
-                                <h2 className="text-2xl font-bold tracking-tight">Trending Starter Kits</h2>
-                                <p className="text-muted-foreground">Popular kits in the Laravel community</p>
-                            </div>
-                            <Button asChild variant="ghost">
-                                <Link href="/kits">View all kits</Link>
-                            </Button>
-                        </div>
-
-                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                            {trendingKits.map((kit) => (
-                                <Card key={kit.slug} className="flex flex-col p-6">
-                                    <h3 className="mb-2 text-lg font-semibold">{kit.name}</h3>
-                                    <p className="text-muted-foreground mb-4 flex-1 text-sm">{kit.description}</p>
-                                    <div className="flex items-center justify-between">
-                                        <div className="text-muted-foreground flex items-center space-x-4 text-sm">
-                                            <span className="flex items-center">
-                                                <GitHubLogoIcon className="mr-1 h-4 w-4" />
-                                                {kit.stars}
-                                            </span>
-                                            <span className="flex items-center">
-                                                <DownloadIcon className="mr-1 h-4 w-4" />
-                                                {kit.downloads}
-                                            </span>
-                                        </div>
-                                        <div className="flex gap-1">
-                                            {kit.tags.map((tag) => (
-                                                <Badge key={tag.slug} variant="secondary">
-                                                    {tag.name}
-                                                </Badge>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </Card>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            )}
-
-            {/* Recent Kits Section */}
-            {recentKits.length > 0 && (
-                <section className="border-t py-20">
-                    <div className="container mx-auto">
-                        <div className="mb-12 flex items-center justify-between">
-                            <div>
-                                <h2 className="text-2xl font-bold tracking-tight">Recently Added</h2>
-                                <p className="text-muted-foreground">The latest additions to our collection</p>
-                            </div>
-                            <Button asChild variant="ghost">
-                                <Link href="/kits">View all kits</Link>
-                            </Button>
-                        </div>
-
-                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                            {recentKits.map((kit) => (
-                                <Card key={kit.slug} className="flex flex-col p-6">
-                                    <h3 className="mb-2 text-lg font-semibold">{kit.name}</h3>
-                                    <p className="text-muted-foreground mb-4 flex-1 text-sm">{kit.description}</p>
-                                    <div className="flex items-center justify-between">
-                                        <div className="text-muted-foreground flex items-center space-x-4 text-sm">
-                                            <span className="flex items-center">
-                                                <GitHubLogoIcon className="mr-1 h-4 w-4" />
-                                                {kit.stars}
-                                            </span>
-                                            <span className="flex items-center">
-                                                <DownloadIcon className="mr-1 h-4 w-4" />
-                                                {kit.downloads}
-                                            </span>
-                                        </div>
-                                        <div className="flex gap-1">
-                                            {kit.tags.map((tag) => (
-                                                <Badge key={tag.slug} variant="secondary">
-                                                    {tag.name}
-                                                </Badge>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </Card>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            )}
-
-            {/* CTA Section */}
-            <section className="border-t py-20">
-                <div className="container mx-auto">
-                    <div className="bg-primary relative overflow-hidden rounded-lg px-6 py-20">
-                        <div className="relative z-10 mx-auto max-w-2xl text-center">
-                            <h2 className="text-primary-foreground mb-4 text-3xl font-bold tracking-tight">Ready to get started?</h2>
-                            <p className="text-primary-foreground/90 mb-8 text-lg">
-                                Browse our collection of Laravel starter kits and find the perfect foundation for your next project.
-                            </p>
-                            <Button asChild size="lg" variant="secondary" className="group font-semibold">
-                                <Link href="/kits">
-                                    Browse Starter Kits
-                                    <RocketIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                                </Link>
-                            </Button>
-                        </div>
-
-                        {/* Background Pattern */}
-                        <div className="bg-[radial-gradient(45rem_50rem_at_top,theme(colors.primary-foreground/8),transparent)] absolute inset-0 -z-10" />
-                    </div>
-                </div>
-            </section>
-        </GuestLayout>
-    );
+      {/* CTA Section */}
+      <section className="border-t bg-muted/40 py-16">
+        <div className="container mx-auto">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="mb-4 text-3xl font-bold tracking-tight">
+              Ready to Get Started?
+            </h2>
+            <p className="mb-8 text-lg text-muted-foreground">
+              Browse our collection of Laravel starter kits and find the perfect
+              foundation for your next project.
+            </p>
+            <Button asChild size="lg">
+              <Link href="/kits" className="gap-2">
+                Browse Starter Kits
+                <ArrowRightIcon className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+    </GuestLayout>
+  )
 }
