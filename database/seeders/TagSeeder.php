@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Tag;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class TagSeeder extends Seeder
 {
@@ -12,6 +14,13 @@ class TagSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $tags = ['Auth', 'API', 'Admin Panel', 'Teams', 'Roles'];
+
+        foreach ($tags as $tag) {
+            Tag::create([
+                'slug' => Str::slug($tag),
+                'name' => $tag
+            ]);
+        }
     }
 }

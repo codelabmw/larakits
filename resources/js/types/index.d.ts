@@ -40,3 +40,60 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+// Custom types
+interface Tag {
+    slug: string;
+    name: string;
+}
+
+interface Stack {
+    slug: string;
+    name: string;
+}
+
+interface Author {
+    name?: string;
+    email?: string;
+    role?: string;
+}
+
+interface Kit {
+    slug: string;
+    name: string;
+    vendor: string;
+    description: string;
+    stars: number;
+    downloads: number;
+    tags: Tag[];
+    stacks: Stack[];
+    maintainers: Array<{
+        name: string;
+        avatar_url: string;
+    }>;
+    authors: Author[];
+    licenses: string[];
+}
+
+export type Paginator<T> = {
+    data: Array<T>;
+    from: number;
+    links: Array<Link>;
+    path: string;
+    to: number;
+    total: number;
+
+    current_page: number;
+    first_page_url: string;
+    last_page: number;
+    last_page_url: string;
+    next_page_url: string | null;
+    per_page: number;
+    prev_page_url: string | null;
+};
+
+export type PaginatorLink = {
+    url: string | null;
+    label: string;
+    active: boolean;
+};

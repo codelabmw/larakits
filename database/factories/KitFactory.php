@@ -22,12 +22,18 @@ class KitFactory extends Factory
             'vendor' => fake()->name(),
             'description' => fake()->text(),
             'source_url' => fake()->url(),
-            'source_type' => fake()->word(),
+            'source_type' => 'git',
             'stars' => fake()->numberBetween(0, 1000),
             'downloads' => fake()->numberBetween(0, 1000),
-            'maintainers' => [],
-            'authors' => [],
-            'licenses' => [],
+            'maintainers' => array_map(fn() => [
+                'name' => fake()->name(),
+                'avatar_url' => fake()->imageUrl(),
+            ], range(1, 3)),
+            'authors' => array_map(fn() => [
+                'name' => fake()->name(),
+                'email' => fake()->email(),
+            ], range(1, 3)),
+            'licenses' => ['MIT'],
         ];
     }
 }
