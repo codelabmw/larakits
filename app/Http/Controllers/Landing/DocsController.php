@@ -4,15 +4,14 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
-use Inertia\Response;
 
-class HowToController extends Controller
+class DocsController extends Controller
 {
     /**
      * Display the how to page.
      */
-    public function __invoke(): Response
+    public function __invoke()
     {
-        return Inertia::render('how-to');
+        return Inertia::render('docs');
     }
 }
