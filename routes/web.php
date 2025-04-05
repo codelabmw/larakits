@@ -8,6 +8,7 @@ use App\Http\Controllers\Landing\ContactController;
 use App\Http\Controllers\Landing\PrivacyPolicyController;
 use App\Http\Controllers\Landing\TermsController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', HomeController::class)->name('home');
 

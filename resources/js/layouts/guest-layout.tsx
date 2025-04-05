@@ -21,6 +21,11 @@ const navigation = [
         title: 'Resources',
         items: [
             {
+                title: 'About Larakits',
+                href: '/about',
+                description: 'Learn more about why we created Larakits.',
+            },
+            {
                 title: 'Documentation',
                 href: route('docs'),
                 description: 'Learn how to use and contribute to Larakits.',
@@ -50,7 +55,7 @@ const footerNavigation = {
         { name: 'Privacy', href: route('privacy') },
     ],
     community: [
-        { name: 'GitHub', href: 'https://github.com/larakits' },
+        { name: 'GitHub', href: 'https://github.com/codelabmw/larakits' },
         // { name: 'Discord', href: 'https://discord.gg/larakits' },
         // { name: 'Twitter', href: 'https://twitter.com/larakits' },
         { name: 'Newsletter', href: '/newsletter' },
