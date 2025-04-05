@@ -1,5 +1,5 @@
 import KitCard from '@/components/kit-card';
-import KitDetailsSheet from '@/components/kit-details-sheet';
+import { KitDetailsSheet } from '@/components/kit-details-sheet';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';

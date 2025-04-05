@@ -1,8 +1,8 @@
-import { Button } from '@/Components/ui/button';
+import { Button } from '@/components/ui/button';
 import { useTheme } from '@/hooks/use-theme';
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 
-export function ThemeToggle() {
+function ThemeToggle() {
     const { theme, setTheme } = useTheme();
 
     return (
@@ -13,3 +13,5 @@ export function ThemeToggle() {
         </Button>
     );
 }
+
+export { ThemeToggle };

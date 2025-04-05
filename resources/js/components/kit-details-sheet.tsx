@@ -15,7 +15,7 @@ interface Props {
     onOpenChange: (open: boolean) => void;
 }
 
-export default function KitDetailsSheet({ kit, onOpenChange }: Props) {
+function KitDetailsSheet({ kit, onOpenChange }: Props) {
     const { copy, recentlyCopied } = useClipboard();
 
     return (
@@ -142,3 +142,5 @@ export default function KitDetailsSheet({ kit, onOpenChange }: Props) {
         </Sheet>
     );
 }
+
+export { KitDetailsSheet };
