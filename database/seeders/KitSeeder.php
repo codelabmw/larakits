@@ -18,8 +18,8 @@ class KitSeeder extends Seeder
         $kits = Kit::factory()->count(100)->create();
 
         foreach ($kits as $kit) {
-            $kit->tags()->attach(Tag::all()->random(rand(3, 5)));
-            $kit->stacks()->attach(Stack::all()->random(rand(2, 3)));
+            $kit->tags()->attach(Tag::all()->random(random_int(3, 5)));
+            $kit->stacks()->attach(Stack::all()->random(random_int(2, 3)));
         }
     }
 }
