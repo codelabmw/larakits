@@ -26,7 +26,9 @@ export default function KitCard({ kit, onClick }: { kit: Kit; onClick?: () => vo
                 </div>
                 <h3 className="font-semibold">{kit.name}</h3>
             </div>
-            <p className="text-muted-foreground mb-4 flex-1 text-left text-sm">{kit.description ?? 'This starter kit does not have a description.'}</p>
+            <p className="text-muted-foreground mb-4 flex-1 text-left text-sm">
+                {kit.description ?? 'This starter kit does not have a description.'}
+            </p>
             <div className="flex items-center justify-between">
                 <div className="text-muted-foreground flex items-center space-x-4 text-sm">
                     <span className="flex items-center">

@@ -40,37 +40,35 @@ export default function About() {
                 <div className="relative isolate">
                     <div className="mx-auto max-w-7xl">
                         <div className="py-24 sm:py-32">
-                            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl max-w-2xl">
+                            <h1 className="max-w-2xl text-4xl font-bold tracking-tight sm:text-6xl">
                                 Discover Your Next Laravel Project's Foundation
                             </h1>
-                            <p className="text-muted-foreground mt-6 text-lg leading-8 max-w-2xl">
-                                Larakits is your go-to platform for discovering high-quality Laravel starter kits. We help developers
-                                find the perfect foundation for their next project, saving time and ensuring best practices from the start.
+                            <p className="text-muted-foreground mt-6 max-w-2xl text-lg leading-8">
+                                Larakits is your go-to platform for discovering high-quality Laravel starter kits. We help developers find the perfect
+                                foundation for their next project, saving time and ensuring best practices from the start.
                             </p>
                         </div>
                     </div>
 
                     {/* Background gradient effect */}
-                    <div className="absolute left-1/2 top-0 -z-10 h-[1000px] w-[1000px] -translate-x-1/2 rounded-full bg-gradient-radial from-primary/5 to-transparent blur-2xl" />
+                    <div className="bg-gradient-radial from-primary/5 absolute top-0 left-1/2 -z-10 h-[1000px] w-[1000px] -translate-x-1/2 rounded-full to-transparent blur-2xl" />
                 </div>
 
                 {/* Feature section */}
                 <div className="mx-auto max-w-7xl py-24 sm:py-32">
                     <div className="mx-auto max-w-3xl lg:text-center">
-                        <h2 className="text-base font-semibold leading-7 text-primary">Why Larakits?</h2>
-                        <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-                            Everything you need to start your Laravel project right
-                        </p>
+                        <h2 className="text-primary text-base leading-7 font-semibold">Why Larakits?</h2>
+                        <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Everything you need to start your Laravel project right</p>
                         <p className="text-muted-foreground mt-6 text-lg leading-8">
-                            We believe in the power of starting projects with a solid foundation. That's why we've created a platform
-                            that brings together the best Laravel starter kits in one place.
+                            We believe in the power of starting projects with a solid foundation. That's why we've created a platform that brings
+                            together the best Laravel starter kits in one place.
                         </p>
                     </div>
                     <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
                         <dl className="grid max-w-xl grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3">
                             {features.map((feature) => (
                                 <div key={feature.name} className="flex flex-col">
-                                    <dt className="flex items-center gap-x-3 text-base font-semibold leading-7">
+                                    <dt className="flex items-center gap-x-3 text-base leading-7 font-semibold">
                                         <feature.icon className="text-primary h-5 w-5 flex-none" aria-hidden="true" />
                                         {feature.name}
                                     </dt>
@@ -88,17 +86,13 @@ export default function About() {
                     <div className="mx-auto max-w-7xl py-24 sm:py-32">
                         <div className="mx-auto max-w-2xl lg:max-w-none">
                             <div className="text-center">
-                                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                                    Trusted by developers worldwide
-                                </h2>
-                                <p className="text-muted-foreground mt-4 text-lg">
-                                    Join our growing community of Laravel developers
-                                </p>
+                                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Trusted by developers worldwide</h2>
+                                <p className="text-muted-foreground mt-4 text-lg">Join our growing community of Laravel developers</p>
                             </div>
                             <dl className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                                 {stats.map((stat) => (
-                                    <div key={stat.name} className="flex flex-col bg-muted/50 p-8 rounded-lg">
-                                        <dt className="text-sm font-semibold leading-6">{stat.name}</dt>
+                                    <div key={stat.name} className="bg-muted/50 flex flex-col rounded-lg p-8">
+                                        <dt className="text-sm leading-6 font-semibold">{stat.name}</dt>
                                         <dd className="order-first text-3xl font-semibold tracking-tight">{stat.value}</dd>
                                     </div>
                                 ))}

@@ -55,7 +55,7 @@ interface Stack {
 interface Author {
     name?: string;
     email?: string;
-    role?: string
+    role?: string;
 }
 
 interface Kit {
@@ -96,4 +96,4 @@ export type PaginatorLink = {
     url: string | null;
     label: string;
     active: boolean;
-}
+};

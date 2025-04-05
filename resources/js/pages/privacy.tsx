@@ -74,7 +74,7 @@ export default function Privacy() {
 
                             <div className="my-12 space-y-12">
                                 <section id="information-collected">
-                                    <h2 className="!mt-0 font-bold text-lg">Information We Collect</h2>
+                                    <h2 className="!mt-0 text-lg font-bold">Information We Collect</h2>
                                     <p className="mt-2">When you use LaraKits, we may collect the following types of information:</p>
                                     <ul className="mt-2 list-decimal pl-5">
                                         <li>Name and email address when you contact us</li>
@@ -85,7 +85,7 @@ export default function Privacy() {
                                 </section>
 
                                 <section id="information-use">
-                                    <h2 className="!mt-0 font-bold text-lg">How We Use Your Information</h2>
+                                    <h2 className="!mt-0 text-lg font-bold">How We Use Your Information</h2>
                                     <p className="mt-2">We use the collected information for the following purposes:</p>
                                     <ul className="mt-2 list-decimal pl-5">
                                         <li>To provide and maintain our service</li>
@@ -96,7 +96,7 @@ export default function Privacy() {
                                 </section>
 
                                 <section id="data-security">
-                                    <h2 className="!mt-0 font-bold text-lg">Data Security</h2>
+                                    <h2 className="!mt-0 text-lg font-bold">Data Security</h2>
                                     <p className="mt-2">
                                         We implement appropriate security measures to protect your personal information. However, no method of
                                         transmission over the internet is 100% secure, and we cannot guarantee absolute security.
@@ -104,7 +104,7 @@ export default function Privacy() {
                                 </section>
 
                                 <section id="third-party">
-                                    <h2 className="!mt-0 font-bold text-lg">Third-Party Services</h2>
+                                    <h2 className="!mt-0 text-lg font-bold">Third-Party Services</h2>
                                     <p className="mt-2">
                                         We may use third-party services that collect, monitor, and analyze data. These services have their own privacy
                                         policies addressing how they use such information.
@@ -112,7 +112,7 @@ export default function Privacy() {
                                 </section>
 
                                 <section id="your-rights">
-                                    <h2 className="!mt-0 font-bold text-lg">Your Rights</h2>
+                                    <h2 className="!mt-0 text-lg font-bold">Your Rights</h2>
                                     <p className="mt-2">You have the right to:</p>
                                     <ul className="mt-2 list-decimal pl-5">
                                         <li>Access your personal data</li>
@@ -124,7 +124,7 @@ export default function Privacy() {
                                 </section>
 
                                 <section id="policy-changes">
-                                    <h2 className="!mt-0 font-bold text-lg">Changes to This Policy</h2>
+                                    <h2 className="!mt-0 text-lg font-bold">Changes to This Policy</h2>
                                     <p className="mt-2">
                                         We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new
                                         Privacy Policy on this page and updating the "effective date" at the top of this policy.
@@ -132,7 +132,7 @@ export default function Privacy() {
                                 </section>
 
                                 <section id="contact">
-                                    <h2 className="!mt-0 font-bold text-lg">Contact Us</h2>
+                                    <h2 className="!mt-0 text-lg font-bold">Contact Us</h2>
                                     <p className="mt-2">
                                         If you have any questions about this Privacy Policy, please contact us at{' '}
                                         <a href="mailto:privacy@larakits.dev" className="text-primary hover:underline">

@@ -106,13 +106,13 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
                         </p>
 
                         <Tabs defaultValue="trending" className="mx-auto">
-                            <div className="flex justify-between items-center">
+                            <div className="flex items-center justify-between">
                                 <TabsList className="mb-8">
                                     <TabsTrigger value="trending">Trending</TabsTrigger>
                                     <TabsTrigger value="recent">Recently Added</TabsTrigger>
                                 </TabsList>
 
-                                <Button asChild size="lg" variant='ghost' className="group">
+                                <Button asChild size="lg" variant="ghost" className="group">
                                     <Link href="/kits">
                                         <span>View all</span>
                                         <ArrowRightIcon className="transition-transform group-hover:-rotate-[38deg]" />
@@ -173,7 +173,7 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
                         <Button asChild size="lg" className="group">
                             <Link href="/kits" className="gap-2">
                                 Browse Starter Kits
-                                <ArrowRightIcon className="h-4 w-4 group-hover:-rotate-[38deg] transition-transform" />
+                                <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:-rotate-[38deg]" />
                             </Link>
                         </Button>
                     </div>

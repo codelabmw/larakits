@@ -1,9 +1,9 @@
 import { GuestLayout } from '@/layouts/guest-layout';
 import { cn } from '@/lib/utils';
 import { Head } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
 import { CodeIcon, GitHubLogoIcon, LightningBoltIcon } from '@radix-ui/react-icons';
 import { TagIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const sections = [
     { id: 'installation', title: 'Installation' },
@@ -75,19 +75,21 @@ export default function Docs() {
                                 <section id="installation">
                                     <h2 className="!mt-0 text-lg font-bold">Installation</h2>
                                     <p className="mt-2">
-                                        There are two ways to install Laravel starter kits: using the Herd button or using the command line.
-                                        Both methods are simple and straight-forward.
+                                        There are two ways to install Laravel starter kits: using the Herd button or using the command line. Both
+                                        methods are simple and straight-forward.
                                     </p>
                                 </section>
 
                                 <section id="using-herd">
                                     <h2 className="!mt-0 text-lg font-bold">Using Herd</h2>
                                     <div className="mt-4 flex items-center gap-2">
-                                        <LightningBoltIcon className="h-5 w-5 text-primary" />
+                                        <LightningBoltIcon className="text-primary h-5 w-5" />
                                         <span className="font-medium">The fastest way to install starter kits</span>
                                     </div>
                                     <div className="mt-4 space-y-4">
-                                        <p>When viewing a starter kit on Larakits, you'll see a Herd button that allows for one-click installation:</p>
+                                        <p>
+                                            When viewing a starter kit on Larakits, you'll see a Herd button that allows for one-click installation:
+                                        </p>
                                         <ol className="list-decimal space-y-2 pl-5">
                                             <li>Browse and select a starter kit</li>
                                             <li>Click the "Install with Herd" button</li>
@@ -99,16 +101,16 @@ export default function Docs() {
                                 <section id="using-cli">
                                     <h2 className="!mt-0 text-lg font-bold">Using Command Line</h2>
                                     <div className="mt-4 flex items-center gap-2">
-                                        <CodeIcon className="h-5 w-5 text-primary" />
+                                        <CodeIcon className="text-primary h-5 w-5" />
                                         <span className="font-medium">Traditional installation method</span>
                                     </div>
                                     <div className="mt-4 space-y-4">
                                         <p>You can also install starter kits using the Laravel CLI:</p>
-                                        <pre className="rounded-lg bg-muted text-muted-foreground p-4">
+                                        <pre className="bg-muted text-muted-foreground rounded-lg p-4">
                                             <code>laravel new project-name --using=vendor/name</code>
                                         </pre>
                                         <p>For example:</p>
-                                        <pre className="rounded-lg bg-muted text-muted-foreground p-4">
+                                        <pre className="bg-muted text-muted-foreground rounded-lg p-4">
                                             <code>laravel new my-app --using=laravel/react-starter-kit</code>
                                         </pre>
                                     </div>
@@ -117,7 +119,7 @@ export default function Docs() {
                                 <section id="discovery">
                                     <h2 className="!mt-0 text-lg font-bold">Discovery</h2>
                                     <div className="mt-4 flex items-center gap-2">
-                                        <TagIcon className="h-5 w-5 text-primary" />
+                                        <TagIcon className="text-primary h-5 w-5" />
                                         <span className="font-medium">Get your starter kit discovered</span>
                                     </div>
                                     <div className="mt-4 space-y-4">
@@ -137,15 +139,14 @@ export default function Docs() {
                                             <div>
                                                 <h3 className="font-medium">Clear Description</h3>
                                                 <p className="mt-1">
-                                                    Write an intentional, clear, and concise description in your composer.json that includes qualifying
-                                                    keywords. This helps with discovery and lets users quickly understand your kit's purpose.
+                                                    Write an intentional, clear, and concise description in your composer.json that includes
+                                                    qualifying keywords. This helps with discovery and lets users quickly understand your kit's
+                                                    purpose.
                                                 </p>
                                             </div>
                                             <div>
                                                 <h3 className="font-medium">Descriptive Name</h3>
-                                                <p className="mt-1">
-                                                    Choose a name that clearly indicates it's a starter kit. Examples:
-                                                </p>
+                                                <p className="mt-1">Choose a name that clearly indicates it's a starter kit. Examples:</p>
                                                 <ul className="mt-2 list-disc space-y-1 pl-5">
                                                     <li>vue-starter-kit</li>
                                                     <li>react-starter-kit</li>
@@ -158,7 +159,7 @@ export default function Docs() {
                                 <section id="best-practices">
                                     <h2 className="!mt-0 text-lg font-bold">Best Practices</h2>
                                     <div className="mt-4 flex items-center gap-2">
-                                        <GitHubLogoIcon className="h-5 w-5 text-primary" />
+                                        <GitHubLogoIcon className="text-primary h-5 w-5" />
                                         <span className="font-medium">Maintain a quality starter kit</span>
                                     </div>
                                     <div className="mt-4 space-y-4">
