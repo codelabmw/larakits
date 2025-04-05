@@ -157,3 +157,9 @@
         @apply bg-background text-foreground;
     }
 }
+
+@layer utilities {
+    .max-w-7xl {
+        @apply px-4 xl:px-0;
+    }
+}
