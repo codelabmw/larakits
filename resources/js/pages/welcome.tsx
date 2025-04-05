@@ -1,4 +1,5 @@
 import KitCard from '@/components/kit-card';
+import KitDetailsSheet from '@/components/kit-details-sheet';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export default function Welcome({ trendingKits, recentKits }: Props) {
+    const [selectedKit, setSelectedKit] = useState<Kit | null>(null);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
@@ -120,14 +122,14 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
                             <TabsContent value="trending">
                                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                                     {trendingKits.map((kit) => (
-                                        <KitCard key={kit.slug} kit={kit} />
+                                        <KitCard key={kit.slug} kit={kit} onClick={() => setSelectedKit(kit)} />
                                     ))}
                                 </div>
                             </TabsContent>
                             <TabsContent value="recent">
                                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                                     {recentKits.map((kit) => (
-                                        <KitCard key={kit.slug} kit={kit} />
+                                        <KitCard key={kit.slug} kit={kit} onClick={() => setSelectedKit(kit)} />
                                     ))}
                                 </div>
                             </TabsContent>
@@ -177,6 +179,9 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
                     </div>
                 </div>
             </section>
+
+            {/* Kit Details Sheet */}
+            <KitDetailsSheet kit={selectedKit} onOpenChange={() => setSelectedKit(null)} />
         </GuestLayout>
     );
 }
