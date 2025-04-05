@@ -13,12 +13,12 @@ Route::get('/', HomeController::class)->name('home');
 
 Route::get('/about', AboutController::class)->name('about');
 
-Route::get('/how-to', HowToController::class)->name('how-to');
+Route::get('/docs', HowToController::class)->name('docs');
 
 Route::get('/kits', KitController::class)->name('kits');
 
 Route::get('/contact', ContactController::class)->name('contact');
 
-Route::get('/privacy', PrivacyPolicyController::class)->name('privacy-policy');
+Route::get('/privacy', PrivacyPolicyController::class)->name('privacy');
 
-Route::get('/terms', TermsController::class)->name('terms-of-service');
+Route::get('/terms', TermsController::class)->name('terms');

@@ -22,18 +22,18 @@ const navigation = [
         items: [
             {
                 title: 'Documentation',
-                href: '/docs',
+                href: route('docs'),
                 description: 'Learn how to use and contribute to Larakits.',
             },
             {
-                title: 'How To',
-                href: '/how-to',
-                description: 'Step-by-step guides for using starter kits and getting your starter kits discovered.',
+                title: 'Terms of Service',
+                href: route('terms'),
+                description: 'Read our terms of service.',
             },
             {
-                title: 'Blog',
-                href: '/blog',
-                description: 'Latest news, updates, and tutorials.',
+                title: 'Privacy Policy',
+                href: route('privacy'),
+                description: 'Read our privacy policy.',
             },
         ],
     },
@@ -42,24 +42,22 @@ const navigation = [
 const footerNavigation = {
     product: [
         { name: 'Browse kits', href: '/kits' },
-        { name: 'Documentation', href: '/docs' },
+        { name: 'Documentation', href: route('docs') },
     ],
     company: [
         { name: 'About', href: '/about' },
-        { name: 'Blog', href: '/blog' },
-        { name: 'Terms', href: '/terms' },
-        { name: 'Privacy', href: '/privacy' },
+        { name: 'Terms', href: route('terms') },
+        { name: 'Privacy', href: route('privacy') },
     ],
     community: [
         { name: 'GitHub', href: 'https://github.com/larakits' },
-        { name: 'Discord', href: 'https://discord.gg/larakits' },
-        { name: 'Twitter', href: 'https://twitter.com/larakits' },
+        // { name: 'Discord', href: 'https://discord.gg/larakits' },
+        // { name: 'Twitter', href: 'https://twitter.com/larakits' },
         { name: 'Newsletter', href: '/newsletter' },
     ],
     support: [
-        { name: 'Documentation', href: '/docs' },
-        { name: 'Contact', href: '/contact' },
-        { name: 'Status', href: '/status' },
+        { name: 'Documentation', href: route('docs') },
+        { name: 'Contact', href: route('contact') },
     ],
 };
 
