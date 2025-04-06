@@ -41,7 +41,7 @@ export default function Index({ kits, tags, stacks, filters }: Props) {
                     tags: params.tags ?? selectedTags.map((tag) => tag.slug),
                     stacks: params.stacks ?? selectedStacks.map((stack) => stack.slug),
                 },
-                { preserveState: false, preserveScroll: true },
+                { preserveState: true, preserveScroll: true },
             );
         },
         [search, selectedTags, selectedStacks],

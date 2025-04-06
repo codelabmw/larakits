@@ -3,11 +3,18 @@
 namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
+use App\Http\Filters\Order;
+use App\Http\Filters\Search;
+use App\Http\Filters\Tag as TagFilter;
+use App\Http\Filters\Stack as StackFilter;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Pipeline;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Kit;
 use App\Models\Tag;
 use App\Models\Stack;
+use App\Contracts\Filter;
 
 class KitController extends Controller
 {
@@ -16,26 +23,21 @@ class KitController extends Controller
      */
     public function __invoke(): Response
     {
-        $kits = Kit::query()
-            ->with(['stacks', 'tags'])
-            ->when(request('search'), function ($query, $search) {
-                $query->where(function ($query) use ($search) {
-                    $query->where('name', 'like', "%{$search}%")
-                        ->orWhere('description', 'like', "%{$search}%");
-                });
-            })
-            ->when(request('tags'), function ($query, $tags) {
-                $query->whereHas('tags', function ($query) use ($tags) {
-                    $query->whereIn('slug', $tags);
-                });
-            })
-            ->when(request('stacks'), function ($query, $stacks) {
-                $query->whereHas('stacks', function ($query) use ($stacks) {
-                    $query->whereIn('slug', $stacks);
-                });
-            })
-            ->paginate()
-            ->withQueryString();
+        $query = Kit::query();
+
+        /** @var array<class-string<Filter>> */
+        $filters = [
+            Search::class,
+            TagFilter::class,
+            StackFilter::class,
+            Order::class,
+        ];
+
+        $kits = Pipeline::send($query)
+            ->through($filters)
+            ->then(function (Builder $query) {
+                return $query->with(['stacks', 'tags'])->paginate()->withQueryString();
+            });
 
         $tags = Tag::all();
         $stacks = Stack::all();
