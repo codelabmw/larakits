@@ -66,13 +66,13 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
             {/* Hero Section */}
             <section className="relative flex min-h-[calc(100vh-4rem)] items-center">
                 <div className="container mx-auto">
-                    <div className="mx-auto max-w-2xl text-center">
+                    <div className="mx-auto max-w-3xl text-center">
                         <Badge variant="outline" className="text-muted-foreground mb-4 rounded-full px-5 py-3">
                             <Rocket />
                             <span>v1.0 is almost here!</span>
                         </Badge>
-                        <h1 className="mb-6 text-5xl font-normal tracking-tight sm:text-6xl">
-                            one more reason <span className="block font-bold">to ship faster then ever</span>
+                        <h1 className="mb-6 text-4xl font-light tracking-wider sm:text-5xl">
+                            one more reason to <span className="block font-bold text-7xl sm:text-9xl capitalize">ship faster</span>
                         </h1>
                         <p className="text-muted-foreground text-md mb-8 sm:text-xl">
                             Discover community-maintained starter kits that help you build better Laravel applications faster.
