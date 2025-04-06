@@ -29,8 +29,8 @@ interface Props {
 export default function Index({ kits, tags, stacks, filters }: Props) {
     const [selectedKit, setSelectedKit] = useState<Kit | null>(null);
     const [search, setSearch] = useState(filters.search || '');
-    const [selectedTags, setSelectedTags] = useState<Tag[]>(tags.filter((tag) => filters.tags.includes(tag.slug)));
-    const [selectedStacks, setSelectedStacks] = useState<Stack[]>(stacks.filter((stack) => filters.stacks.includes(stack.slug)));
+    const [selectedTags, setSelectedTags] = useState<string[]>(tags.filter((tag) => filters.tags.includes(tag.slug)).map((tag) => tag.slug));
+    const [selectedStacks, setSelectedStacks] = useState<string[]>(stacks.filter((stack) => filters.stacks.includes(stack.slug)).map((stack) => stack.slug));
 
     const updateFilters = useCallback(
         (params: { search?: string; tags?: string[]; stacks?: string[] }) => {
@@ -38,8 +38,8 @@ export default function Index({ kits, tags, stacks, filters }: Props) {
                 '/kits',
                 {
                     search: params.search ?? search,
-                    tags: params.tags ?? selectedTags.map((tag) => tag.slug),
-                    stacks: params.stacks ?? selectedStacks.map((stack) => stack.slug),
+                    tags: params.tags ?? selectedTags,
+                    stacks: params.stacks ?? selectedStacks,
                 },
                 { preserveState: true, preserveScroll: true },
             );
@@ -58,15 +58,15 @@ export default function Index({ kits, tags, stacks, filters }: Props) {
     };
 
     const handleTagChange = (tag: Tag, checked: boolean) => {
-        const newTags = checked ? [...selectedTags, tag] : selectedTags.filter((t) => t !== tag);
+        const newTags = checked ? [...selectedTags, tag.slug] : selectedTags.filter((t) => t !== tag.slug);
         setSelectedTags(newTags);
-        updateFilters({ tags: newTags.map((t) => t.slug) });
+        updateFilters({ tags: newTags });
     };
 
     const handleStackChange = (stack: Stack, checked: boolean) => {
-        const newStacks = checked ? [...selectedStacks, stack] : selectedStacks.filter((s) => s !== stack);
+        const newStacks = checked ? [...selectedStacks, stack.slug] : selectedStacks.filter((s) => s !== stack.slug);
         setSelectedStacks(newStacks);
-        updateFilters({ stacks: newStacks.map((s) => s.slug) });
+        updateFilters({ stacks: newStacks });
     };
 
     const handleClearFilters = () => {
@@ -127,7 +127,7 @@ export default function Index({ kits, tags, stacks, filters }: Props) {
                                                 <div key={tag.slug} className="flex items-center space-x-2">
                                                     <Checkbox
                                                         id={`tag-${tag.slug}`}
-                                                        checked={selectedTags.includes(tag)}
+                                                        checked={selectedTags.includes(tag.slug)}
                                                         onCheckedChange={(checked) => {
                                                             handleTagChange(tag, checked as boolean);
                                                         }}
@@ -148,7 +148,7 @@ export default function Index({ kits, tags, stacks, filters }: Props) {
                                                 <div key={stack.slug} className="flex items-center space-x-2">
                                                     <Checkbox
                                                         id={`stack-${stack.slug}`}
-                                                        checked={selectedStacks.includes(stack)}
+                                                        checked={selectedStacks.includes(stack.slug)}
                                                         onCheckedChange={(checked) => {
                                                             handleStackChange(stack, checked as boolean);
                                                         }}
