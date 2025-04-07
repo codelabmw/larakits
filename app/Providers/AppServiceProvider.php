@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Http\Client;
 use App\Services\Github\Github;
+use App\Services\Packagist\Actions\SearchPackages;
 use App\Services\Packagist\Packagist;
 use App\Services\Packagist\ValueObjects\Agent;
 use App\Contracts\Http\Client as ClientContract;
@@ -24,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
         ));
 
         $this->app->bind(Packagist::class, fn() => new Packagist(
+            searchPackages: new SearchPackages(),
             client: $this->app->make(Client::class),
             agent: $this->app->make(Agent::class),
         ));

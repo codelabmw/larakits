@@ -2,6 +2,7 @@
 
 use App\Contracts\Http\Client;
 use App\Http\Response;
+use App\Services\Packagist\Actions\SearchPackages;
 use App\Services\Packagist\Packagist;
 use App\Services\Packagist\Paginator;
 use App\Services\Packagist\ValueObjects\Agent;
@@ -13,6 +14,7 @@ test('service can be instantiated', function () {
     $client = Mockery::mock(Client::class);
 
     $packagist = new Packagist(
+        searchPackages: new SearchPackages(),
         client: $client,
         agent: new Agent(name: 'Test User', email: 'test@example.com')
     );
@@ -53,6 +55,7 @@ it('searches packages by type', function () {
     )->andReturn($response);
 
     $packagist = new Packagist(
+        searchPackages: new SearchPackages(),
         client: $client,
         agent: new Agent(name: 'Test User', email: 'test@example.com')
     );
@@ -62,8 +65,8 @@ it('searches packages by type', function () {
 
     // Assert
     expect($result)->toBeInstanceOf(Paginator::class);
-    expect($result->items)->toBeInstanceOf(Collection::class);
-    expect($result->items->first())->toBeInstanceOf(Package::class);
+    expect($result->items())->toBeInstanceOf(Collection::class);
+    expect($result->items()->first())->toBeInstanceOf(Package::class);
 });
 
 it('searches packages by tags', function () {
@@ -98,6 +101,7 @@ it('searches packages by tags', function () {
     )->andReturn($response);
 
     $packagist = new Packagist(
+        searchPackages: new SearchPackages(),
         client: $client,
         agent: new Agent(name: 'Test User', email: 'test@example.com')
     );
@@ -107,8 +111,8 @@ it('searches packages by tags', function () {
 
     // Assert
     expect($result)->toBeInstanceOf(Paginator::class);
-    expect($result->items)->toBeInstanceOf(Collection::class);
-    expect($result->items->first())->toBeInstanceOf(Package::class);
+    expect($result->items())->toBeInstanceOf(Collection::class);
+    expect($result->items()->first())->toBeInstanceOf(Package::class);
 });
 
 it('gets specific package', function () {
@@ -139,6 +143,7 @@ it('gets specific package', function () {
     )->andReturn($response);
 
     $packagist = new Packagist(
+        searchPackages: new SearchPackages(),
         client: $client,
         agent: new Agent(name: 'Test User', email: 'test@example.com')
     );
