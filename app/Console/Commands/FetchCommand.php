@@ -50,25 +50,28 @@ class FetchCommand extends Command
             tags: ['laravel', 'starter', 'kit', 'starter-kit', 'starter kit', 'laravel starter kit'],
         );
 
-        $paginator->items->each(function ($package) use ($packagist, $isLaravelProject) {
-            $package = $packagist->get($package->name);
+        do {
+            $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject) {
+                $package = $packagist->get($package->name);
 
-            if ($isLaravelProject($package)) {
-                $payload = new KitPayload(package: $package, isKit: false);
+                if ($isLaravelProject($package)) {
+                    $kitPayload = new KitPayload(package: $package, isKit: false);
 
-                /** @var array<class-string<Guessor>> */
-                $guessors = [
-                    ByKeyword::class,
-                    ByName::class,
-                    ByDescription::class,
-                ];
+                    /** @var array<class-string<Guessor>> */
+                    $guessors = [
+                        ByKeyword::class,
+                        ByName::class,
+                        ByDescription::class,
+                    ];
 
-                Pipeline::send($payload)
-                    ->through($guessors)
-                    ->finally(fn(KitPayload $kitPayload) => $this->saveKit($kitPayload))
-                    ->thenReturn();
-            }
-        });
+                    Pipeline::send($kitPayload)
+                        ->through($guessors)
+                        ->thenReturn();
+
+                    $this->saveKit($kitPayload);
+                }
+            });
+        } while ($paginator->next());
     }
 
     /**
@@ -120,7 +123,7 @@ class FetchCommand extends Command
                 [$vendor, $name] = explode('/', $package->name);
 
                 $kit = Kit::create(attributes: [
-                    'slug' => Str::slug($package->name),
+                    'slug' => Str::slug(implode('-', [$vendor, $name])),
                     'name' => $name,
                     'vendor' => $vendor,
                     'description' => $package->description,
