@@ -12,6 +12,8 @@ class EnsureIsLaravelProject
      */
     public function __invoke(Package $package): bool
     {
-        return Collection::make($package->require)->has('laravel/framework') && $package->type === 'project';
+        $requiresLaravel = Collection::make($package->require)->has('laravel/framework');
+
+        return $package->type === 'project' && $requiresLaravel && !$package->abandoned;
     }
 }
