@@ -65,6 +65,8 @@ interface Kit {
     description: string;
     stars: number;
     downloads: number;
+    source_type: string;
+    source_url: string;
     tags: Tag[];
     stacks: Stack[];
     maintainers: Array<{

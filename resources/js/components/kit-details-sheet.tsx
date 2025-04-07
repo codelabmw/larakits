@@ -5,8 +5,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import useClipboard from '@/hooks/use-clipboard';
 import type { Kit } from '@/types';
 import { Link } from '@inertiajs/react';
-import { GitHubLogoIcon } from '@radix-ui/react-icons';
+import { GitHubLogoIcon, StarFilledIcon } from '@radix-ui/react-icons';
 import { Check, Copy, DownloadIcon, Scale } from 'lucide-react';
+import numeral from 'numeral';
+import { Packagist } from './icons/packagist';
 import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
 
@@ -53,25 +55,45 @@ function KitDetailsSheet({ kit, onOpenChange }: Props) {
                             </div>
 
                             {/* Stats */}
-                            <div className="flex items-center gap-4">
-                                {kit.licenses.length > 0 && (
-                                    <div className="flex items-center">
-                                        <div className="text-muted-foreground flex items-center text-sm">
-                                            <Scale className="mr-1 h-4 w-4" />
-                                            {kit.licenses[0]}
-                                        </div>
-                                        {kit.licenses.length > 1 && (
-                                            <span className="text-muted-foreground ml-1 text-xs">+{kit.licenses.length - 1}</span>
-                                        )}
-                                    </div>
-                                )}
-                                <div className="text-muted-foreground flex items-center text-sm">
-                                    <GitHubLogoIcon className="mr-1 h-4 w-4" />
-                                    {kit.stars} stars
+                            <div className="flex items-center justify-between flex-wrap">
+                                <div className="flex items-center gap-2">
+                                    <Button asChild size="sm" variant="ghost" className="text-sm">
+                                        <Link href={`https://packagist.org/packages/${kit.vendor}/${kit.name}`}>
+                                            <Packagist />
+                                            <span>Packagist</span>
+                                        </Link>
+                                    </Button>
+
+                                    {kit.source_type === 'git' && (
+                                        <Button asChild size="sm" variant="ghost" className="text-sm">
+                                            <Link href={kit.source_url}>
+                                                <GitHubLogoIcon />
+                                                <span>GitHub</span>
+                                            </Link>
+                                        </Button>
+                                    )}
                                 </div>
-                                <div className="text-muted-foreground flex items-center text-sm">
-                                    <DownloadIcon className="mr-1 h-4 w-4" />
-                                    {kit.downloads} downloads
+
+                                <div className="flex items-center gap-4">
+                                    {kit.licenses.length > 0 && (
+                                        <div className="flex items-center">
+                                            <div className="text-muted-foreground flex items-center text-sm">
+                                                <Scale className="mr-1 h-4 w-4" />
+                                                {kit.licenses[0]}
+                                            </div>
+                                            {kit.licenses.length > 1 && (
+                                                <span className="text-muted-foreground ml-1 text-xs">+{kit.licenses.length - 1}</span>
+                                            )}
+                                        </div>
+                                    )}
+                                    <div className="text-muted-foreground flex items-center text-sm">
+                                        <StarFilledIcon className="mr-1 h-4 w-4" />
+                                        {numeral(kit.stars).format('0a')}
+                                    </div>
+                                    <div className="text-muted-foreground flex items-center text-sm">
+                                        <DownloadIcon className="mr-1 h-4 w-4" />
+                                        {numeral(kit.downloads).format('0a')}
+                                    </div>
                                 </div>
                             </div>
 
