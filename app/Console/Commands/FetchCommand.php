@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Actions\EnsureIsLaravelProject;
+use App\Exceptions\ConnectionException;
 use App\Guessors\Kit\ByDescription;
 use App\Guessors\Kit\ByKeyword;
 use App\Guessors\Kit\ByName;
@@ -13,6 +14,7 @@ use App\Guessors\Stack\Vue;
 use App\Models\Kit;
 use App\Models\Stack;
 use App\Models\Tag;
+use App\Models\Task;
 use App\Services\Packagist\Packagist;
 use App\ValueObjects\KitPayload as KitPayload;
 use App\ValueObjects\StackPayload;
@@ -51,28 +53,39 @@ class FetchCommand extends Command
         );
 
         do {
-            $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject) {
-                $package = $packagist->get($package->name);
-
-                if ($isLaravelProject($package)) {
-                    $kitPayload = new KitPayload(package: $package, isKit: false);
-
-                    /** @var array<class-string<Guessor>> */
-                    $guessors = [
-                        ByKeyword::class,
-                        ByName::class,
-                        ByDescription::class,
-                    ];
-
-                    Pipeline::send($kitPayload)
-                        ->through($guessors)
-                        ->thenReturn();
-
-                    $this->saveKit($kitPayload);
-                }
-            });
+            try {
+                $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject) {
+                    $package = $packagist->get($package->name);
+    
+                    if ($isLaravelProject($package)) {
+                        $kitPayload = new KitPayload(package: $package, isKit: false);
+    
+                        /** @var array<class-string<Guessor>> */
+                        $guessors = [
+                            ByKeyword::class,
+                            ByName::class,
+                            ByDescription::class,
+                        ];
+    
+                        Pipeline::send($kitPayload)
+                            ->through($guessors)
+                            ->thenReturn();
+    
+                        $this->saveKit($kitPayload);
+                    }
+                });
+            } catch (ConnectionException $exception) {
+                Task::currentTask()?->markFailed();
+                
+                break;
+            }
         } while ($paginator->next());
+
+        if (Task::currentTask()?->status === 'pending') {
+            Task::currentTask()->markSuccessful();
+        }
     }
+
 
     /**
      * Saves the kit to the database.
