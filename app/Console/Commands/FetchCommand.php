@@ -56,27 +56,27 @@ class FetchCommand extends Command
             try {
                 $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject) {
                     $package = $packagist->get($package->name);
-    
+
                     if ($isLaravelProject($package)) {
                         $kitPayload = new KitPayload(package: $package, isKit: false);
-    
+
                         /** @var array<class-string<Guessor>> */
                         $guessors = [
                             ByKeyword::class,
                             ByName::class,
                             ByDescription::class,
                         ];
-    
+
                         Pipeline::send($kitPayload)
                             ->through($guessors)
                             ->thenReturn();
-    
+
                         $this->saveKit($kitPayload);
                     }
                 });
             } catch (ConnectionException $exception) {
                 Task::currentTask()?->markFailed();
-                
+
                 break;
             }
         } while ($paginator->next());
@@ -149,7 +149,21 @@ class FetchCommand extends Command
                     'licenses' => $package->licenses,
                 ]);
 
-                foreach ($package->keywords as $keyword) {
+                $keywords = array_filter(
+                    $package->keywords,
+                    fn($keyword) => !in_array($keyword, [
+                        'laravel',
+                        'starter',
+                        'kit',
+                        'starter-kit',
+                        'starter kit',
+                        'laravel starter kit',
+                    ])
+                );
+
+                $tags = array_unique($keywords);
+
+                foreach ($tags as $keyword) {
                     $tag = Tag::firstOrCreate(['slug' => Str::slug($keyword), 'name' => $keyword]);
                     $kit->tags()->attach($tag);
                 }

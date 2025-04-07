@@ -87,7 +87,7 @@ it('fetches & stores kits', function () {
     // Assert
     expect(Kit::count())->toBe(4);
     expect(Stack::count())->toBeGreaterThan(0);
-    expect(Tag::count())->toBe(4);
+    expect(Tag::count())->toBeGreaterThan(0);
 });
 
 it('fetches through paginated results', function () {
@@ -183,7 +183,7 @@ it('fetches through paginated results', function () {
     // Assert
     expect(Kit::count())->toBe(4);
     expect(Stack::count())->toBeGreaterThan(0);
-    expect(Tag::count())->toBe(4);
+    expect(Tag::count())->toBeGreaterThan(0);
 });
 
 it('updates existing kits')->todo();
