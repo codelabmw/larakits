@@ -79,4 +79,12 @@ class Task extends Model
     {
         return self::query()->where('status', TaskStatus::PENDING->value)->latest()->first();
     }
+
+    /**
+     * Checks if the task should run.
+     */
+    public function shouldRun(): bool
+    {
+        return $this->should_run_at <= now();
+    }
 }

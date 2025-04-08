@@ -1,8 +1,14 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use App\Models\Task;
+use Illuminate\Support\Facades\Schedule;
+use App\Console\Commands\FetchCommand;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+Schedule::command(FetchCommand::class)
+    ->name('fetch:packages')
+    ->hourly()
+    ->withoutOverlapping()
+    ->evenInMaintenanceMode()
+    ->when(function () {
+        return Task::currentTask()?->shouldRun();
+    });
