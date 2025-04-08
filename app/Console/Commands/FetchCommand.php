@@ -49,13 +49,14 @@ class FetchCommand extends Command
      */
     public function handle(Packagist $packagist, EnsureIsLaravelProject $isLaravelProject)
     {
-        $paginator = $packagist->search(
-            type: 'project',
-            tags: ['laravel', 'starter', 'kit', 'starter-kit', 'starter kit', 'laravel starter kit'],
-        );
+        
+        try {
+            $paginator = $packagist->search(
+                type: 'project',
+                tags: ['laravel', 'starter', 'kit', 'starter-kit', 'starter kit', 'laravel starter kit'],
+            );
 
-        do {
-            try {
+            do {
                 $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject) {
                     $package = $packagist->get($package->name);
 
@@ -76,12 +77,10 @@ class FetchCommand extends Command
                         $this->saveKit($kitPayload);
                     }
                 });
-            } catch (ConnectionException $exception) {
-                Task::currentTask()?->markFailed();
-
-                break;
-            }
-        } while ($paginator->next());
+            } while ($paginator->next());
+        } catch (ConnectionException $exception) {
+            Task::currentTask()?->markFailed();
+        }
 
         if (Task::currentTask()?->status === 'pending') {
             Task::currentTask()->markSuccessful();
@@ -179,7 +178,7 @@ class FetchCommand extends Command
 
                 foreach ($tags as $keyword) {
                     $tag = Tag::firstOrCreate(['slug' => Str::slug($keyword), 'name' => $keyword]);
-                    
+
                     try {
                         $kit->tags()->attach($tag);
                     } catch (UniqueConstraintViolationException $e) {
@@ -189,7 +188,7 @@ class FetchCommand extends Command
 
                 foreach ($stacks as $stack) {
                     $stack = Stack::firstOrCreate(['slug' => Str::slug($stack), 'name' => $stack]);
-                    
+
                     try {
                         $kit->stacks()->attach($stack);
                     } catch (UniqueConstraintViolationException $e) {
