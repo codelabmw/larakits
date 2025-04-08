@@ -55,21 +55,21 @@ function KitDetailsSheet({ kit, onOpenChange }: Props) {
                             </div>
 
                             {/* Stats */}
-                            <div className="flex items-center justify-between flex-wrap">
+                            <div className="flex flex-wrap items-center justify-between">
                                 <div className="flex items-center gap-2">
                                     <Button asChild size="sm" variant="ghost" className="text-sm">
-                                        <Link href={`https://packagist.org/packages/${kit.vendor}/${kit.name}`}>
+                                        <a target="_blank" href={`https://packagist.org/packages/${kit.vendor}/${kit.name}`}>
                                             <Packagist />
                                             <span>Packagist</span>
-                                        </Link>
+                                        </a>
                                     </Button>
 
                                     {kit.source_type === 'git' && (
                                         <Button asChild size="sm" variant="ghost" className="text-sm">
-                                            <Link href={kit.source_url}>
+                                            <a target="_blank" href={kit.source_url}>
                                                 <GitHubLogoIcon />
                                                 <span>GitHub</span>
-                                            </Link>
+                                            </a>
                                         </Button>
                                     )}
                                 </div>
