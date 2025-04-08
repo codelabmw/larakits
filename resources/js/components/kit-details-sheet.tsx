@@ -107,55 +107,71 @@ function KitDetailsSheet({ kit, onOpenChange }: Props) {
                                     </TabsList>
                                     <div className="mt-4 px-2">
                                         <TabsContent value="maintainers">
-                                            <div className="flex flex-wrap gap-2">
-                                                {kit.maintainers.map((maintainer) => (
-                                                    <img
-                                                        key={maintainer.name}
-                                                        src={maintainer.avatar_url}
-                                                        alt={maintainer.name}
-                                                        className="border-background h-8 w-8 rounded-full border-2"
-                                                        title={maintainer.name}
-                                                    />
-                                                ))}
-                                            </div>
+                                            {kit.maintainers.length > 0 ? (
+                                                <div className="flex flex-wrap gap-2">
+                                                    {kit.maintainers.map((maintainer) => (
+                                                        <img
+                                                            key={maintainer.name}
+                                                            src={maintainer.avatar_url}
+                                                            alt={maintainer.name}
+                                                            className="border-background h-8 w-8 rounded-full border-2"
+                                                            title={maintainer.name}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <div className="px-1">
+                                                    <span className="text-muted-foreground">No maintainers found.</span>
+                                                </div>
+                                            )}
                                         </TabsContent>
                                         <TabsContent value="authors">
-                                            <div className="flex flex-wrap gap-2">
-                                                {kit.authors.map((author) => (
-                                                    <Badge key={author.name} variant="outline" className="border-none">
-                                                        {author.name}
-                                                    </Badge>
-                                                ))}
-                                            </div>
+                                            {kit.authors.length > 0 ? (
+                                                <div className="flex flex-wrap gap-2">
+                                                    {kit.authors.map((author) => (
+                                                        <Badge key={author.name} variant="outline" className="border-none">
+                                                            {author.name}
+                                                        </Badge>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <div className="px-1">
+                                                    <span className="text-muted-foreground text-sm">No authors found.</span>
+                                                </div>
+                                            )}
                                         </TabsContent>
                                     </div>
                                 </Tabs>
                             </div>
 
                             {/* Tech Stack */}
-                            <div className="px-3">
-                                <h3 className="mb-3 text-sm font-medium">Stack</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {kit.stacks.map((stack) => (
-                                        <Badge key={stack.slug} variant="outline">
-                                            {stack.name}
-                                        </Badge>
-                                    ))}
+                            {kit.stacks.length > 0 && (
+                                <div className="px-3">
+                                    <h3 className="mb-3 text-sm font-medium">Stack</h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        {kit.stacks.map((stack) => (
+                                            <Badge key={stack.slug} variant="outline">
+                                                {stack.name}
+                                            </Badge>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
 
                             <Separator />
 
                             {/* Tags */}
-                            <div>
-                                <div className="flex flex-wrap gap-2">
-                                    {kit.tags.map((tag) => (
-                                        <Badge key={tag.slug} variant="secondary">
-                                            {tag.name}
-                                        </Badge>
-                                    ))}
+                            {kit.tags.length > 0 && (
+                                <div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {kit.tags.map((tag) => (
+                                            <Badge key={tag.slug} variant="secondary">
+                                                {tag.name}
+                                            </Badge>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
                     </ScrollArea>
                 )}
