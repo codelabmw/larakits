@@ -4,7 +4,6 @@ import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import useClipboard from '@/hooks/use-clipboard';
 import type { Kit } from '@/types';
-import { Link } from '@inertiajs/react';
 import { GitHubLogoIcon, StarFilledIcon } from '@radix-ui/react-icons';
 import { Check, Copy, DownloadIcon, Scale } from 'lucide-react';
 import numeral from 'numeral';
@@ -35,9 +34,9 @@ function KitDetailsSheet({ kit, onOpenChange }: Props) {
                             {/* Installation */}
                             <div className="flex items-center gap-4">
                                 <Button asChild variant="destructive">
-                                    <Link href={`https://herd.laravel.com/new?starter-kit=${kit.vendor}/${kit.name}`}>
+                                    <a target="_blank" href={`https://herd.laravel.com/new?starter-kit=${kit.vendor}/${kit.name}`}>
                                         <span>Laravel Herd</span>
-                                    </Link>
+                                    </a>
                                 </Button>
                                 <div className="text-muted-foreground bg-muted relative flex-1 rounded p-2 text-sm">
                                     <code className="line-clamp-1">
