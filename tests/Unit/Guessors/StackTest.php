@@ -42,7 +42,7 @@ test('it guesses livewire stack', function () {
     (new Livewire)->handle($payload, fn($payload) => null);
 
     // Assert
-    expect($payload->getStacks())->toBe(['laravel/livewire']);
+    expect($payload->getStacks())->toBe(['laravel-livewire']);
 });
 
 test('it guesses tailwindcss stack', function () {

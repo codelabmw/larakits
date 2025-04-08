@@ -19,12 +19,14 @@ use App\Services\Packagist\Packagist;
 use App\ValueObjects\KitPayload as KitPayload;
 use App\ValueObjects\StackPayload;
 use Illuminate\Console\Command;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Pipeline;
 use App\Contracts\Guessor;
 use Illuminate\Support\Str;
 use App\Services\Github\Github;
+use PDOException;
 
 class FetchCommand extends Command
 {
@@ -135,10 +137,7 @@ class FetchCommand extends Command
             DB::transaction(function () use ($package, $stacks): void {
                 [$vendor, $name] = explode('/', $package->name);
 
-                $kit = Kit::create(attributes: [
-                    'slug' => Str::slug(implode('-', [$vendor, $name])),
-                    'name' => $name,
-                    'vendor' => $vendor,
+                $metadata = [
                     'description' => $package->description,
                     'source_url' => $package->source['url'],
                     'source_type' => $package->source['type'],
@@ -147,7 +146,22 @@ class FetchCommand extends Command
                     'maintainers' => $package->maintainers,
                     'authors' => $package->authors,
                     'licenses' => $package->licenses,
-                ]);
+                ];
+
+                $kit = Kit::firstOrCreate(
+                    attributes: [
+                        'slug' => Str::slug(implode('-', [$vendor, $name])),
+                        'name' => $name,
+                        'vendor' => $vendor,
+                    ],
+                    values: $metadata
+                );
+
+                $kit->fill($metadata);
+
+                if ($kit->isDirty()) {
+                    $kit->save();
+                }
 
                 $keywords = array_filter(
                     $package->keywords,
@@ -165,12 +179,22 @@ class FetchCommand extends Command
 
                 foreach ($tags as $keyword) {
                     $tag = Tag::firstOrCreate(['slug' => Str::slug($keyword), 'name' => $keyword]);
-                    $kit->tags()->attach($tag);
+                    
+                    try {
+                        $kit->tags()->attach($tag);
+                    } catch (UniqueConstraintViolationException $e) {
+                        //
+                    }
                 }
 
                 foreach ($stacks as $stack) {
                     $stack = Stack::firstOrCreate(['slug' => Str::slug($stack), 'name' => $stack]);
-                    $kit->stacks()->attach($stack);
+                    
+                    try {
+                        $kit->stacks()->attach($stack);
+                    } catch (UniqueConstraintViolationException $e) {
+                        //
+                    }
                 }
             });
         }
