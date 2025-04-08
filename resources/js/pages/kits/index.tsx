@@ -82,7 +82,7 @@ export default function Index({ kits, tags, stacks, filters }: Props) {
         <GuestLayout>
             <Head title="Browse Starter Kits" />
 
-            <div className="mx-auto max-w-7xl min-h-[calc(100vh-4rem)] py-8">
+            <div className="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl py-8">
                 {/* Header */}
                 <div className="mb-8 py-8 text-center">
                     <h1 className="mb-2 text-3xl font-bold tracking-wider">Browse starter kits</h1>
@@ -176,42 +176,44 @@ export default function Index({ kits, tags, stacks, filters }: Props) {
                         </div>
 
                         {/* Pagination */}
-                        <div className="flex items-center justify-between">
-                            <p className="text-muted-foreground text-sm">
-                                Page {kits.current_page} of {kits.last_page}
-                            </p>
-                            <div className="flex items-center gap-2">
-                                <Link href={`/kits?page=1`} className={`${kits.current_page === 1 ? 'pointer-events-none opacity-50' : ''}`}>
-                                    <Button variant="outline" size="icon">
-                                        <DoubleArrowLeftIcon className="h-4 w-4" />
-                                    </Button>
-                                </Link>
-                                <Link
-                                    href={`/kits?page=${kits.current_page - 1}`}
-                                    className={`${kits.current_page === 1 ? 'pointer-events-none opacity-50' : ''}`}
-                                >
-                                    <Button variant="outline" size="icon">
-                                        <ChevronLeftIcon className="h-4 w-4" />
-                                    </Button>
-                                </Link>
-                                <Link
-                                    href={`/kits?page=${kits.current_page + 1}`}
-                                    className={`${kits.current_page === kits.last_page ? 'pointer-events-none opacity-50' : ''}`}
-                                >
-                                    <Button variant="outline" size="icon">
-                                        <ChevronRightIcon className="h-4 w-4" />
-                                    </Button>
-                                </Link>
-                                <Link
-                                    href={`/kits?page=${kits.last_page}`}
-                                    className={`${kits.current_page === kits.last_page ? 'pointer-events-none opacity-50' : ''}`}
-                                >
-                                    <Button variant="outline" size="icon">
-                                        <DoubleArrowRightIcon className="h-4 w-4" />
-                                    </Button>
-                                </Link>
+                        {kits.total / kits.per_page > 1 && (
+                            <div className="flex items-center justify-between">
+                                <p className="text-muted-foreground text-sm">
+                                    Page {kits.current_page} of {kits.last_page}
+                                </p>
+                                <div className="flex items-center gap-2">
+                                    <Link href={`/kits?page=1`} className={`${kits.current_page === 1 ? 'pointer-events-none opacity-50' : ''}`}>
+                                        <Button variant="outline" size="icon">
+                                            <DoubleArrowLeftIcon className="h-4 w-4" />
+                                        </Button>
+                                    </Link>
+                                    <Link
+                                        href={`/kits?page=${kits.current_page - 1}`}
+                                        className={`${kits.current_page === 1 ? 'pointer-events-none opacity-50' : ''}`}
+                                    >
+                                        <Button variant="outline" size="icon">
+                                            <ChevronLeftIcon className="h-4 w-4" />
+                                        </Button>
+                                    </Link>
+                                    <Link
+                                        href={`/kits?page=${kits.current_page + 1}`}
+                                        className={`${kits.current_page === kits.last_page ? 'pointer-events-none opacity-50' : ''}`}
+                                    >
+                                        <Button variant="outline" size="icon">
+                                            <ChevronRightIcon className="h-4 w-4" />
+                                        </Button>
+                                    </Link>
+                                    <Link
+                                        href={`/kits?page=${kits.last_page}`}
+                                        className={`${kits.current_page === kits.last_page ? 'pointer-events-none opacity-50' : ''}`}
+                                    >
+                                        <Button variant="outline" size="icon">
+                                            <DoubleArrowRightIcon className="h-4 w-4" />
+                                        </Button>
+                                    </Link>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </>
                 ) : (
                     <div className="mx-auto flex h-96 max-w-4xl items-center justify-center rounded border">
