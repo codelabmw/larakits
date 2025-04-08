@@ -3,6 +3,7 @@ import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { DownloadIcon } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { Card } from './ui/card';
+import numeral from 'numeral';
 
 export default function KitCard({ kit, onClick }: { kit: Kit; onClick?: () => void }) {
     return (
@@ -33,11 +34,11 @@ export default function KitCard({ kit, onClick }: { kit: Kit; onClick?: () => vo
                 <div className="text-muted-foreground flex items-center space-x-4 text-sm">
                     <span className="flex items-center">
                         <GitHubLogoIcon className="mr-1 h-4 w-4" />
-                        {kit.stars}
+                        {numeral(kit.stars).format('0a')}
                     </span>
                     <span className="flex items-center">
                         <DownloadIcon className="mr-1 h-4 w-4" />
-                        {kit.downloads}
+                        {numeral(kit.downloads).format('0a')}
                     </span>
                 </div>
                 <div className="flex gap-1">
