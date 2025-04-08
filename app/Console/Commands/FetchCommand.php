@@ -136,16 +136,24 @@ class FetchCommand extends Command
             ];
 
             if ($package->source['type'] === 'git') {
-                /** @var Github */
-                $github = App::make(Github::class);
+                try {
+                    /** @var Github */
+                    $github = App::make(Github::class);
 
-                [$owner, $repo] = Github::ownerAndRepo($package->source['url']);
-                $packageJson = $github->jsonContent($owner, $repo, 'package.json');
+                    [$owner, $repo] = Github::ownerAndRepo($package->source['url']);
+                    $packageJson = $github->jsonContent($owner, $repo, 'package.json');
 
-                $dependencies['npm'] = array_keys(array_merge(
-                    $packageJson['dependencies'] ?? [],
-                    $packageJson['devDependencies'] ?? [],
-                ));
+                    $dependencies['npm'] = array_keys(array_merge(
+                        $packageJson['dependencies'] ?? [],
+                        $packageJson['devDependencies'] ?? [],
+                    ));
+                } catch (ConnectionException $exception) {
+                    if (in_array($exception->response->status(), [404, 401, 403])) {
+                        $dependencies['npm'] = [];
+                    } else {
+                        throw $exception;
+                    }
+                }
             }
 
             $stackPayload = new StackPayload($dependencies);
