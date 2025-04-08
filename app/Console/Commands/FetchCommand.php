@@ -83,14 +83,23 @@ class FetchCommand extends Command
             } while ($paginator->next());
         } catch (ConnectionException $exception) {
             $task?->markFailed();
+        } finally {
+            $task?->refresh();
         }
 
-        if ($task?->refresh()->status === TaskStatus::PENDING) {
+        if ($task?->status === TaskStatus::PENDING) {
             $task->markSuccessful();
         }
 
-        // TODO: Calculate a more random time based on failure or success
-        $nextRunTime = $task->should_run_at->addMinutes(10);
+        // If the task is successful, schedule the next task tommorow at a random time
+        // Else schedule the next task today at a random time between 10 minutes from now and 2 hours from now
+        $nextRunTime = $task->should_run_at;
+
+        if ($task->status === TaskStatus::SUCCESS) {
+            $nextRunTime = $nextRunTime->addDay()->addMinutes(random_int(10, 120));
+        } else {
+            $nextRunTime = $nextRunTime->addMinutes(random_int(10, 120));
+        }
 
         Task::create([
             'status' => TaskStatus::PENDING,

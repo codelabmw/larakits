@@ -2,7 +2,6 @@
 
 use App\Contracts\Http\Client;
 use App\Enums\TaskStatus;
-use App\Exceptions\ConnectionException;
 use App\Models\Kit;
 use App\Models\Stack;
 use App\Models\Tag;
@@ -13,8 +12,6 @@ use App\Services\Packagist\Actions\SearchPackages;
 use App\Services\Packagist\Packagist;
 use App\Services\Packagist\ValueObjects\Agent;
 use Tests\Fixtures\Packages;
-
-beforeEach()->only();
 
 it('fetches & stores kits', function () {
     // Arrange
