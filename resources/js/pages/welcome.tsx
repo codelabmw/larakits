@@ -7,7 +7,7 @@ import { GuestLayout } from '@/layouts/guest-layout';
 import type { Kit } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { ArrowRightIcon, GearIcon, GitHubLogoIcon, HeartIcon, LightningBoltIcon, RocketIcon } from '@radix-ui/react-icons';
-import { Rocket } from 'lucide-react';
+import { PackageSearchIcon, Rocket } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface Props {
@@ -72,7 +72,7 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
                             <span>v1.0 is almost here!</span>
                         </Badge>
                         <h1 className="mb-6 text-4xl font-light tracking-wider sm:text-5xl">
-                            one more reason to <span className="block font-bold text-7xl sm:text-9xl capitalize">ship faster</span>
+                            one more reason to <span className="block text-7xl font-bold capitalize sm:text-9xl">ship faster</span>
                         </h1>
                         <p className="text-muted-foreground text-md mb-8 sm:text-xl">
                             Discover community-maintained starter kits that help you build better Laravel applications faster.
@@ -105,35 +105,46 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
                             with ease.
                         </p>
 
-                        <Tabs defaultValue="trending" className="mx-auto">
-                            <div className="flex items-center justify-between">
-                                <TabsList className="mb-8">
-                                    <TabsTrigger value="trending">Trending</TabsTrigger>
-                                    <TabsTrigger value="recent">Recently Added</TabsTrigger>
-                                </TabsList>
+                        {trendingKits.length > 0 ? (
+                            <Tabs defaultValue="trending" className="mx-auto">
+                                <div className="flex items-center justify-between">
+                                    <TabsList className="mb-8">
+                                        <TabsTrigger value="trending">Trending</TabsTrigger>
+                                        <TabsTrigger value="recent">Recently Added</TabsTrigger>
+                                    </TabsList>
 
-                                <Button asChild size="lg" variant="ghost" className="group">
-                                    <Link href="/kits">
-                                        <span>View all</span>
-                                        <ArrowRightIcon className="transition-transform group-hover:-rotate-[38deg]" />
-                                    </Link>
-                                </Button>
+                                    <Button asChild size="lg" variant="ghost" className="group">
+                                        <Link href="/kits">
+                                            <span>View all</span>
+                                            <ArrowRightIcon className="transition-transform group-hover:-rotate-[38deg]" />
+                                        </Link>
+                                    </Button>
+                                </div>
+                                <TabsContent value="trending">
+                                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                        {trendingKits.map((kit) => (
+                                            <KitCard key={kit.slug} kit={kit} onClick={() => setSelectedKit(kit)} />
+                                        ))}
+                                    </div>
+                                </TabsContent>
+                                <TabsContent value="recent">
+                                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                        {recentKits.map((kit) => (
+                                            <KitCard key={kit.slug} kit={kit} onClick={() => setSelectedKit(kit)} />
+                                        ))}
+                                    </div>
+                                </TabsContent>
+                            </Tabs>
+                        ) : (
+                            <div className="mx-auto flex h-96 max-w-4xl items-center justify-center rounded border">
+                                <div className="text-muted-foreground text-center">
+                                    <div className="flex items-center justify-center">
+                                        <PackageSearchIcon className="h-8 w-8" />
+                                    </div>
+                                    <p className="mt-2">No kits found at the moment! Still curating...</p>
+                                </div>
                             </div>
-                            <TabsContent value="trending">
-                                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                                    {trendingKits.map((kit) => (
-                                        <KitCard key={kit.slug} kit={kit} onClick={() => setSelectedKit(kit)} />
-                                    ))}
-                                </div>
-                            </TabsContent>
-                            <TabsContent value="recent">
-                                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                                    {recentKits.map((kit) => (
-                                        <KitCard key={kit.slug} kit={kit} onClick={() => setSelectedKit(kit)} />
-                                    ))}
-                                </div>
-                            </TabsContent>
-                        </Tabs>
+                        )}
                     </div>
                 </div>
             </section>
