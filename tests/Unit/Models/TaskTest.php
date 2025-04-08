@@ -13,6 +13,7 @@ test('to array', function () {
     expect(array_keys($fields))->toEqual([
         'id',
         'status',
+        'exception',
         'should_run_at',
         'created_at',
         'updated_at',
