@@ -210,6 +210,7 @@ class FetchCommand extends Command
                         'starter-kit',
                         'starter kit',
                         'laravel starter kit',
+                        'framework'
                     ])
                 );
 
