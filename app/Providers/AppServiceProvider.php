@@ -8,6 +8,11 @@ use App\Services\Packagist\Actions\SearchPackages;
 use App\Services\Packagist\Packagist;
 use App\Services\Packagist\ValueObjects\Agent;
 use App\Contracts\Http\Client as ClientContract;
+use Carbon\CarbonImmutable;
+use Date;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -40,6 +45,34 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->configureCommands();
+        $this->configureModels();
+        $this->configureDates();
+    }
+
+    /**
+     * Configure the application's commands.
+     */
+    private function configureCommands(): void
+    {
+        DB::prohibitDestructiveCommands(
+            $this->app->isProduction()
+        );
+    }
+
+    /**
+     * Configure the dates.
+     */
+    private function configureDates(): void
+    {
+        Date::use(CarbonImmutable::class);
+    }
+
+    /**
+     * Configure the models.
+     */
+    private function configureModels(): void
+    {
+        Model::shouldBeStrict(!$this->app->isProduction());
     }
 }

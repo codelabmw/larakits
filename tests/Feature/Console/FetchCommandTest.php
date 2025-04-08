@@ -1,6 +1,7 @@
 <?php
 
 use App\Contracts\Http\Client;
+use App\Enums\TaskStatus;
 use App\Exceptions\ConnectionException;
 use App\Models\Kit;
 use App\Models\Stack;
@@ -455,7 +456,7 @@ it('updates current task on success', function () {
     $this->artisan('fetch:kits');
 
     // Assert
-    expect(Task::first()->status)->toBe('success');
+    expect(Task::first()->status)->toBe(TaskStatus::SUCCESS);
 });
 
 it('updates current task on failure', function () {
@@ -528,7 +529,7 @@ it('updates current task on failure', function () {
     $this->artisan('fetch:kits');
 
     // Assert
-    expect(Task::first()->status)->toBe('failed');
+    expect(Task::first()->status)->toBe(TaskStatus::FAILED);
 });
 
 it('schedules next task', function () {

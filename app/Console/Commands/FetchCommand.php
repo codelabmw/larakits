@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Actions\EnsureIsLaravelProject;
+use App\Enums\TaskStatus;
 use App\Exceptions\ConnectionException;
 use App\Guessors\Kit\ByDescription;
 use App\Guessors\Kit\ByKeyword;
@@ -49,7 +50,9 @@ class FetchCommand extends Command
      */
     public function handle(Packagist $packagist, EnsureIsLaravelProject $isLaravelProject)
     {
-        
+
+        $task = Task::currentTask();
+
         try {
             $paginator = $packagist->search(
                 type: 'project',
@@ -79,12 +82,20 @@ class FetchCommand extends Command
                 });
             } while ($paginator->next());
         } catch (ConnectionException $exception) {
-            Task::currentTask()?->markFailed();
+            $task?->markFailed();
         }
 
-        if (Task::currentTask()?->status === 'pending') {
-            Task::currentTask()->markSuccessful();
+        if ($task?->refresh()->status === TaskStatus::PENDING) {
+            $task->markSuccessful();
         }
+
+        // TODO: Calculate a more random time based on failure or success
+        $nextRunTime = $task->should_run_at->addMinutes(10);
+
+        Task::create([
+            'status' => TaskStatus::PENDING,
+            'should_run_at' => $nextRunTime,
+        ]);
     }
 
 

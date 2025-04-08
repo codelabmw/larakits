@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\TaskStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\CarbonInterface;
 
 /**
  * @property int $id
- * @property string $status
+ * @property TaskStatus $status
  * @property CarbonInterface $should_run_at
  * @property CarbonInterface $updated_at
  * @property CarbonInterface $created_at
@@ -34,6 +35,7 @@ class Task extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'status' => TaskStatus::class,
         'should_run_at' => 'datetime',
     ];
 
@@ -42,13 +44,13 @@ class Task extends Model
      */
     public function wasRunSuccessfully(): bool
     {
-        return $this->status === 'success';
+        return $this->status === TaskStatus::SUCCESS;
     }
 
     /**
      * Updates the task status.
      */
-    public function updateStatus(string $status): void
+    public function updateStatus(TaskStatus $status): void
     {
         $this->status = $status;
         $this->save();
@@ -59,7 +61,7 @@ class Task extends Model
      */
     public function markFailed(): void
     {
-        $this->updateStatus('failed');
+        $this->updateStatus(TaskStatus::FAILED);
     }
 
     /**
@@ -67,7 +69,7 @@ class Task extends Model
      */
     public function markSuccessful(): void
     {
-        $this->updateStatus('success');
+        $this->updateStatus(TaskStatus::SUCCESS);
     }
 
     /**
@@ -75,6 +77,6 @@ class Task extends Model
      */
     public static function currentTask(): ?Task
     {
-        return self::query()->where('status', 'pending')->latest()->first();
+        return self::query()->where('status', TaskStatus::PENDING->value)->latest()->first();
     }
 }
