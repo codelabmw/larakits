@@ -82,7 +82,18 @@ class FetchCommand extends Command
                 });
             } while ($paginator->next());
         } catch (ConnectionException $exception) {
-            $task?->markFailed();
+            $task?->markFailed(json_encode([
+                'message' => $exception->getMessage(),
+                'code' => $exception->getCode(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+                'payload' => [
+                    'name' => 'response',
+                    'status' => $exception->response->status(),
+                    'body' => $exception->response->body(),
+                    'headers' => $exception->response->headers(),
+                ]
+            ]));
         } finally {
             $task?->refresh();
         }

@@ -10,6 +10,7 @@ use Carbon\CarbonInterface;
 /**
  * @property int $id
  * @property TaskStatus $status
+ * @property ?string $exception
  * @property CarbonInterface $should_run_at
  * @property CarbonInterface $updated_at
  * @property CarbonInterface $created_at
@@ -26,6 +27,7 @@ class Task extends Model
      */
     protected $fillable = [
         'status',
+        'exception',
         'should_run_at',
     ];
 
@@ -59,9 +61,11 @@ class Task extends Model
     /**
      * Marks the task as failed.
      */
-    public function markFailed(): void
+    public function markFailed(?string $exception = null): void
     {
-        $this->updateStatus(TaskStatus::FAILED);
+        $this->status = TaskStatus::FAILED;
+        $this->exception = $exception;
+        $this->save();
     }
 
     /**

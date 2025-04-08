@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('status');
+            $table->string('exception')->nullable();
             $table->timestamp('should_run_at');
             $table->timestamps();
         });
