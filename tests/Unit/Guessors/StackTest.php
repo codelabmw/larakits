@@ -2,6 +2,7 @@
 
 use App\Guessors\Stack\React;
 use App\Guessors\Stack\Tailwindcss;
+use App\Guessors\Stack\Volt;
 use App\Guessors\Stack\Vue;
 use App\Guessors\Stack\Livewire;
 use App\ValueObjects\StackPayload;
@@ -56,4 +57,17 @@ test('it guesses tailwindcss stack', function () {
 
     // Assert
     expect($payload->getStacks())->toBe(['tailwindcss']);
+});
+
+it('it guesses volt stack', function () {
+    // Arrange
+    $payload = new StackPayload([
+        'composer' => ['pestphp/pest', 'livewire/livewire', 'laravel/framework', 'livewire/volt'],
+    ]);
+
+    // Act
+    (new Volt)->handle($payload, fn($payload) => null);
+
+    // Assert
+    expect($payload->getStacks())->toBe(['volt']);
 });
