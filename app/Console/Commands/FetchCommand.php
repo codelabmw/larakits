@@ -36,7 +36,7 @@ class FetchCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'fetch:kits';
+    protected $signature = 'fetch:kits {--packagist= : Base URL of Packagist}';
 
     /**
      * The console command description.
@@ -52,11 +52,13 @@ class FetchCommand extends Command
     {
 
         $task = Task::currentTask();
+        $baseUrl = $this->option('packagist');
 
         try {
             $paginator = $packagist->search(
                 type: 'project',
                 tags: ['laravel', 'starter', 'kit', 'starter-kit', 'starter kit', 'laravel starter kit'],
+                baseUrl: $baseUrl,
             );
 
             do {
