@@ -35,14 +35,14 @@ test('it guesses vue stack', function () {
 test('it guesses livewire stack', function () {
     // Arrange
     $payload = new StackPayload([
-        'composer' => ['pestphp/pest', 'laravel/livewire', 'laravel/framework'],
+        'composer' => ['pestphp/pest', 'livewire/livewire', 'laravel/framework'],
     ]);
 
     // Act
     (new Livewire)->handle($payload, fn($payload) => null);
 
     // Assert
-    expect($payload->getStacks())->toBe(['laravel-livewire']);
+    expect($payload->getStacks())->toBe(['livewire']);
 });
 
 test('it guesses tailwindcss stack', function () {
