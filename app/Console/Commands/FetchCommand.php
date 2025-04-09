@@ -62,8 +62,8 @@ class FetchCommand extends Command
             );
 
             do {
-                $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject) {
-                    $package = $packagist->get($package->name);
+                $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject, $baseUrl) {
+                    $package = $packagist->get($package->name, baseUrl: $baseUrl);
 
                     if ($isLaravelProject($package)) {
                         $kitPayload = new KitPayload(package: $package, isKit: false);
