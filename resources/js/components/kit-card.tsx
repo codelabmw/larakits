@@ -1,11 +1,15 @@
 import type { Kit } from '@/types';
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { DownloadIcon } from 'lucide-react';
+import numeral from 'numeral';
 import { Badge } from './ui/badge';
 import { Card } from './ui/card';
-import numeral from 'numeral';
 
 export default function KitCard({ kit, onClick }: { kit: Kit; onClick?: () => void }) {
+    const parseKitName = (name: string) => {
+        return name.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+    };
+
     return (
         <Card className="hover:bg-muted/50 flex cursor-pointer flex-col p-6 transition-colors" onClick={onClick}>
             <div className="mb-4 flex items-center justify-start gap-2">
@@ -25,7 +29,7 @@ export default function KitCard({ kit, onClick }: { kit: Kit; onClick?: () => vo
                         </div>
                     )}
                 </div>
-                <h3 className="font-semibold">{kit.name}</h3>
+                <h3 className="font-semibold">{parseKitName(kit.name)}</h3>
             </div>
             <p className="text-muted-foreground mb-4 flex-1 text-left text-sm">
                 {kit.description ?? 'This starter kit does not have a description.'}
@@ -42,12 +46,12 @@ export default function KitCard({ kit, onClick }: { kit: Kit; onClick?: () => vo
                     </span>
                 </div>
                 <div className="flex gap-1">
-                    {kit.tags.slice(0, 3).map((tag) => (
-                        <Badge key={tag.slug} variant="secondary">
+                    {kit.tags.slice(0, 2).map((tag) => (
+                        <Badge key={tag.slug} variant="secondary" className="p-1.5 px-2 capitalize">
                             {tag.name}
                         </Badge>
                     ))}
-                    {kit.tags.length > 3 && <Badge variant="outline">+{kit.tags.length - 3}</Badge>}
+                    {kit.tags.length > 2 && <Badge variant="outline">+{kit.tags.length - 2}</Badge>}
                 </div>
             </div>
         </Card>

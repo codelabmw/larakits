@@ -19,6 +19,10 @@ interface Props {
 function KitDetailsSheet({ kit, onOpenChange }: Props) {
     const { copy, recentlyCopied } = useClipboard();
 
+    const parseKitName = (name: string) => {
+        return name.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+    };
+
     return (
         <Sheet open={!!kit} onOpenChange={onOpenChange}>
             <SheetContent className="p-8 sm:max-w-xl">
@@ -27,7 +31,7 @@ function KitDetailsSheet({ kit, onOpenChange }: Props) {
                         <div className="space-y-8">
                             {/* Header */}
                             <div>
-                                <h2 className="mb-2 text-2xl font-bold tracking-tight">{kit.name}</h2>
+                                <h2 className="mb-2 text-2xl font-bold tracking-tight">{parseKitName(kit.name)}</h2>
                                 <p className="text-muted-foreground">{kit.description ?? 'This starter kit does not have a description.'}</p>
                             </div>
 
@@ -38,15 +42,15 @@ function KitDetailsSheet({ kit, onOpenChange }: Props) {
                                         <span>Laravel Herd</span>
                                     </a>
                                 </Button>
-                                <div className="text-muted-foreground bg-muted relative flex-1 rounded p-2 text-sm">
-                                    <code className="line-clamp-1">
+                                <div className="text-muted-foreground bg-muted relative flex flex-1 items-center justify-between gap-2 rounded pl-3 text-sm">
+                                    <p className="line-clamp-1 flex-1">
                                         laravel new --using={kit.vendor}/{kit.name}
-                                    </code>
+                                    </p>
                                     <Button
                                         onClick={() => copy(`laravel new --using=${kit.vendor}/${kit.name}`)}
                                         variant="ghost"
                                         size="icon"
-                                        className="absolute top-1/2 right-2 -translate-y-1/2"
+                                        className="w-10"
                                     >
                                         {recentlyCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                                     </Button>
@@ -150,7 +154,7 @@ function KitDetailsSheet({ kit, onOpenChange }: Props) {
                                     <h3 className="mb-3 text-sm font-medium">Stack</h3>
                                     <div className="flex flex-wrap gap-2">
                                         {kit.stacks.map((stack) => (
-                                            <Badge key={stack.slug} variant="outline">
+                                            <Badge key={stack.slug} variant="outline" className="p-1.5 px-3 capitalize">
                                                 {stack.name}
                                             </Badge>
                                         ))}
@@ -165,7 +169,7 @@ function KitDetailsSheet({ kit, onOpenChange }: Props) {
                                 <div>
                                     <div className="flex flex-wrap gap-2">
                                         {kit.tags.map((tag) => (
-                                            <Badge key={tag.slug} variant="secondary">
+                                            <Badge key={tag.slug} variant="secondary" className="p-1.5 px-3 capitalize">
                                                 {tag.name}
                                             </Badge>
                                         ))}
