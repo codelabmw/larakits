@@ -21,7 +21,7 @@ it('fetches & stores kits', function () {
         'https://packagist.org/search.json',
         [
             'type' => 'project',
-            'tags' => ['laravel', 'starter', 'kit', 'starter-kit', 'starter kit', 'laravel starter kit']
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit']
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(
@@ -98,7 +98,7 @@ it('fetches through paginated results', function () {
         'https://packagist.org/search.json',
         [
             'type' => 'project',
-            'tags' => ['laravel', 'starter', 'kit', 'starter-kit', 'starter kit', 'laravel starter kit']
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit']
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(
@@ -205,7 +205,7 @@ it('updates existing kits', function () {
         'https://packagist.org/search.json',
         [
             'type' => 'project',
-            'tags' => ['laravel', 'starter', 'kit', 'starter-kit', 'starter kit', 'laravel starter kit']
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit']
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(
@@ -308,7 +308,7 @@ it('updates existing kits that has tags/stacks', function () {
         'https://packagist.org/search.json',
         [
             'type' => 'project',
-            'tags' => ['laravel', 'starter', 'kit', 'starter-kit', 'starter kit', 'laravel starter kit']
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit']
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(
@@ -389,7 +389,7 @@ it('updates current task on success', function () {
         'https://packagist.org/search.json',
         [
             'type' => 'project',
-            'tags' => ['laravel', 'starter', 'kit', 'starter-kit', 'starter kit', 'laravel starter kit']
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit']
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(
@@ -464,7 +464,7 @@ it('updates current task on failure', function () {
         'https://packagist.org/search.json',
         [
             'type' => 'project',
-            'tags' => ['laravel', 'starter', 'kit', 'starter-kit', 'starter kit', 'laravel starter kit']
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit']
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(
@@ -537,7 +537,7 @@ it('schedules next task', function () {
         'https://packagist.org/search.json',
         [
             'type' => 'project',
-            'tags' => ['laravel', 'starter', 'kit', 'starter-kit', 'starter kit', 'laravel starter kit']
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit']
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(

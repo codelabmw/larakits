@@ -57,7 +57,7 @@ class FetchCommand extends Command
         try {
             $paginator = $packagist->search(
                 type: 'project',
-                tags: ['laravel', 'starter', 'kit', 'starter-kit', 'starter kit', 'laravel starter kit'],
+                tags: ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'],
                 baseUrl: $baseUrl,
             );
 
