@@ -28,9 +28,13 @@ final class Packagist
      * @param array<int, string>|null $tags
      * @return Paginator<Package>
      */
-    public function search(?string $type = null, ?array $tags = null, ?int $perPage = null): Paginator
+    public function search(?string $type = null, ?array $tags = null, ?int $perPage = null, ?string $baseUrl = null): Paginator
     {
         $parameters = [];
+
+        if ($baseUrl === null) {
+            $baseUrl = $this->baseUrl;
+        }
 
         if ($type !== null) {
             $parameters['type'] = $type;
@@ -47,7 +51,7 @@ final class Packagist
         $data = $this->searchPackages->handle(
             client: $this->client,
             agent: $this->agent,
-            url: $this->baseUrl . '/search.json',
+            url: $baseUrl . '/search.json',
             filters: $parameters,
         );
 
@@ -69,10 +73,14 @@ final class Packagist
     /**
      * Gets a specific package.
      */
-    public function get(string $name): Package
+    public function get(string $name, ?string $baseUrl = null): Package
     {
+        if ($baseUrl === null) {
+            $baseUrl = $this->baseUrl;
+        }
+
         $response = $this->client->get(
-            url: $this->baseUrl . '/packages/' . $name . '.json',
+            url: $baseUrl . '/packages/' . $name . '.json',
             headers: ['User-Agent' => (string) $this->agent],
         );
 
