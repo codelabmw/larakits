@@ -28,7 +28,7 @@ final class Packagist
      * @param array<int, string>|null $tags
      * @return Paginator<Package>
      */
-    public function search(?string $type = null, ?array $tags = null): Paginator
+    public function search(?string $type = null, ?array $tags = null, ?int $perPage = null): Paginator
     {
         $parameters = [];
 
@@ -38,6 +38,10 @@ final class Packagist
 
         if ($tags !== null) {
             $parameters['tags'] = $tags;
+        }
+
+        if ($perPage !== null) {
+            $parameters['per_page'] = $perPage;
         }
 
         $data = $this->searchPackages->handle(
@@ -53,6 +57,7 @@ final class Packagist
             items: $items,
             total: $data['total'],
             next: $data['next'],
+            perPage: $data['per_page'] ?? null,
             getNextPage: fn(?string $url) => $this->searchPackages->handle(
                 client: $this->client,
                 agent: $this->agent,
