@@ -27,6 +27,7 @@ final class Paginator
         array $items,
         private int $total,
         private ?string $next = null,
+        private ?int $perPage = null,
         private ?Closure $getNextPage,
     ) {
         $this->items = Collection::make($items);
@@ -38,6 +39,14 @@ final class Paginator
     public function total(): int
     {
         return $this->total;
+    }
+
+    /**
+     * Gets the number of items per page.
+     */
+    public function perPage(): ?int
+    {
+        return $this->perPage;
     }
 
     /**

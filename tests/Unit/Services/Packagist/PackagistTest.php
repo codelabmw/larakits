@@ -115,6 +115,51 @@ it('searches packages by tags', function () {
     expect($result->items()->first())->toBeInstanceOf(Package::class);
 });
 
+it('searches with page limit', function () {
+    // Arrange
+    $response = new Response(
+        status: 200,
+        body: json_encode([
+            'results' => [
+                [
+                    "name" => "[vendor]/[package]",
+                    "description" => "[description]",
+                    "url" => "https://packagist.org/packages/[vendor]/[package]",
+                    "repository" => '[repository url]',
+                    "downloads" => 1,
+                    "favers" => 1,
+                ],
+            ],
+            'total' => 4,
+            'per_page' => 2,
+            'next' => null,
+        ]),
+        headers: [
+            'Content-Type' => 'application/json',
+        ],
+    );
+
+    $client = Mockery::mock(Client::class);
+
+    $client->shouldReceive('get')->with(
+        'https://packagist.org/search.json',                // URL
+        ['type' => 'project', 'per_page' => 2],             // Parameters
+        ['User-Agent' => 'Test User (test@example.com)']    // Headers
+    )->andReturn($response);
+
+    $packagist = new Packagist(
+        searchPackages: new SearchPackages(),
+        client: $client,
+        agent: new Agent(name: 'Test User', email: 'test@example.com')
+    );
+
+    // Act
+    $result = $packagist->search(type: 'project', perPage: 2);
+
+    // Assert
+    expect($result->perPage())->toBe(2);
+});
+
 it('gets specific package', function () {
     // Arrange
     $response = new Response(
