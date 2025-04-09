@@ -7,6 +7,7 @@ use App\Exceptions\ConnectionException;
 use App\Services\Packagist\Actions\SearchPackages;
 use App\Services\Packagist\ValueObjects\Agent;
 use App\Services\Packagist\ValueObjects\Package;
+use Spatie\Url\Url;
 
 final class Packagist
 {
@@ -57,16 +58,35 @@ final class Packagist
 
         $items = array_map(fn($item) => Package::fromArray($item), $data['results']);
 
+
         return new Paginator(
             items: $items,
             total: $data['total'],
-            next: $data['next'],
+            next: $data['next'] ?? null,
             perPage: $data['per_page'] ?? null,
-            getNextPage: fn(?string $url) => $this->searchPackages->handle(
-                client: $this->client,
-                agent: $this->agent,
-                url: $url,
-            )
+            getNextPage: fn(string $url) => $this->getNextPage(
+                Url::fromString($url)->withHost(
+                    Url::fromString($baseUrl)->getHost(),
+                ),
+            ),
+        );
+    }
+
+    /**
+     * Gets the next page.
+     */
+    private function getNextPage(Url $url): array
+    {
+        $parameters = [];
+        $queryString = $url->getQuery();
+
+        parse_str($queryString, $parameters);
+
+        return $this->searchPackages->handle(
+            client: $this->client,
+            agent: $this->agent,
+            url: (string) $url->withoutQueryParameters(),
+            filters: $parameters,
         );
     }
 

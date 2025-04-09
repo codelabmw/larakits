@@ -67,11 +67,11 @@ final class Paginator
         if ($this->next && $this->getNextPage !== null) {
             $data = ($this->getNextPage)($this->next);
 
-            $items = array_map(fn($item) => Package::fromArray($item), $data['results']);
+            $items = array_map(fn($item) => Package::fromArray($item), $data['results'] ?? []);
 
             $this->items = Collection::make($items);
 
-            $this->next = $data['next'];
+            $this->next = $data['next'] ?? null;
 
             return true;
         }

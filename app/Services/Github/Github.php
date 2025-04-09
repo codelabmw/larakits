@@ -13,8 +13,7 @@ final class Github
     public function __construct(
         private readonly Client $client,
         private readonly string $baseUrl = 'https://api.github.com'
-    )
-    {
+    ) {
         //
     }
 
@@ -34,17 +33,7 @@ final class Github
             throw new ConnectionException($response, 'Failed to retrieve file contents');
         }
 
-        return $response->body();
-    }
-
-    /**
-     * Returns the contents of a file in a repository as an array.
-     */
-    public function jsonContent(string $owner, string $repo, string $path): array
-    {
-        $base64Data = $this->contents($owner, $repo, $path);
-
-        return json_decode(base64_decode($base64Data), true);
+        return $response->json()['content'];
     }
 
     /**

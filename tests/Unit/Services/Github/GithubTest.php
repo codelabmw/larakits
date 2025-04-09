@@ -24,14 +24,14 @@ it('gets file contents', function () {
     )->andReturn($response);
 
     $response->shouldReceive('status')->andReturn(200);
-    $response->shouldReceive('body')->andReturn(base64_encode(json_encode(['content' => 'Hello World'])));
+    $response->shouldReceive('body')->andReturn(json_encode(['content' => base64_encode('Hello World')]));
     $response->shouldReceive('json')->andReturn(['content' => 'Hello World']);
 
     $github = new Github($client);
 
     // Act
-    $result = $github->jsonContent('laravel', 'framework', 'example.json');
+    $result = $github->contents('laravel', 'framework', 'example.json');
 
     // Assert
-    expect($result)->toBe(['content' => 'Hello World']);
+    expect($result)->toBe('Hello World');
 });

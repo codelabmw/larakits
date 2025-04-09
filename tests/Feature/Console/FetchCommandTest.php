@@ -21,7 +21,8 @@ it('fetches & stores kits', function () {
         'https://packagist.org/search.json',
         [
             'type' => 'project',
-            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit']
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'],
+            'per_page' => 50,
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(
@@ -56,6 +57,7 @@ it('fetches & stores kits', function () {
 
     foreach (Packages::$starterKitRepos as $key => $respository) {
         [$owner, $repo] = Github::ownerAndRepo($respository);
+        $repo = Str::remove(subject: $repo, search: '.git');
 
         $client->shouldReceive('get')->with(
             "https://api.github.com/repos/{$owner}/{$repo}/contents/package.json",
@@ -64,7 +66,9 @@ it('fetches & stores kits', function () {
         )->andReturn(
                 new Response(
                     status: 200,
-                    body: base64_encode(json_encode(Packages::$packageJsons[$key])),
+                    body: json_encode([
+                        'content' => base64_encode(json_encode(Packages::$packageJsons[$key])),
+                    ]),
                     headers: [
                         'Content-Type' => 'application/json',
                     ],
@@ -98,7 +102,8 @@ it('fetches through paginated results', function () {
         'https://packagist.org/search.json',
         [
             'type' => 'project',
-            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit']
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'],
+            'per_page' => 50,
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(
@@ -107,7 +112,7 @@ it('fetches through paginated results', function () {
                 body: json_encode([
                     'results' => array_slice(Packages::$all, 0, 4),
                     'total' => count(Packages::$all),
-                    'next' => 'https://packagist.org/search.json?tags=laravel&tags=starter&tags=kit&tags=starter-kit&tags=starter+kit&tags=laravel+starter+kit&page=2',
+                    'next' => 'https://packagist.org/search.json?type=project&tags[]=laravel&tags[]=starter-kit&tags[]=starter+kit&tags[]=laravel-starter-kit&tags[]=laravel+starter+kit&page=2&per_page=50',
                 ]),
                 headers: [
                     'Content-Type' => 'application/json',
@@ -116,8 +121,12 @@ it('fetches through paginated results', function () {
         );
 
     $client->shouldReceive('get')->with(
-        'https://packagist.org/search.json?tags=laravel&tags=starter&tags=kit&tags=starter-kit&tags=starter+kit&tags=laravel+starter+kit&page=2',
+        'https://packagist.org/search.json',
         [
+            'type' => 'project',
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'],
+            'page' => 2,
+            'per_page' => 50,
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(
@@ -152,20 +161,23 @@ it('fetches through paginated results', function () {
 
     foreach (Packages::$starterKitRepos as $key => $respository) {
         [$owner, $repo] = Github::ownerAndRepo($respository);
+        $repo = Str::remove(subject: $repo, search: '.git');
 
         $client->shouldReceive('get')->with(
             "https://api.github.com/repos/{$owner}/{$repo}/contents/package.json",
             [],
             ['Accept' => 'application/vnd.github.v3+json']
         )->andReturn(
-                new Response(
-                    status: 200,
-                    body: base64_encode(json_encode(Packages::$packageJsons[$key])),
-                    headers: [
-                        'Content-Type' => 'application/json',
-                    ],
-                )
-            );
+            new Response(
+                status: 200,
+                body: json_encode([
+                    'content' => base64_encode(json_encode(Packages::$packageJsons[$key])),
+                ]),
+                headers: [
+                    'Content-Type' => 'application/json',
+                ],
+            )
+        );
     }
 
     $packagist = new Packagist(
@@ -205,7 +217,8 @@ it('updates existing kits', function () {
         'https://packagist.org/search.json',
         [
             'type' => 'project',
-            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit']
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'],
+            'per_page' => 50,
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(
@@ -240,6 +253,7 @@ it('updates existing kits', function () {
 
     foreach (Packages::$starterKitRepos as $key => $respository) {
         [$owner, $repo] = Github::ownerAndRepo($respository);
+        $repo = Str::remove(subject: $repo, search: '.git');
 
         $client->shouldReceive('get')->with(
             "https://api.github.com/repos/{$owner}/{$repo}/contents/package.json",
@@ -248,7 +262,9 @@ it('updates existing kits', function () {
         )->andReturn(
                 new Response(
                     status: 200,
-                    body: base64_encode(json_encode(Packages::$packageJsons[$key])),
+                    body: json_encode([
+                        'content' => base64_encode(json_encode(Packages::$packageJsons[$key])),
+                    ]),
                     headers: [
                         'Content-Type' => 'application/json',
                     ],
@@ -308,7 +324,8 @@ it('updates existing kits that has tags/stacks', function () {
         'https://packagist.org/search.json',
         [
             'type' => 'project',
-            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit']
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'],
+            'per_page' => 50,
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(
@@ -343,6 +360,7 @@ it('updates existing kits that has tags/stacks', function () {
 
     foreach (Packages::$starterKitRepos as $key => $respository) {
         [$owner, $repo] = Github::ownerAndRepo($respository);
+        $repo = Str::remove(subject: $repo, search: '.git');
 
         $client->shouldReceive('get')->with(
             "https://api.github.com/repos/{$owner}/{$repo}/contents/package.json",
@@ -351,7 +369,9 @@ it('updates existing kits that has tags/stacks', function () {
         )->andReturn(
                 new Response(
                     status: 200,
-                    body: base64_encode(json_encode(Packages::$packageJsons[$key])),
+                    body: json_encode([
+                        'content' => base64_encode(json_encode(Packages::$packageJsons[$key])),
+                    ]),
                     headers: [
                         'Content-Type' => 'application/json',
                     ],
@@ -389,7 +409,8 @@ it('updates current task on success', function () {
         'https://packagist.org/search.json',
         [
             'type' => 'project',
-            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit']
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'],
+            'per_page' => 50,
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(
@@ -424,6 +445,7 @@ it('updates current task on success', function () {
 
     foreach (Packages::$starterKitRepos as $key => $respository) {
         [$owner, $repo] = Github::ownerAndRepo($respository);
+        $repo = Str::remove(subject: $repo, search: '.git');
 
         $client->shouldReceive('get')->with(
             "https://api.github.com/repos/{$owner}/{$repo}/contents/package.json",
@@ -432,7 +454,9 @@ it('updates current task on success', function () {
         )->andReturn(
                 new Response(
                     status: 200,
-                    body: base64_encode(json_encode(Packages::$packageJsons[$key])),
+                    body: json_encode([
+                        'content' => base64_encode(json_encode(Packages::$packageJsons[$key])),
+                    ]),
                     headers: [
                         'Content-Type' => 'application/json',
                     ],
@@ -464,7 +488,8 @@ it('updates current task on failure', function () {
         'https://packagist.org/search.json',
         [
             'type' => 'project',
-            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit']
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'],
+            'per_page' => 50,
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(
@@ -497,6 +522,7 @@ it('updates current task on failure', function () {
 
     foreach (Packages::$starterKitRepos as $key => $respository) {
         [$owner, $repo] = Github::ownerAndRepo($respository);
+        $repo = Str::remove(subject: $repo, search: '.git');
 
         $client->shouldReceive('get')->with(
             "https://api.github.com/repos/{$owner}/{$repo}/contents/package.json",
@@ -505,7 +531,9 @@ it('updates current task on failure', function () {
         )->andReturn(
                 new Response(
                     status: 200,
-                    body: base64_encode(json_encode(Packages::$packageJsons[$key])),
+                    body: json_encode([
+                        'content' => base64_encode(json_encode(Packages::$packageJsons[$key])),
+                    ]),
                     headers: [
                         'Content-Type' => 'application/json',
                     ],
@@ -537,7 +565,8 @@ it('schedules next task', function () {
         'https://packagist.org/search.json',
         [
             'type' => 'project',
-            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit']
+            'tags' => ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'],
+            'per_page' => 50,
         ],
         ['User-Agent' => 'Larakits (info@larakits.dev)']
     )->andReturn(
@@ -572,6 +601,7 @@ it('schedules next task', function () {
 
     foreach (Packages::$starterKitRepos as $key => $respository) {
         [$owner, $repo] = Github::ownerAndRepo($respository);
+        $repo = Str::remove(subject: $repo, search: '.git');
 
         $client->shouldReceive('get')->with(
             "https://api.github.com/repos/{$owner}/{$repo}/contents/package.json",
@@ -580,7 +610,9 @@ it('schedules next task', function () {
         )->andReturn(
                 new Response(
                     status: 200,
-                    body: base64_encode(json_encode(Packages::$packageJsons[$key])),
+                    body: json_encode([
+                        'content' => base64_encode(json_encode(Packages::$packageJsons[$key])),
+                    ]),
                     headers: [
                         'Content-Type' => 'application/json',
                     ],

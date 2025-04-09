@@ -58,28 +58,35 @@ class FetchCommand extends Command
             $paginator = $packagist->search(
                 type: 'project',
                 tags: ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'],
+                perPage: 50,
                 baseUrl: $baseUrl,
             );
 
             do {
                 $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject, $baseUrl) {
-                    $package = $packagist->get($package->name, baseUrl: $baseUrl);
+                    try {
+                        $package = $packagist->get($package->name, baseUrl: $baseUrl);
 
-                    if ($isLaravelProject($package)) {
-                        $kitPayload = new KitPayload(package: $package, isKit: false);
+                        if ($isLaravelProject($package)) {
+                            $kitPayload = new KitPayload(package: $package, isKit: false);
 
-                        /** @var array<class-string<Guessor>> */
-                        $guessors = [
-                            ByKeyword::class,
-                            ByName::class,
-                            ByDescription::class,
-                        ];
+                            /** @var array<class-string<Guessor>> */
+                            $guessors = [
+                                ByKeyword::class,
+                                ByName::class,
+                                ByDescription::class,
+                            ];
 
-                        Pipeline::send($kitPayload)
-                            ->through($guessors)
-                            ->thenReturn();
+                            Pipeline::send($kitPayload)
+                                ->through($guessors)
+                                ->thenReturn();
 
-                        $this->saveKit($kitPayload);
+                            $this->saveKit($kitPayload);
+                        }
+                    } catch (ConnectionException $exception) {
+                        if (!in_array($exception->response->status(), [404, 401, 403])) {
+                            throw $exception;
+                        }
                     }
                 });
             } while ($paginator->next());
@@ -135,15 +142,19 @@ class FetchCommand extends Command
                     $package->require ?? [],
                     $package->requireDev ?? [],
                 )),
+                'npm' => [],
             ];
 
             if ($package->source['type'] === 'git') {
-                try {
-                    /** @var Github */
-                    $github = App::make(Github::class);
+                /** @var Github */
+                $github = App::make(Github::class);
 
-                    [$owner, $repo] = Github::ownerAndRepo($package->source['url']);
-                    $packageJson = $github->jsonContent($owner, $repo, 'package.json');
+                [$owner, $repo] = Github::ownerAndRepo($package->source['url']);
+                $repo = Str::remove(subject: $repo, search: '.git');
+
+                try {
+                    $packageJson = $github->contents($owner, $repo, 'package.json');
+                    $packageJson = json_decode(base64_decode($packageJson), true);
 
                     $dependencies['npm'] = array_keys(array_merge(
                         $packageJson['dependencies'] ?? [],
@@ -151,7 +162,7 @@ class FetchCommand extends Command
                     ));
                 } catch (ConnectionException $exception) {
                     if (in_array($exception->response->status(), [404, 401, 403])) {
-                        $dependencies['npm'] = [];
+                        //
                     } else {
                         throw $exception;
                     }
@@ -173,6 +184,7 @@ class FetchCommand extends Command
                 ->thenReturn();
 
             $stacks = $stackPayload->getStacks();
+
 
             DB::transaction(function () use ($package, $stacks): void {
                 [$vendor, $name] = explode('/', $package->name);
