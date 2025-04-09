@@ -398,7 +398,7 @@ it('updates existing kits that has tags/stacks', function () {
     expect($kit->stars)->toBe(5928);
     expect($kit->downloads)->toBe(491);
     expect($kit->tags()->count())->toBe(1);
-    expect($kit->stacks()->count())->toBe(2);
+    expect($kit->stacks()->count())->toBe(3);
 });
 
 it('updates current task on success', function () {
