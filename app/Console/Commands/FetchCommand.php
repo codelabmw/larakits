@@ -55,6 +55,7 @@ class FetchCommand extends Command
         $task = Task::currentTask();
         $baseUrl = $this->option('packagist');
         $debug = $this->option('debug');
+        $startTime = microtime(true);
 
         try {
             if ($debug) {
@@ -143,6 +144,10 @@ class FetchCommand extends Command
             'status' => TaskStatus::PENDING,
             'should_run_at' => $nextRunTime,
         ]);
+
+        if ($debug) {
+            $this->info('Finished fetching kits in ' . number_format((microtime(true) - $startTime), 2) . ' seconds');
+        }
     }
 
 
