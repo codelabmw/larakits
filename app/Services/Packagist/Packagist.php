@@ -77,16 +77,12 @@ final class Packagist
      */
     private function getNextPage(Url $url): array
     {
-        $parameters = [];
-        $queryString = $url->getQuery();
-
-        parse_str($queryString, $parameters);
 
         return $this->searchPackages->handle(
             client: $this->client,
             agent: $this->agent,
             url: (string) $url->withoutQueryParameters(),
-            filters: $parameters,
+            filters: $url->getAllQueryParameters(),
         );
     }
 
