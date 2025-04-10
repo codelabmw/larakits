@@ -11,6 +11,7 @@ use App\Guessors\Kit\ByName;
 use App\Guessors\Stack\Livewire;
 use App\Guessors\Stack\React;
 use App\Guessors\Stack\Tailwindcss;
+use App\Guessors\Stack\Volt;
 use App\Guessors\Stack\Vue;
 use App\Models\Kit;
 use App\Models\Stack;
@@ -194,6 +195,7 @@ class FetchCommand extends Command
                 Vue::class,
                 Livewire::class,
                 Tailwindcss::class,
+                Volt::class,
             ];
 
             Pipeline::send($stackPayload)
