@@ -20,6 +20,7 @@ use App\Models\Task;
 use App\Services\Packagist\Packagist;
 use App\ValueObjects\KitPayload as KitPayload;
 use App\ValueObjects\StackPayload;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\App;
@@ -29,6 +30,7 @@ use App\Contracts\Guessor;
 use Illuminate\Support\Str;
 use App\Services\Github\Github;
 use PDOException;
+use function Pest\Laravel\instance;
 
 class FetchCommand extends Command
 {
@@ -61,7 +63,7 @@ class FetchCommand extends Command
             if ($debug) {
                 $this->info('Fetching kits from Packagist...');
             }
-            
+
             $paginator = $packagist->search(
                 type: 'project',
                 tags: ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'],
@@ -105,23 +107,33 @@ class FetchCommand extends Command
                     }
                 });
             } while ($paginator->next());
-        } catch (ConnectionException $exception) {
+        } catch (Exception $exception) {
             if ($debug) {
-                $this->error('Failed to fetch kits from Packagist');
+                $this->error('Failed to fetch kits from Packagist with exception: ' . $exception->getMessage());
             }
-            
-            $task?->markFailed(json_encode([
-                'message' => $exception->getMessage(),
-                'code' => $exception->getCode(),
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-                'payload' => [
-                    'name' => 'response',
-                    'status' => $exception->response->status(),
-                    'body' => $exception->response->body(),
-                    'headers' => $exception->response->headers(),
-                ]
-            ]));
+
+            if ($exception instanceof ConnectionException) {
+
+                $task?->markFailed(json_encode([
+                    'message' => $exception->getMessage(),
+                    'code' => $exception->getCode(),
+                    'file' => $exception->getFile(),
+                    'line' => $exception->getLine(),
+                    'payload' => [
+                        'name' => 'response',
+                        'status' => $exception->response->status(),
+                        'body' => $exception->response->body(),
+                        'headers' => $exception->response->headers(),
+                    ]
+                ]));
+            } else {
+                $task?->markFailed(json_encode([
+                    'message' => $exception->getMessage(),
+                    'code' => $exception->getCode(),
+                    'file' => $exception->getFile(),
+                    'line' => $exception->getLine(),
+                ]));
+            }
         } finally {
             $task?->refresh();
         }
