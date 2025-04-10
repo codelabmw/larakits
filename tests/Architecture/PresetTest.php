@@ -5,11 +5,7 @@ use App\Http\Client;
 use App\Services\Packagist\Packagist;
 
 arch()->preset()->php();
-
-arch()->preset()->security()->ignoring([
-    Packagist::class,
-]);
-
+arch()->preset()->security();
 arch()->preset()->laravel()->ignoring([
     ConnectionException::class,
     Client::class,

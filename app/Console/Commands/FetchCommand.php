@@ -250,9 +250,8 @@ class FetchCommand extends Command
                 $tags = array_unique($keywords);
 
                 foreach ($tags as $keyword) {
-                    $tag = Tag::firstOrCreate(['slug' => Str::slug($keyword), 'name' => $keyword]);
-
                     try {
+                        $tag = Tag::firstOrCreate(['slug' => Str::slug($keyword), 'name' => $keyword]);
                         $kit->tags()->attach($tag);
                     } catch (UniqueConstraintViolationException $e) {
                         //
@@ -260,9 +259,8 @@ class FetchCommand extends Command
                 }
 
                 foreach ($stacks as $stack) {
-                    $stack = Stack::firstOrCreate(['slug' => Str::slug($stack), 'name' => $stack]);
-
                     try {
+                        $stack = Stack::firstOrCreate(['slug' => Str::slug($stack), 'name' => $stack]);
                         $kit->stacks()->attach($stack);
                     } catch (UniqueConstraintViolationException $e) {
                         //
