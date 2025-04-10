@@ -29,8 +29,6 @@ use Illuminate\Support\Facades\Pipeline;
 use App\Contracts\Guessor;
 use Illuminate\Support\Str;
 use App\Services\Github\Github;
-use PDOException;
-use function Pest\Laravel\instance;
 
 class FetchCommand extends Command
 {
@@ -39,7 +37,10 @@ class FetchCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'fetch:kits {--packagist= : Base URL of Packagist} {--debug}';
+    protected $signature = 'fetch:kits 
+                            {--packagist= : Base URL of Packagist}
+                            {--debug : Enable debug mode}
+                            {--new : Only fetch new kits}';
 
     /**
      * The console command description.
@@ -54,10 +55,11 @@ class FetchCommand extends Command
     public function handle(Packagist $packagist, EnsureIsLaravelProject $isLaravelProject)
     {
 
+        $startTime = microtime(true);
         $task = Task::currentTask();
         $baseUrl = $this->option('packagist');
         $debug = $this->option('debug');
-        $startTime = microtime(true);
+        $new = $this->option('new');
 
         try {
             if ($debug) {
@@ -72,37 +74,43 @@ class FetchCommand extends Command
             );
 
             do {
-                $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject, $baseUrl, $debug) {
-                    if ($debug) {
-                        $this->info('Processing package: ' . $package->name);
-                    }
-
-                    try {
-                        $package = $packagist->get($package->name, baseUrl: $baseUrl);
-
-                        if ($isLaravelProject($package)) {
-                            $kitPayload = new KitPayload(package: $package, isKit: false);
-
-                            /** @var array<class-string<Guessor>> */
-                            $guessors = [
-                                ByKeyword::class,
-                                ByName::class,
-                                ByDescription::class,
-                            ];
-
-                            Pipeline::send($kitPayload)
-                                ->through($guessors)
-                                ->thenReturn();
-
-                            $this->saveKit($kitPayload);
-                        }
-                    } catch (ConnectionException $exception) {
+                $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject, $baseUrl, $debug, $new) {
+                    if ($new && Kit::hasPackage($package->name)) {
                         if ($debug) {
-                            $this->error('Failed to process package: ' . $package->name);
+                            $this->alert('Skipping package: ' . $package->name);
                         }
-
-                        if (!in_array($exception->response->status(), [404, 401, 403])) {
-                            throw $exception;
+                    } else {
+                        if ($debug) {
+                            $this->info('Processing package: ' . $package->name);
+                        }
+    
+                        try {
+                            $package = $packagist->get($package->name, baseUrl: $baseUrl);
+    
+                            if ($isLaravelProject($package)) {
+                                $kitPayload = new KitPayload(package: $package, isKit: false);
+    
+                                /** @var array<class-string<Guessor>> */
+                                $guessors = [
+                                    ByKeyword::class,
+                                    ByName::class,
+                                    ByDescription::class,
+                                ];
+    
+                                Pipeline::send($kitPayload)
+                                    ->through($guessors)
+                                    ->thenReturn();
+    
+                                $this->saveKit($kitPayload);
+                            }
+                        } catch (ConnectionException $exception) {
+                            if ($debug) {
+                                $this->error('Failed to process package: ' . $package->name);
+                            }
+    
+                            if (!in_array($exception->response->status(), [404, 401, 403])) {
+                                throw $exception;
+                            }
                         }
                     }
                 });
