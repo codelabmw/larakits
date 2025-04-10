@@ -36,7 +36,7 @@ class FetchCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'fetch:kits {--packagist= : Base URL of Packagist}';
+    protected $signature = 'fetch:kits {--packagist= : Base URL of Packagist} {--debug}';
 
     /**
      * The console command description.
@@ -53,8 +53,13 @@ class FetchCommand extends Command
 
         $task = Task::currentTask();
         $baseUrl = $this->option('packagist');
+        $debug = $this->option('debug');
 
         try {
+            if ($debug) {
+                $this->info('Fetching kits from Packagist...');
+            }
+            
             $paginator = $packagist->search(
                 type: 'project',
                 tags: ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'],
@@ -63,7 +68,11 @@ class FetchCommand extends Command
             );
 
             do {
-                $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject, $baseUrl) {
+                $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject, $baseUrl, $debug) {
+                    if ($debug) {
+                        $this->info('Processing package: ' . $package->name);
+                    }
+
                     try {
                         $package = $packagist->get($package->name, baseUrl: $baseUrl);
 
@@ -84,6 +93,10 @@ class FetchCommand extends Command
                             $this->saveKit($kitPayload);
                         }
                     } catch (ConnectionException $exception) {
+                        if ($debug) {
+                            $this->error('Failed to process package: ' . $package->name);
+                        }
+
                         if (!in_array($exception->response->status(), [404, 401, 403])) {
                             throw $exception;
                         }
@@ -91,6 +104,10 @@ class FetchCommand extends Command
                 });
             } while ($paginator->next());
         } catch (ConnectionException $exception) {
+            if ($debug) {
+                $this->error('Failed to fetch kits from Packagist');
+            }
+            
             $task?->markFailed(json_encode([
                 'message' => $exception->getMessage(),
                 'code' => $exception->getCode(),
