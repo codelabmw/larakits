@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Collection;
 use Carbon\CarbonInterface;
+use Str;
 
 /**
  * @property-read int $id
@@ -95,5 +97,19 @@ class Kit extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    /**
+     * Checks if a kit with the given name exists.
+     */
+    public static function hasPackage(string $name): bool
+    {
+        try {
+            $name = Str::slug(implode('-', explode('/', $name)));
+        } catch (Exception $exception) {
+            //    
+        }
+
+        return self::where('slug', $name)->exists();
     }
 }
