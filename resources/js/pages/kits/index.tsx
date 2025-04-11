@@ -1,38 +1,28 @@
 import KitCard from '@/components/kit-card';
 import { KitDetailsSheet } from '@/components/kit-details-sheet';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { GuestLayout } from '@/layouts/guest-layout';
-import type { Kit, Paginator, Stack, Tag } from '@/types';
+import type { Kit, Paginator, Tag } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon, MagnifyingGlassIcon, StackIcon } from '@radix-ui/react-icons';
 import debounce from 'lodash/debounce';
-import { Filter, PackageSearchIcon } from 'lucide-react';
+import { PackageSearchIcon } from 'lucide-react';
 import { useCallback, useState } from 'react';
+import TagsSheet from './partials/tags-sheet';
 
 interface Props {
     kits: Paginator<Kit>;
-    tags: Tag[];
-    stacks: Stack[];
     filters: {
         search: string;
         tags: string[];
-        stacks: string[];
     };
 }
 
-export default function Index({ kits, tags, stacks, filters }: Props) {
+export default function Index({ kits, filters }: Props) {
     const [selectedKit, setSelectedKit] = useState<Kit | null>(null);
     const [search, setSearch] = useState(filters.search || '');
-    const [selectedTags, setSelectedTags] = useState<string[]>(tags.filter((tag) => filters.tags.includes(tag.slug)).map((tag) => tag.slug));
-    const [selectedStacks, setSelectedStacks] = useState<string[]>(
-        stacks.filter((stack) => filters.stacks.includes(stack.slug)).map((stack) => stack.slug),
-    );
+    const [selectedTags, setSelectedTags] = useState<string[]>(filters.tags || []);
 
     const updateFilters = useCallback(
         (params: { search?: string; tags?: string[]; stacks?: string[] }) => {
@@ -41,12 +31,11 @@ export default function Index({ kits, tags, stacks, filters }: Props) {
                 {
                     search: params.search ?? search,
                     tags: params.tags ?? selectedTags,
-                    stacks: params.stacks ?? selectedStacks,
                 },
                 { preserveState: true, preserveScroll: true },
             );
         },
-        [search, selectedTags, selectedStacks],
+        [search, selectedTags],
     );
 
     const debouncedSearch = useCallback(
@@ -59,23 +48,9 @@ export default function Index({ kits, tags, stacks, filters }: Props) {
         debouncedSearch(value);
     };
 
-    const handleTagChange = (tag: Tag, checked: boolean) => {
-        const newTags = checked ? [...selectedTags, tag.slug] : selectedTags.filter((t) => t !== tag.slug);
-        setSelectedTags(newTags);
-        updateFilters({ tags: newTags });
-    };
-
-    const handleStackChange = (stack: Stack, checked: boolean) => {
-        const newStacks = checked ? [...selectedStacks, stack.slug] : selectedStacks.filter((s) => s !== stack.slug);
-        setSelectedStacks(newStacks);
-        updateFilters({ stacks: newStacks });
-    };
-
-    const handleClearFilters = () => {
-        setSearch('');
-        setSelectedTags([]);
-        setSelectedStacks([]);
-        updateFilters({ search: '', tags: [], stacks: [] });
+    const handleTagsChange = (tags: Tag[]) => {
+        setSelectedTags(tags.map((tag) => tag.slug));
+        updateFilters({ tags: tags.map((tag) => tag.slug) });
     };
 
     return (
@@ -103,68 +78,14 @@ export default function Index({ kits, tags, stacks, filters }: Props) {
                                     onChange={(e) => handleSearch(e.target.value)}
                                 />
                             </div>
-                            <div className="flex items-center gap-2">
-                                {(search || selectedTags.length > 0 || selectedStacks.length > 0) && (
-                                    <Button variant="ghost" onClick={handleClearFilters} className="text-muted-foreground hover:text-foreground">
-                                        Clear filters
-                                    </Button>
-                                )}
-                                <Sheet>
-                                    <SheetTrigger asChild>
-                                        <Button variant="outline" className="gap-2">
-                                            <Filter className="h-4 w-4" />
-                                            Filters
-                                            {(selectedTags.length > 0 || selectedStacks.length > 0) && (
-                                                <Badge variant="secondary" className="ml-1">
-                                                    {selectedTags.length + selectedStacks.length}
-                                                </Badge>
-                                            )}
-                                        </Button>
-                                    </SheetTrigger>
-                                    <SheetContent>
-                                        <div className="space-y-8 p-8">
-                                            {/* Tags Filter */}
-                                            <div>
-                                                <h4 className="mb-4 text-sm font-medium">Tags</h4>
-                                                <div className="space-y-4">
-                                                    {tags.map((tag) => (
-                                                        <div key={tag.slug} className="flex items-center space-x-2">
-                                                            <Checkbox
-                                                                id={`tag-${tag.slug}`}
-                                                                checked={selectedTags.includes(tag.slug)}
-                                                                onCheckedChange={(checked) => {
-                                                                    handleTagChange(tag, checked as boolean);
-                                                                }}
-                                                            />
-                                                            <Label htmlFor={`tag-${tag.slug}`}>{tag.name}</Label>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
 
-                                            <Separator />
+                            <div className="flex items-center gap-3">
+                                <TagsSheet onChanged={handleTagsChange} />
 
-                                            {/* Stacks Filter */}
-                                            <div>
-                                                <h4 className="mb-4 text-sm font-medium">Tech Stack</h4>
-                                                <div className="space-y-4">
-                                                    {stacks.map((stack) => (
-                                                        <div key={stack.slug} className="flex items-center space-x-2">
-                                                            <Checkbox
-                                                                id={`stack-${stack.slug}`}
-                                                                checked={selectedStacks.includes(stack.slug)}
-                                                                onCheckedChange={(checked) => {
-                                                                    handleStackChange(stack, checked as boolean);
-                                                                }}
-                                                            />
-                                                            <Label htmlFor={`stack-${stack.slug}`}>{stack.name}</Label>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </SheetContent>
-                                </Sheet>
+                                <Button variant="outline">
+                                    <StackIcon className="h-4 w-4" />
+                                    <span>Stack</span>
+                                </Button>
                             </div>
                         </div>
 

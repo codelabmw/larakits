@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Filters;
+namespace App\Http\Filters\Kit;
 
 use App\Contracts\Filter;
 use Illuminate\Database\Eloquent\Builder;
@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Closure;
 
-class Tag implements Filter
+class Order implements Filter
 {
     /**
-     * Creates a new Tag instance.
+     * Creates a new Order instance.
      */
     public function __construct(private readonly Request $request)
     {
@@ -19,17 +19,14 @@ class Tag implements Filter
     }
 
     /**
-     * Filter results by tag.
+     * Filter results by order.
      */
     public function handle(Builder|Relation $query, Closure $next)
     {
-        $tags = $this->request->get('tags');
+        $orderBy = $this->request->get('orderBy') ?? 'created_at';
+        $sort = $this->request->get('sort') ?? 'desc';
 
-        if ($tags) {
-            $query->whereHas('tags', function ($query) use ($tags) {
-                $query->whereIn('slug', $tags);
-            });
-        }
+        $query->orderBy($orderBy, $sort);
 
         return $next($query);
     }

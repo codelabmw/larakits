@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Filters;
+namespace App\Http\Filters\Kit;
 
 use App\Contracts\Filter;
 use Illuminate\Database\Eloquent\Builder;

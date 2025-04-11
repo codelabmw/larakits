@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Filters;
+namespace App\Http\Filters\Tag;
 
 use App\Contracts\Filter;
+use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
-use Closure;
 
-class Order implements Filter
+final class Search implements Filter
 {
     /**
-     * Creates a new Order instance.
+     * Creates a new Search instance.
      */
     public function __construct(private readonly Request $request)
     {
@@ -19,14 +19,15 @@ class Order implements Filter
     }
 
     /**
-     * Filter results by order.
+     * Search a for a tag.
      */
     public function handle(Builder|Relation $query, Closure $next)
     {
-        $orderBy = $this->request->get('orderBy') ?? 'created_at';
-        $sort = $this->request->get('sort') ?? 'desc';
-
-        $query->orderBy($orderBy, $sort);
+        $this->request->whenHas('search', function (?string $keyword) use ($query) {
+            if ($keyword) {
+                $query->whereLike('name', '%' . $keyword . '%');
+            }
+        });
 
         return $next($query);
     }
