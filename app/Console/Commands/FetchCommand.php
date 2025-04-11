@@ -218,7 +218,7 @@ class FetchCommand extends Command
                 } catch (ConnectionException $exception) {
                     //
                 } catch (InvalidArgumentException $exception){
-                    //
+                    // TODO: Handle other reposioty types.
                 }
             }
 
