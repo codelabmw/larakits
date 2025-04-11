@@ -18,6 +18,7 @@ use App\Models\Stack;
 use App\Models\Tag;
 use App\Models\Task;
 use App\Services\Packagist\Packagist;
+use App\Services\Timer;
 use App\ValueObjects\KitPayload as KitPayload;
 use App\ValueObjects\StackPayload;
 use Exception;
@@ -50,12 +51,20 @@ class FetchCommand extends Command
     protected $description = 'Fetch kits from Packagist.';
 
     /**
+     * Creates a new command instance.
+     */
+    public function __construct(private Timer $timer)
+    {
+        parent::__construct();
+    }
+
+    /**
      * Execute the console command.
      */
     public function handle(Packagist $packagist, EnsureIsLaravelProject $isLaravelProject)
     {
+        $this->timer->start();
 
-        $startTime = microtime(true);
         $task = Task::currentTask();
         $baseUrl = $this->option('packagist');
         $debug = $this->option('debug');
@@ -165,8 +174,10 @@ class FetchCommand extends Command
             'should_run_at' => $nextRunTime,
         ]);
 
-        if ($debug) {
-            $this->info('Finished fetching kits in ' . number_format((microtime(true) - $startTime), 2) . ' seconds');
+        $this->timer->stop();
+
+        if ($debug){
+            $this->info('Finished fetching kits in ' . number_format($this->timer->duration(), 2) . ' seconds');
         }
     }
 
