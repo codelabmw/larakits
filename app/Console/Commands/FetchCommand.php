@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Pipeline;
 use App\Contracts\Guessor;
 use Illuminate\Support\Str;
 use App\Services\Github\Github;
+use InvalidArgumentException;
 
 class FetchCommand extends Command
 {
@@ -92,31 +93,31 @@ class FetchCommand extends Command
                         if ($debug) {
                             $this->info('Processing package: ' . $package->name);
                         }
-    
+
                         try {
                             $package = $packagist->get($package->name, baseUrl: $baseUrl);
-    
+
                             if ($isLaravelProject($package)) {
                                 $kitPayload = new KitPayload(package: $package, isKit: false);
-    
+
                                 /** @var array<class-string<Guessor>> */
                                 $guessors = [
                                     ByKeyword::class,
                                     ByName::class,
                                     ByDescription::class,
                                 ];
-    
+
                                 Pipeline::send($kitPayload)
                                     ->through($guessors)
                                     ->thenReturn();
-    
+
                                 $this->saveKit($kitPayload);
                             }
                         } catch (ConnectionException $exception) {
                             if ($debug) {
                                 $this->error('Failed to process package: ' . $package->name);
                             }
-    
+
                             if (!in_array($exception->response->status(), [404, 401, 403])) {
                                 throw $exception;
                             }
@@ -176,7 +177,7 @@ class FetchCommand extends Command
 
         $this->timer->stop();
 
-        if ($debug){
+        if ($debug) {
             $this->info('Finished fetching kits in ' . number_format($this->timer->duration(), 2) . ' seconds');
         }
     }
@@ -203,10 +204,10 @@ class FetchCommand extends Command
                 /** @var Github */
                 $github = App::make(Github::class);
 
-                [$owner, $repo] = Github::ownerAndRepo($package->source['url']);
-                $repo = Str::remove(subject: $repo, search: '.git');
-
                 try {
+                    [$owner, $repo] = Github::ownerAndRepo($package->source['url']);
+                    $repo = Str::remove(subject: $repo, search: '.git');
+
                     $packageJson = $github->contents($owner, $repo, 'package.json');
                     $packageJson = json_decode(base64_decode($packageJson), true);
 
@@ -215,11 +216,9 @@ class FetchCommand extends Command
                         $packageJson['devDependencies'] ?? [],
                     ));
                 } catch (ConnectionException $exception) {
-                    if (in_array($exception->response->status(), [404, 401, 403])) {
-                        //
-                    } else {
-                        throw $exception;
-                    }
+                    //
+                } catch (InvalidArgumentException $exception){
+                    //
                 }
             }
 
