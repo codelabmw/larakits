@@ -87,7 +87,7 @@ class FetchCommand extends Command
                 $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject, $baseUrl, $debug, $new) {
                     if ($new && Kit::hasPackage($package->name)) {
                         if ($debug) {
-                            $this->alert('Skipping package: ' . $package->name);
+                            $this->warn('Skipping package: ' . $package->name);
                         }
                     } else {
                         if ($debug) {
