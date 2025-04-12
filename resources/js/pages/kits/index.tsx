@@ -3,12 +3,13 @@ import { KitDetailsSheet } from '@/components/kit-details-sheet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { GuestLayout } from '@/layouts/guest-layout';
-import type { Kit, Paginator, Tag } from '@/types';
+import type { Kit, Paginator, Stack, Tag } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon, MagnifyingGlassIcon, StackIcon } from '@radix-ui/react-icons';
+import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import debounce from 'lodash/debounce';
 import { PackageSearchIcon } from 'lucide-react';
 import { useCallback, useState } from 'react';
+import StackSheet from './partials/stack-sheet';
 import TagsSheet from './partials/tags-sheet';
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
     filters: {
         search: string;
         tags: string[];
+        stacks: string[];
     };
 }
 
@@ -23,6 +25,7 @@ export default function Index({ kits, filters }: Props) {
     const [selectedKit, setSelectedKit] = useState<Kit | null>(null);
     const [search, setSearch] = useState(filters.search || '');
     const [selectedTags, setSelectedTags] = useState<string[]>(filters.tags || []);
+    const [selectedStacks, setSelectedStacks] = useState<string[]>(filters.stacks || []);
 
     const updateFilters = useCallback(
         (params: { search?: string; tags?: string[]; stacks?: string[] }) => {
@@ -31,11 +34,12 @@ export default function Index({ kits, filters }: Props) {
                 {
                     search: params.search ?? search,
                     tags: params.tags ?? selectedTags,
+                    stacks: params.stacks ?? selectedStacks,
                 },
                 { preserveState: true, preserveScroll: true },
             );
         },
-        [search, selectedTags],
+        [search, selectedTags, selectedStacks],
     );
 
     const debouncedSearch = useCallback(
@@ -51,6 +55,11 @@ export default function Index({ kits, filters }: Props) {
     const handleTagsChange = (tags: Tag[]) => {
         setSelectedTags(tags.map((tag) => tag.slug));
         updateFilters({ tags: tags.map((tag) => tag.slug) });
+    };
+
+    const handleStacksChange = (stacks: Stack[]) => {
+        setSelectedStacks(stacks.map((stack) => stack.slug));
+        updateFilters({ stacks: stacks.map((stack) => stack.slug) });
     };
 
     return (
@@ -82,10 +91,7 @@ export default function Index({ kits, filters }: Props) {
                             <div className="flex items-center gap-3">
                                 <TagsSheet onChanged={handleTagsChange} />
 
-                                <Button variant="outline">
-                                    <StackIcon className="h-4 w-4" />
-                                    <span>Stack</span>
-                                </Button>
+                                <StackSheet onChanged={handleStacksChange} />
                             </div>
                         </div>
 
@@ -103,35 +109,29 @@ export default function Index({ kits, filters }: Props) {
                                     Page {kits.current_page} of {kits.last_page}
                                 </p>
                                 <div className="flex items-center gap-2">
-                                    <Link href={`/kits?page=1`} className={`${kits.current_page === 1 ? 'pointer-events-none opacity-50' : ''}`}>
-                                        <Button variant="outline" size="icon">
-                                            <DoubleArrowLeftIcon className="h-4 w-4" />
-                                        </Button>
-                                    </Link>
-                                    <Link
-                                        href={`/kits?page=${kits.current_page - 1}`}
-                                        className={`${kits.current_page === 1 ? 'pointer-events-none opacity-50' : ''}`}
-                                    >
-                                        <Button variant="outline" size="icon">
+                                    <Button asChild variant="outline">
+                                        <Link
+                                            href={kits.prev_page_url ?? ''}
+                                            className={`${kits.current_page === 1 ? 'pointer-events-none opacity-50' : ''}`}
+                                        >
                                             <ChevronLeftIcon className="h-4 w-4" />
+                                        </Link>
+                                    </Button>
+
+                                    {kits.links.slice(1, -1).map((link) => (
+                                        <Button asChild key={link.url} variant={link.active ? 'default' : 'secondary'}>
+                                            <Link href={link.url ?? ''}>{link.label}</Link>
                                         </Button>
-                                    </Link>
-                                    <Link
-                                        href={`/kits?page=${kits.current_page + 1}`}
-                                        className={`${kits.current_page === kits.last_page ? 'pointer-events-none opacity-50' : ''}`}
-                                    >
-                                        <Button variant="outline" size="icon">
+                                    ))}
+
+                                    <Button asChild variant="outline">
+                                        <Link
+                                            href={kits.next_page_url ?? ''}
+                                            className={`${kits.current_page === kits.last_page ? 'pointer-events-none opacity-50' : ''}`}
+                                        >
                                             <ChevronRightIcon className="h-4 w-4" />
-                                        </Button>
-                                    </Link>
-                                    <Link
-                                        href={`/kits?page=${kits.last_page}`}
-                                        className={`${kits.current_page === kits.last_page ? 'pointer-events-none opacity-50' : ''}`}
-                                    >
-                                        <Button variant="outline" size="icon">
-                                            <DoubleArrowRightIcon className="h-4 w-4" />
-                                        </Button>
-                                    </Link>
+                                        </Link>
+                                    </Button>
                                 </div>
                             </div>
                         )}

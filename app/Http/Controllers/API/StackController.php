@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Filters\Tag\Search;
-use App\Models\Tag;
+use App\Models\Stack;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Support\Facades\Response;
+use App\Http\Filters\Stack\Search;
 use App\Contracts\Filter;
 
-class TagController
+class StackController
 {
     /**
-     * Handle tags request.
+     * Handle stacks request.
      */
     public function __invoke(): JsonResponse
     {
@@ -22,14 +22,14 @@ class TagController
             Search::class,
         ];
 
-        $query = Tag::query();
+        $query = Stack::query();
 
-        $tags = Pipeline::send($query)
+        $stacks = Pipeline::send($query)
             ->through($filters)
             ->then(function (Builder $query) {
                 return $query->limit(10)->get();
             });
 
-        return Response::json($tags);
+        return Response::json($stacks);
     }
 }

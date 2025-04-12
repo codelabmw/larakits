@@ -42,7 +42,8 @@ class KitController extends Controller
             'kits' => $kits,
             'filters' => [
                 'search' => $request->get('search'),
-                'tags' => $request->get('tags', [])
+                'tags' => $request->get('tags', []),
+                'stacks' => $request->get('stacks', []),
             ],
         ]);
     }
