@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Filters;
+namespace App\Http\Filters\Kit;
 
 use App\Contracts\Filter;
 use Illuminate\Database\Eloquent\Builder;
@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Closure;
 
-class Tag implements Filter
+class Stack implements Filter
 {
     /**
-     * Creates a new Tag instance.
+     * Creates a new Stack instance.
      */
     public function __construct(private readonly Request $request)
     {
@@ -19,15 +19,15 @@ class Tag implements Filter
     }
 
     /**
-     * Filter results by tag.
+     * Filter results by stack.
      */
     public function handle(Builder|Relation $query, Closure $next)
     {
-        $tags = $this->request->get('tags');
+        $stacks = $this->request->get('stacks');
 
-        if ($tags) {
-            $query->whereHas('tags', function ($query) use ($tags) {
-                $query->whereIn('slug', $tags);
+        if ($stacks) {
+            $query->whereHas('stacks', function ($query) use ($stacks) {
+                $query->whereIn('slug', $stacks);
             });
         }
 

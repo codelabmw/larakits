@@ -80,7 +80,7 @@ interface Kit {
 export type Paginator<T> = {
     data: Array<T>;
     from: number;
-    links: Array<Link>;
+    links: Array<PaginatorLink>;
     path: string;
     to: number;
     total: number;

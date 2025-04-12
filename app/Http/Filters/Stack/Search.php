@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Filters;
+namespace App\Http\Filters\Stack;
 
 use App\Contracts\Filter;
+use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
-use Closure;
 
-class Stack implements Filter
+final class Search implements Filter
 {
     /**
-     * Creates a new Stack instance.
+     * Creates a new Search instance.
      */
     public function __construct(private readonly Request $request)
     {
@@ -19,17 +19,15 @@ class Stack implements Filter
     }
 
     /**
-     * Filter results by stack.
+     * Search for a stack.
      */
     public function handle(Builder|Relation $query, Closure $next)
     {
-        $stacks = $this->request->get('stacks');
-
-        if ($stacks) {
-            $query->whereHas('stacks', function ($query) use ($stacks) {
-                $query->whereIn('slug', $stacks);
-            });
-        }
+        $this->request->whenHas('search', function (?string $keyword) use ($query) {
+            if ($keyword) {
+                $query->whereLike('name', '%' . $keyword . '%');
+            }
+        });
 
         return $next($query);
     }
