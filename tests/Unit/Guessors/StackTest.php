@@ -1,5 +1,6 @@
 <?php
 
+use App\Guessors\Stack\Bootstrap;
 use App\Guessors\Stack\React;
 use App\Guessors\Stack\Tailwindcss;
 use App\Guessors\Stack\Volt;
@@ -70,4 +71,17 @@ it('it guesses volt stack', function () {
 
     // Assert
     expect($payload->getStacks())->toBe(['volt']);
+});
+
+it('it guesses bootstrap stack', function () {
+    // Arrange
+    $payload = new StackPayload([
+        'npm' => ['bootstrap', 'vue', 'react', 'react-dom'],
+    ]);
+
+    // Act
+    (new Bootstrap)->handle($payload, fn($payload) => null);
+
+    // Assert
+    expect($payload->getStacks())->toBe(['bootstrap']);
 });

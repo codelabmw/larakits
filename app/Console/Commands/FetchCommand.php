@@ -8,6 +8,7 @@ use App\Exceptions\ConnectionException;
 use App\Guessors\Kit\ByDescription;
 use App\Guessors\Kit\ByKeyword;
 use App\Guessors\Kit\ByName;
+use App\Guessors\Stack\Bootstrap;
 use App\Guessors\Stack\Livewire;
 use App\Guessors\Stack\React;
 use App\Guessors\Stack\Tailwindcss;
@@ -231,6 +232,7 @@ class FetchCommand extends Command
                 Livewire::class,
                 Tailwindcss::class,
                 Volt::class,
+                Bootstrap::class,
             ];
 
             Pipeline::send($stackPayload)
