@@ -2,7 +2,6 @@
 
 namespace App\Services\Packagist;
 
-use App\Contracts\Http\Client;
 use App\Exceptions\ConnectionException;
 use App\Services\Packagist\Actions\SearchPackages;
 use App\Services\Packagist\ValueObjects\Agent;
@@ -16,7 +15,6 @@ final class Packagist
      */
     public function __construct(
         private readonly SearchPackages $searchPackages,
-        private readonly Client $client,
         private readonly Agent $agent,
         private readonly string $baseUrl = 'https://packagist.org',
     ) {
@@ -50,7 +48,6 @@ final class Packagist
         }
 
         $data = $this->searchPackages->handle(
-            client: $this->client,
             agent: $this->agent,
             url: $baseUrl . '/search.json',
             filters: $parameters,
@@ -79,7 +76,6 @@ final class Packagist
     {
 
         return $this->searchPackages->handle(
-            client: $this->client,
             agent: $this->agent,
             url: (string) $url->withoutQueryParameters(),
             filters: $url->getAllQueryParameters(),

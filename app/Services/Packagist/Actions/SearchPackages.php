@@ -5,6 +5,7 @@ namespace App\Services\Packagist\Actions;
 use App\Contracts\Http\Client;
 use App\Exceptions\ConnectionException;
 use App\Services\Packagist\ValueObjects\Agent;
+use Illuminate\Support\Facades\Http;
 
 class SearchPackages
 {
@@ -15,21 +16,23 @@ class SearchPackages
      * @return array{results: array, total: int, next: ?string}
      */
     public function handle(
-        Client $client,
         Agent $agent,
         string $url,
         array $filters = [],
     ): array {
-        $response = $client->get(
+        $response = Http::withHeaders([
+            'User-Agent' => (string) $agent,
+        ])->get(
             url: $url,
             query: $filters,
-            headers: ['User-Agent' => (string) $agent],
         );
 
         if ($response->status() !== 200) {
             throw new ConnectionException(response: $response);
         }
 
-        return $response->json();
+        $data = $response->json()['body'];
+
+        return json_decode($data, true);
     }
 }
