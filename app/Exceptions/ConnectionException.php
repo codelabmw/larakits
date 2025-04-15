@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Exceptions;;
 
-use App\Contracts\Http\Response;
+use Illuminate\Http\Client\Response;
 
 final class ConnectionException extends \Exception
 {

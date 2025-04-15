@@ -2,18 +2,14 @@
 
 namespace App\Providers;
 
-use App\Http\Client;
 use App\Services\Github\Github;
-use App\Services\Packagist\Actions\SearchPackages;
 use App\Services\Packagist\Packagist;
 use App\Services\Packagist\ValueObjects\Agent;
-use App\Contracts\Http\Client as ClientContract;
 use Carbon\CarbonImmutable;
-use Date;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\ServiceProvider;
+use Date;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,22 +18,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(ClientContract::class, fn() => new Client());
-
         $this->app->bind(Agent::class, fn() => new Agent(
             name: config('app.agent.name'),
             email: config('app.agent.email'),
         ));
 
         $this->app->bind(Packagist::class, fn() => new Packagist(
-            searchPackages: new SearchPackages(),
-            client: $this->app->make(Client::class),
             agent: $this->app->make(Agent::class),
         ));
 
-        $this->app->bind(Github::class, fn() => new Github(
-            client: $this->app->make(Client::class),
-        ));
+        $this->app->bind(Github::class, fn() => new Github());
     }
 
     /**
