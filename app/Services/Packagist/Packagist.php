@@ -6,6 +6,10 @@ use App\Exceptions\ConnectionException;
 use App\Services\Packagist\Actions\SearchPackages;
 use App\Services\Packagist\ValueObjects\Agent;
 use App\Services\Packagist\ValueObjects\Package;
+use Exception;
+use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Http;
 use Spatie\Url\Url;
 
 final class Packagist
@@ -91,10 +95,17 @@ final class Packagist
             $baseUrl = $this->baseUrl;
         }
 
-        $response = $this->client->get(
-            url: $baseUrl . '/packages/' . $name . '.json',
-            headers: ['User-Agent' => (string) $this->agent],
-        );
+        $response = Http::retry(config('services.github.retry'), function (int $attempt, Exception $exception): int {
+            return $attempt * 1000;
+        }, function (Exception $exception, PendingRequest $request) {
+            if ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403])) {
+                return false;
+            }
+
+            return true;
+        })->withUserAgent($this->agent)->get(
+                url: $baseUrl . '/packages/' . $name . '.json',
+            );
 
         if ($response->status() !== 200) {
             throw new ConnectionException(response: $response);
