@@ -125,17 +125,25 @@ final class Packagist
             $baseUrl = $this->baseUrl;
         }
 
-        $response = Http::retry(config('services.github.retry'), function (int $attempt, Exception $exception): int {
-            return $attempt * 1000;
-        }, function (Exception $exception, PendingRequest $request) {
-            if ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403])) {
-                return false;
+        try {
+            $response = Http::retry(config('services.github.retry'), function (int $attempt, Exception $exception): int {
+                return $attempt * 1000;
+            }, function (Exception $exception, PendingRequest $request) {
+                if ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403])) {
+                    return false;
+                }
+    
+                return true;
+            })->withUserAgent($this->agent)->get(
+                    url: $baseUrl . '/packages/' . $name . '.json',
+                );
+        } catch (Exception $exception) {
+            if ($exception instanceof RequestException) {
+                throw new ConnectionException(response: $exception->response);
             }
 
-            return true;
-        })->withUserAgent($this->agent)->get(
-                url: $baseUrl . '/packages/' . $name . '.json',
-            );
+            throw $exception;
+        }
 
         if ($response->status() !== 200) {
             throw new ConnectionException(response: $response);

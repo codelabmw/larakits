@@ -6,7 +6,7 @@ use Illuminate\Http\Client\Request;
 
 beforeEach(function () {
     Http::preventStrayRequests();
-})->only();
+});
 
 it('gets file contents', function () {
     // Arrange

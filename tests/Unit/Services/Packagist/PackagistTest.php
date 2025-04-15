@@ -265,3 +265,21 @@ it('retries getting deatils on failure', function () {
             $request->url() === 'https://packagist.org/packages/laravel/laravel.json';
     });
 });
+
+it('ignores retrying getting details on common client errors', function () {
+    // Arrange
+    Http::fake([
+        'https://packagist.org/packages/*' => Http::sequence()
+            ->push('Server error', 404)
+            ->push([
+                'package' => Packages::$detailed[0],
+            ], 200),
+    ]);
+
+    $packagist = new Packagist(
+        agent: new Agent(name: 'Test User', email: 'test@example.com')
+    );
+
+    // Act
+    $packagist->get('laravel/laravel');
+})->throws(ConnectionException::class);
