@@ -18,7 +18,6 @@ final class Packagist
      * Creates a new instance of the Packagist class.
      */
     public function __construct(
-        private readonly SearchPackages $searchPackages,
         private readonly Agent $agent,
         private readonly string $baseUrl = 'https://packagist.org',
     ) {
@@ -51,7 +50,7 @@ final class Packagist
             $parameters['per_page'] = $perPage;
         }
 
-        $data = $this->searchPackages->handle(
+        $data = $this->searchPackages(
             agent: $this->agent,
             url: $baseUrl . '/search.json',
             filters: $parameters,
@@ -79,11 +78,42 @@ final class Packagist
     private function getNextPage(Url $url): array
     {
 
-        return $this->searchPackages->handle(
+        return $this->searchPackages(
             agent: $this->agent,
             url: (string) $url->withoutQueryParameters(),
             filters: $url->getAllQueryParameters(),
         );
+    }
+
+    private function searchPackages(Agent $agent, string $url, array $filters = []): array
+    {
+        try {
+            $response = Http::retry(config('services.github.retry'), function (int $attempt, Exception $exception): int {
+                return $attempt * 1000;
+            }, function (Exception $exception, PendingRequest $request) {
+                if ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403])) {
+                    return false;
+                }
+
+                return true;
+            })->withUserAgent($agent)->get(
+                    url: $url,
+                    query: $filters,
+                );
+
+        } catch (Exception $exception) {
+            if ($exception instanceof RequestException) {
+                throw new ConnectionException(response: $exception->response);
+            }
+
+            throw $exception;
+        }
+
+        if ($response->status() !== 200) {
+            throw new ConnectionException(response: $response);
+        }
+
+        return $response->json();
     }
 
     /**

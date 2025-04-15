@@ -39,7 +39,6 @@ it('searches packages by type', function () {
     ]);
 
     $packagist = new Packagist(
-        searchPackages: new SearchPackages(),
         agent: new Agent(name: 'Test User', email: 'test@example.com')
     );
 
@@ -79,7 +78,6 @@ it('searches packages by tags', function () {
     ]);
 
     $packagist = new Packagist(
-        searchPackages: new SearchPackages(),
         agent: new Agent(name: 'Test User', email: 'test@example.com')
     );
 
@@ -122,7 +120,6 @@ it('retries search request on failure', function () {
     ]);
 
     $packagist = new Packagist(
-        searchPackages: new SearchPackages(),
         agent: new Agent(name: 'Test User', email: 'test@example.com')
     );
 
@@ -168,7 +165,6 @@ it('ignores retrying on common client errors', function () {
     ]);
 
     $packagist = new Packagist(
-        searchPackages: new SearchPackages(),
         agent: new Agent(name: 'Test User', email: 'test@example.com')
     );
 
@@ -207,7 +203,6 @@ it('searches with page limit', function () {
     ]);
 
     $packagist = new Packagist(
-        searchPackages: new SearchPackages(),
         agent: new Agent(name: 'Test User', email: 'test@example.com')
     );
 
@@ -232,7 +227,6 @@ it('gets specific package', function () {
     ]);
 
     $packagist = new Packagist(
-        searchPackages: new SearchPackages(),
         agent: new Agent(name: 'Test User', email: 'test@example.com')
     );
 
@@ -260,7 +254,6 @@ it('retries getting deatils on failure', function () {
     ]);
 
     $packagist = new Packagist(
-        searchPackages: new SearchPackages(),
         agent: new Agent(name: 'Test User', email: 'test@example.com')
     );
 
