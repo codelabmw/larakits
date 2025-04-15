@@ -2,8 +2,11 @@
 
 namespace App\Services\Github;
 
-use App\Contracts\Http\Client;
 use App\Exceptions\ConnectionException;
+use Exception;
+use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Http;
 
 final class Github
 {
@@ -11,7 +14,6 @@ final class Github
      * Creates a new Github instance.
      */
     public function __construct(
-        private readonly Client $client,
         private readonly string $baseUrl = 'https://api.github.com'
     ) {
         //
@@ -22,12 +24,25 @@ final class Github
      */
     public function contents(string $owner, string $repo, string $path): string
     {
-        $response = $this->client->get(
-            url: "{$this->baseUrl}/repos/{$owner}/{$repo}/contents/{$path}",
-            headers: [
-                'Accept' => 'application/vnd.github.v3+json',
-            ]
-        );
+        try {
+            $response = Http::retry(config('services.github.retry'), function (int $attempt, Exception $exception): int {
+                return $attempt * 1000;
+            }, function (Exception $exception, PendingRequest $request) {
+                if ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403])) {
+                    return false;
+                }
+    
+                return true;
+            })->withHeader('Accept', 'application/vnd.github.v3+json')->get(
+                url: "{$this->baseUrl}/repos/{$owner}/{$repo}/contents/{$path}",
+            );
+        } catch (Exception $exception) {
+            if ($exception instanceof RequestException) {
+                throw new ConnectionException($exception->response, 'Failed to retrieve file contents');
+            }
+
+            throw $exception;
+        }
 
         if ($response->status() !== 200) {
             throw new ConnectionException($response, 'Failed to retrieve file contents');

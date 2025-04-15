@@ -1,9 +1,6 @@
 <?php
 
-use App\Contracts\Http\Client;
 use App\Exceptions\ConnectionException;
-use App\Http\Response;
-use App\Services\Packagist\Actions\SearchPackages;
 use App\Services\Packagist\Packagist;
 use App\Services\Packagist\Paginator;
 use App\Services\Packagist\ValueObjects\Agent;
@@ -15,7 +12,7 @@ use Tests\Fixtures\Packages;
 
 beforeEach(function () {
     Http::preventStrayRequests();
-})->only();
+});
 
 it('searches packages by type', function () {
     // Arrange
