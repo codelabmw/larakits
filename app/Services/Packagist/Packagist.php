@@ -88,7 +88,7 @@ final class Packagist
     private function searchPackages(Agent $agent, string $url, array $filters = []): array
     {
         try {
-            $response = Http::retry(config('services.github.retry'), function (int $attempt, Exception $exception): int {
+            $response = Http::retry(config('services.packagist.retry'), function (int $attempt, Exception $exception): int {
                 return $attempt * 1000;
             }, function (Exception $exception, PendingRequest $request) {
                 if ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403])) {
@@ -101,16 +101,8 @@ final class Packagist
                     query: $filters,
                 );
 
-        } catch (Exception $exception) {
-            if ($exception instanceof RequestException) {
-                throw new ConnectionException(response: $exception->response);
-            }
-
-            throw $exception;
-        }
-
-        if ($response->status() !== 200) {
-            throw new ConnectionException(response: $response);
+        } catch (RequestException $exception) {
+            throw new ConnectionException(response: $exception->response);
         }
 
         return $response->json();
@@ -126,7 +118,7 @@ final class Packagist
         }
 
         try {
-            $response = Http::retry(config('services.github.retry'), function (int $attempt, Exception $exception): int {
+            $response = Http::retry(config('services.packagist.retry'), function (int $attempt, Exception $exception): int {
                 return $attempt * 1000;
             }, function (Exception $exception, PendingRequest $request) {
                 if ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403])) {
@@ -137,16 +129,8 @@ final class Packagist
             })->withUserAgent($this->agent)->get(
                     url: $baseUrl . '/packages/' . $name . '.json',
                 );
-        } catch (Exception $exception) {
-            if ($exception instanceof RequestException) {
-                throw new ConnectionException(response: $exception->response);
-            }
-
-            throw $exception;
-        }
-
-        if ($response->status() !== 200) {
-            throw new ConnectionException(response: $response);
+        } catch (RequestException $exception) {
+            throw new ConnectionException(response: $exception->response);
         }
 
         $data = $response->json();
