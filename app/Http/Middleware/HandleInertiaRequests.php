@@ -2,8 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Foundation\Inspiring;
+use App\Services\Github\Github;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
@@ -17,6 +18,14 @@ class HandleInertiaRequests extends Middleware
      * @var string
      */
     protected $rootView = 'app';
+
+    /**
+     * Create a new instance.
+     */
+    public function __construct(private readonly Github $github)
+    {
+        // 
+    }
 
     /**
      * Determines the current asset version.
@@ -37,19 +46,33 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
-
         return [
             ...parent::share($request),
             'name' => config('app.name'),
-            'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
             ],
             'ziggy' => fn (): array => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
-            ]
+            ],
+            'stars' => Cache::remember('stars', 3600, fn () => $this->stars()),
         ];
+    }
+
+    /**
+     * Get projects repository stars.
+     */
+    private function stars(): ?int
+    {
+        $stars = null;
+
+        try {
+            $stars = $this->github->stars('codelabmw', 'larakits');
+        } catch (\Exception $e) {
+            //
+        }
+
+        return $stars;
     }
 }
