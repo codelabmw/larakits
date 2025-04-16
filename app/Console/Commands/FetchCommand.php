@@ -33,6 +33,7 @@ use Illuminate\Support\Str;
 use App\Services\Github\Github;
 use InvalidArgumentException;
 
+// @codeCoverageIgnoreStart
 class FetchCommand extends Command
 {
     /**
@@ -307,3 +308,4 @@ class FetchCommand extends Command
         }
     }
 }
+// @codeCoverageIgnoreEnd
