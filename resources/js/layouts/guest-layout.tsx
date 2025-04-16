@@ -8,8 +8,10 @@ import {
     NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
-import { Link } from '@inertiajs/react';
+import { SharedData } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
+import numeral from 'numeral';
 import { PropsWithChildren } from 'react';
 
 const navigation = [
@@ -67,6 +69,8 @@ const footerNavigation = {
 };
 
 export function GuestLayout({ children }: PropsWithChildren) {
+    const { stars } = usePage<SharedData>().props;
+
     return (
         <div className="relative min-h-screen">
             {/* Header */}
@@ -135,7 +139,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
                             className="text-muted-foreground hover:text-foreground flex items-center gap-1.5 text-sm"
                         >
                             <GitHubLogoIcon className="h-5 w-5" />
-                            <span className="text-muted-foreground text-sm">2.1k</span>
+                            {stars && <span className="text-muted-foreground text-sm">{numeral(stars).format('0a')}</span>}
                         </a>
 
                         {/* Theme Toggle */}
