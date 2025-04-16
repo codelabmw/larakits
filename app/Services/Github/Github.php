@@ -14,7 +14,7 @@ final class Github
      * Creates a new Github instance.
      */
     public function __construct(
-        private readonly string $baseUrl = 'https://api.github.com'
+        private readonly string $baseUrl = 'https://api.github.com',
     ) {
         //
     }
@@ -31,11 +31,11 @@ final class Github
                 if ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403])) {
                     return false;
                 }
-    
+
                 return true;
             })->withHeader('Accept', 'application/vnd.github.v3+json')->get(
-                url: "{$this->baseUrl}/repos/{$owner}/{$repo}/contents/{$path}",
-            );
+                    url: "{$this->baseUrl}/repos/{$owner}/{$repo}/contents/{$path}",
+                );
         } catch (RequestException $exception) {
             throw new ConnectionException($exception->response, 'Failed to retrieve file contents');
         }
@@ -56,5 +56,27 @@ final class Github
         }
 
         return [$matches[1], $matches[2]];
+    }
+
+    /**
+     * Gets and returns the number of stars for a repository.
+     */
+    public function stars(string $owner, string $repo, ?string $token = null): int
+    {
+        try {
+            $response = Http::retry(config('services.github.retry'), function (int $attempt, Exception $exception): int {
+                return $attempt * 1000;
+            }, function (Exception $exception, PendingRequest $request) {
+                if ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403, 401])) {
+                    return false;
+                }
+
+                return true;
+            })->withHeader('Authorization', "token {$token}")->get("{$this->baseUrl}/repos/{$owner}/{$repo}");
+        } catch (RequestException $exception) {
+            throw new ConnectionException($exception->response, 'Failed to retrieve repository stars');
+        }
+
+        return $response->json()['stargazers_count'];
     }
 }

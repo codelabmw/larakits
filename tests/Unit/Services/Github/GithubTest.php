@@ -87,3 +87,87 @@ it('throws on invalid URL', function () {
     // Act
     Github::ownerAndRepo($url);
 })->throws(\InvalidArgumentException::class);
+
+it('gets a repositories stars', function () {
+    // Arrange
+    Http::fake([
+        'https://api.github.com/repos/laravel/framework' => Http::response([
+            'stargazers_count' => 1000,
+        ], 200, [
+            'Content-Type' => 'application/json',
+        ]),
+    ]);
+
+    $github = new Github();
+
+    // Act
+    $result = $github->stars('laravel', 'framework');
+
+    // Assert
+    expect($result)->toBe(1000);
+    Http::assertSent(function (Request $request) {
+        return $request->url() === 'https://api.github.com/repos/laravel/framework';
+    });
+});
+
+it('gets a repositories stars with token', function () {
+    // Arrange
+    Http::fake([
+        'https://api.github.com/repos/laravel/framework' => Http::response([
+            'stargazers_count' => 1000,
+        ], 200, [
+            'Content-Type' => 'application/json',
+        ]),
+    ]);
+
+    $github = new Github();
+
+    // Act
+    $result = $github->stars('laravel', 'framework', 'token');
+
+    // Assert
+    expect($result)->toBe(1000);
+    Http::assertSent(function (Request $request) {
+        return $request->hasHeader('Authorization', 'token token');
+    });
+});
+
+it('retries getting stars on failure', function () {
+    // Arrange
+    Http::fake([
+        'https://api.github.com/repos/laravel/framework' => Http::sequence()
+            ->push('Server error', 500)
+            ->push('Server error', 500)
+            ->push([
+                'stargazers_count' => 1000,
+            ], 200),
+    ]);
+
+    $github = new Github();
+
+    // Act
+    $result = $github->stars('laravel', 'framework');
+
+    // Assert
+    expect($result)->toBe(1000);
+    Http::assertSent(function (Request $request) {
+        return $request->url() === 'https://api.github.com/repos/laravel/framework';
+    });
+});
+
+it('ignores retrying getting stars on common client errors', function () {
+    // Arrange
+    Http::fake([
+        'https://api.github.com/repos/laravel/framework' => Http::sequence()
+            ->push('Server error', 404)
+            ->push('Server error', 403)
+            ->push([
+                'stargazers_count' => 1000,
+            ], 200),
+    ]);
+
+    $github = new Github();
+
+    // Act
+    $github->stars('laravel', 'framework');
+})->throws(ConnectionException::class);
