@@ -69,7 +69,7 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
                     <div className="mx-auto max-w-3xl text-center">
                         <Badge variant="outline" className="text-muted-foreground mb-4 rounded-full px-5 py-3">
                             <Rocket />
-                            <span>v1.0 is almost here!</span>
+                            <span>Introducing Larakits!</span>
                         </Badge>
                         <h1 className="mb-6 text-4xl font-light tracking-wider sm:text-5xl">
                             one more reason to <span className="block text-7xl font-bold capitalize sm:text-9xl">ship faster</span>
@@ -85,10 +85,10 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
                                 </Link>
                             </Button>
                             <Button variant="outline" size="lg" asChild>
-                                <Link href="https://github.com/codelabmw/laracasts">
+                                <a target="_blank" href="https://github.com/codelabmw/larakits">
                                     <GitHubLogoIcon />
                                     <span>Star on GitHub</span>
-                                </Link>
+                                </a>
                             </Button>
                         </div>
                     </div>
@@ -176,10 +176,15 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
             {/* CTA Section */}
             <section className="bg-muted/40 border-t py-16">
                 <div className="container mx-auto">
-                    <div className="mx-auto max-w-2xl text-center">
+                    <div className="mx-auto max-w-3xl text-center">
                         <h2 className="mb-4 text-3xl font-bold tracking-wider">Ready to get started?</h2>
-                        <p className="text-muted-foreground mb-8 text-lg">
-                            Browse our collection of Laravel starter kits and find the perfect foundation for your next project.
+                        <p className="text-muted-foreground mb-8">
+                            Browse our collection of Laravel starter kits and find the perfect foundation for your next project. Have your own starter
+                            kit? Read our{' '}
+                            <Button variant="link" className="p-0 text-base font-normal" asChild>
+                                <Link href={route('docs')}>docs</Link>
+                            </Button>{' '}
+                            to learn how we discover and curate kits.
                         </p>
                         <Button asChild size="lg" className="group">
                             <Link href="/kits" className="gap-2">
