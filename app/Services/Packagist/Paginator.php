@@ -26,19 +26,11 @@ final class Paginator
     public function __construct(
         array $items,
         private int $total,
+        private ?Closure $getNextPage,
         private ?string $next = null,
         private ?int $perPage = null,
-        private ?Closure $getNextPage,
     ) {
         $this->items = Collection::make($items);
-    }
-
-    /**
-     * Gets the total number of items.
-     */
-    public function total(): int
-    {
-        return $this->total;
     }
 
     /**

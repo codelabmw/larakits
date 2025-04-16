@@ -36,16 +36,8 @@ final class Github
             })->withHeader('Accept', 'application/vnd.github.v3+json')->get(
                 url: "{$this->baseUrl}/repos/{$owner}/{$repo}/contents/{$path}",
             );
-        } catch (Exception $exception) {
-            if ($exception instanceof RequestException) {
-                throw new ConnectionException($exception->response, 'Failed to retrieve file contents');
-            }
-
-            throw $exception;
-        }
-
-        if ($response->status() !== 200) {
-            throw new ConnectionException($response, 'Failed to retrieve file contents');
+        } catch (RequestException $exception) {
+            throw new ConnectionException($exception->response, 'Failed to retrieve file contents');
         }
 
         return $response->json()['content'];

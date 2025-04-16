@@ -52,3 +52,18 @@ it('has tags', function () {
     // Assert
     expect($kit->tags()->first()->slug)->toEqual($tag->slug);
 });
+
+it('checks if kit exists corresponding to package name', function () {
+    // Arrange
+    Kit::factory()->create([
+        'slug' => 'test-kit',
+        'name' => 'kit',
+        'vendor' => 'test',
+    ]);
+
+    // Act
+    $exists = Kit::hasPackage('test/kit');
+
+    // Assert
+    expect($exists)->toBeTrue();
+});

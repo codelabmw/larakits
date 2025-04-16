@@ -104,11 +104,7 @@ class Kit extends Model
      */
     public static function hasPackage(string $name): bool
     {
-        try {
-            $name = Str::slug(implode('-', explode('/', $name)));
-        } catch (Exception $exception) {
-            //    
-        }
+        $name = Str::slug(implode('-', explode('/', $name)));
 
         return self::where('slug', $name)->exists();
     }
