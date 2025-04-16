@@ -34,14 +34,6 @@ final class Paginator
     }
 
     /**
-     * Gets the total number of items.
-     */
-    public function total(): int
-    {
-        return $this->total;
-    }
-
-    /**
      * Gets the number of items per page.
      */
     public function perPage(): ?int
