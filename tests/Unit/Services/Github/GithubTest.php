@@ -68,3 +68,22 @@ it('ignores retrying on common client errors', function () {
     // Act
     $github->contents('laravel', 'framework', 'example.json');
 })->throws(ConnectionException::class);
+
+it('parses owner and repository from URL', function () {
+    // Arrange
+    $url = 'https://github.com/laravel/framework';
+
+    // Act
+    $result = Github::ownerAndRepo($url);
+
+    // Assert
+    expect($result)->toBe(['laravel', 'framework']);
+});
+
+it('throws on invalid URL', function () {
+    // Arrange
+    $url = 'https://laravel.com/laravel';
+
+    // Act
+    Github::ownerAndRepo($url);
+})->throws(\InvalidArgumentException::class);
