@@ -1,8 +1,7 @@
 import { GuestLayout } from '@/layouts/guest-layout';
 import { cn } from '@/lib/utils';
 import { Head } from '@inertiajs/react';
-import { CodeIcon, GitHubLogoIcon, LightningBoltIcon } from '@radix-ui/react-icons';
-import { TagIcon } from 'lucide-react';
+import { CodeIcon, LightningBoltIcon } from '@radix-ui/react-icons';
 import { useEffect, useState } from 'react';
 
 const sections = [
@@ -45,6 +44,8 @@ export default function Docs() {
                     {/* Side Navigation */}
                     <div className="hidden lg:block lg:w-64">
                         <div className="sticky top-24 space-y-4">
+                            <h6 className='font-medium'>On this page</h6>
+
                             <nav className="space-y-1">
                                 {sections.map((section) => (
                                     <a
@@ -71,111 +72,234 @@ export default function Docs() {
                                 Learn how to install starter kits from Larakits and how to get your starter kits discovered.
                             </p>
 
-                            <div className="my-12 space-y-12">
+                            <div className="my-12 space-y-16">
+                                {/* Installation Section */}
                                 <section id="installation">
-                                    <h2 className="!mt-0 text-lg font-bold">Installation</h2>
-                                    <p className="mt-2">
+                                    <h2 className="mb-4 text-2xl font-bold tracking-tight">Installation</h2>
+                                    <p className="text-muted-foreground mb-2 text-lg">
                                         There are two ways to install Laravel starter kits: using the Herd button or using the command line. Both
                                         methods are simple and straight-forward.
                                     </p>
                                 </section>
 
-                                <section id="using-herd">
-                                    <h2 className="!mt-0 text-lg font-bold">Using Herd</h2>
-                                    <div className="mt-4 flex items-center gap-2">
-                                        <LightningBoltIcon className="text-primary h-5 w-5" />
-                                        <span className="font-medium">The fastest way to install starter kits</span>
+                                {/* Using Herd Section */}
+                                <section id="using-herd" className="from-primary/5 to-secondary/5 rounded-xl border bg-gradient-to-br p-8">
+                                    <div className="mb-3 flex items-center gap-3">
+                                        <LightningBoltIcon className="text-primary h-6 w-6" />
+                                        <h2 className="text-xl font-semibold tracking-tight">Using Herd</h2>
                                     </div>
-                                    <div className="mt-4 space-y-4">
-                                        <p>
-                                            When viewing a starter kit on Larakits, you'll see a Herd button that allows for one-click installation:
-                                        </p>
-                                        <ol className="list-decimal space-y-2 pl-5">
-                                            <li>Browse and select a starter kit</li>
-                                            <li>Click the "Install with Herd" button</li>
-                                            <li>Follow any additional setup instructions if provided</li>
-                                        </ol>
-                                    </div>
+                                    <p className="text-muted-foreground mb-4">
+                                        The fastest way to install starter kits is with Laravel Herd. When viewing a starter kit on Larakits, you'll
+                                        see a <span className="font-medium">Laravel Herd</span> button that follows a deep-link to Laravel Herd and
+                                        opens your installed Herd application.
+                                    </p>
+                                    <ol className="modern-list list-decimal space-y-3 pl-6">
+                                        <li>
+                                            <span className="font-medium">Browse and select a starter kit</span>
+                                            <p className="text-muted-foreground mt-1 text-sm">
+                                                Find the kit you want to install from the Larakits platform.
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <span className="font-medium">Click the "Laravel Herd" button</span>
+                                            <p className="text-muted-foreground mt-1 text-sm">
+                                                This will open Herd and start the installation process for your chosen kit.
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <span className="font-medium">Follow any additional setup instructions</span>
+                                            <p className="text-muted-foreground mt-1 text-sm">
+                                                Some kits may provide extra steps or configuration after installation.
+                                            </p>
+                                        </li>
+                                    </ol>
                                 </section>
 
-                                <section id="using-cli">
-                                    <h2 className="!mt-0 text-lg font-bold">Using Command Line</h2>
-                                    <div className="mt-4 flex items-center gap-2">
-                                        <CodeIcon className="text-primary h-5 w-5" />
-                                        <span className="font-medium">Traditional installation method</span>
+                                {/* Using CLI Section */}
+                                <section id="using-cli" className="dark:bg-muted/70 rounded-xl border bg-white/80 p-8 shadow-sm">
+                                    <div className="mb-3 flex items-center gap-3">
+                                        <CodeIcon className="text-primary h-6 w-6" />
+                                        <h2 className="text-xl font-semibold tracking-tight">Using Command Line</h2>
                                     </div>
-                                    <div className="mt-4 space-y-4">
-                                        <p>You can also install starter kits using the Laravel CLI:</p>
-                                        <pre className="bg-muted text-muted-foreground rounded-lg p-4">
-                                            <code>laravel new project-name --using=vendor/name</code>
-                                        </pre>
-                                        <p>For example:</p>
-                                        <pre className="bg-muted text-muted-foreground rounded-lg p-4">
-                                            <code>laravel new my-app --using=laravel/react-starter-kit</code>
-                                        </pre>
-                                    </div>
-                                </section>
-
-                                <section id="discovery">
-                                    <h2 className="!mt-0 text-lg font-bold">Discovery</h2>
-                                    <div className="mt-4 flex items-center gap-2">
-                                        <TagIcon className="text-primary h-5 w-5" />
-                                        <span className="font-medium">Get your starter kit discovered</span>
-                                    </div>
-                                    <div className="mt-4 space-y-4">
-                                        <p>
-                                            To ensure your starter kit is discovered by Larakits, follow these best practices when submitting to
-                                            Packagist:
-                                        </p>
-                                        <div className="space-y-6">
-                                            <div>
-                                                <h3 className="font-medium">Use Qualifying Keywords</h3>
-                                                <p className="mt-1">Include these keywords in your composer.json:</p>
-                                                <ul className="mt-2 list-disc space-y-1 pl-5">
-                                                    <li>laravel-starter-kit</li>
-                                                    <li>starter-kit</li>
-                                                </ul>
-                                            </div>
-                                            <div>
-                                                <h3 className="font-medium">Clear Description</h3>
-                                                <p className="mt-1">
-                                                    Write an intentional, clear, and concise description in your composer.json that includes
-                                                    qualifying keywords. This helps with discovery and lets users quickly understand your kit's
-                                                    purpose.
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <h3 className="font-medium">Descriptive Name</h3>
-                                                <p className="mt-1">Choose a name that clearly indicates it's a starter kit. Examples:</p>
-                                                <ul className="mt-2 list-disc space-y-1 pl-5">
-                                                    <li>vue-starter-kit</li>
-                                                    <li>react-starter-kit</li>
-                                                </ul>
-                                            </div>
+                                    <p className="text-muted-foreground mb-4">You can also install starter kits using the Laravel CLI:</p>
+                                    <div className="space-y-2">
+                                        <div>
+                                            <span className="font-medium">Basic command</span>
+                                            <pre className="bg-muted text-muted-foreground mt-1 rounded-lg p-4">
+                                                <code>laravel new project-name --using=vendor/name</code>
+                                            </pre>
+                                        </div>
+                                        <div>
+                                            <span className="font-medium">Example</span>
+                                            <pre className="bg-muted text-muted-foreground mt-1 rounded-lg p-4">
+                                                <code>laravel new my-app --using=laravel/react-starter-kit</code>
+                                            </pre>
                                         </div>
                                     </div>
                                 </section>
 
-                                <section id="best-practices">
-                                    <h2 className="!mt-0 text-lg font-bold">Best Practices</h2>
-                                    <div className="mt-4 flex items-center gap-2">
-                                        <GitHubLogoIcon className="text-primary h-5 w-5" />
-                                        <span className="font-medium">Maintain a quality starter kit</span>
+                                {/* Discovery Section */}
+                                <section id="discovery">
+                                    <h2 className="mb-4 text-2xl font-bold tracking-tight">Discovery</h2>
+                                    <p className="text-muted-foreground mb-4">
+                                        Larakits automatically curates Laravel starter kits from Packagist using a multi-step discovery process. This
+                                        ensures that only laravel starter kits appear on the platform, making it easier for developers to find and use
+                                        them.
+                                    </p>
+                                </section>
+
+                                <section className="from-primary/5 to-secondary/5 mb-8 rounded-xl border bg-gradient-to-br p-8">
+                                    <div className="mb-2 flex items-center gap-3">
+                                        <LightningBoltIcon className="text-primary h-6 w-6" />
+                                        <h3 className="text-xl font-bold tracking-tight">Discovery Process</h3>
                                     </div>
-                                    <div className="mt-4 space-y-4">
-                                        <p>Follow these guidelines to ensure your starter kit is well-received:</p>
-                                        <ul className="list-disc space-y-2 pl-5">
-                                            <li>Keep dependencies up to date</li>
-                                            <li>Provide clear documentation</li>
-                                            <li>Include example configurations</li>
-                                            <li>Maintain a clean and organized codebase</li>
-                                            <li>Follow Laravel's coding standards</li>
-                                        </ul>
+                                    <ol className="modern-list list-decimal space-y-3 pl-6">
+                                        <li>
+                                            <span className="font-medium">Packagist Search</span>
+                                            <p className="text-muted-foreground mt-1 text-sm">
+                                                Larakits searches Packagist for packages of type <code>project</code> with tags <code>laravel</code>,{' '}
+                                                <code>starter-kit</code>, and <code>laravel-starter-kit</code>.
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <span className="font-medium">Qualification</span>
+                                            <p className="text-muted-foreground mt-1 text-sm">
+                                                For each package found, Larakits checks that it requires <code>laravel/framework</code> and that its{' '}
+                                                <code>name</code>, <code>description</code>, or <code>keywords</code> contain qualifying tags.
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <span className="font-medium">Stack Detection</span>
+                                            <p className="text-muted-foreground mt-1 text-sm">
+                                                If a package qualifies, Larakits analyzes both Composer and npm dependencies to guess which tech stack
+                                                (e.g., React, Vue, TailwindCSS, Livewire) the kit uses.
+                                            </p>
+                                        </li>
+                                    </ol>
+                                </section>
+
+                                <section className="from-primary/5 to-secondary/5 rounded-xl border bg-gradient-to-br p-8">
+                                    <div className="mb-2 flex items-center gap-3">
+                                        <CodeIcon className="text-primary h-6 w-6" />
+                                        <h3 className="text-xl font-bold tracking-tight">Getting Discovered</h3>
+                                    </div>
+                                    <ol className="modern-list list-decimal space-y-3 pl-6">
+                                        <li>
+                                            <span className="font-medium">Use Qualifying Keywords</span>
+                                            <p className="text-muted-foreground mt-1 text-sm">
+                                                Add <code>laravel-starter-kit</code> and <code>starter-kit</code> to your <code>composer.json</code>{' '}
+                                                keywords array.
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <span className="font-medium">Clear Description</span>
+                                            <p className="text-muted-foreground mt-1 text-sm">
+                                                Write a concise, intentional description that includes qualifying keywords so Larakits and users can
+                                                easily understand your kit’s purpose.
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <span className="font-medium">Descriptive Name</span>
+                                            <p className="text-muted-foreground mt-1 text-sm">
+                                                Choose a package name that clearly indicates it’s a starter kit, e.g., <code>vue-starter-kit</code> or{' '}
+                                                <code>react-starter-kit</code>.
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <span className="font-medium">Require Laravel</span>
+                                            <p className="text-muted-foreground mt-1 text-sm">
+                                                Ensure your <code>composer.json</code> has <code>laravel/framework</code> as a required dependency.
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <span className="font-medium">Include Stack Dependencies</span>
+                                            <p className="text-muted-foreground mt-1 text-sm">
+                                                Add relevant npm and Composer dependencies (like <code>react</code>, <code>vue</code>,{' '}
+                                                <code>tailwindcss</code>, <code>livewire/livewire</code>) to help Larakits accurately detect your tech
+                                                stack.
+                                            </p>
+                                        </li>
+                                    </ol>
+                                </section>
+
+                                {/* Best Practices Section */}
+                                <section id="best-practices">
+                                    <h2 className="mb-6 text-2xl font-bold tracking-tight">Best Practices</h2>
+                                    <p className="text-muted-foreground mb-8">Follow these guidelines to ensure your starter kit is well-received:</p>
+
+                                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                                        <div className="dark:bg-muted/70 flex h-full flex-col items-start rounded-xl border bg-white/80 p-6 shadow-sm">
+                                            <span className="bg-primary/10 text-primary mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+                                                <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                                </svg>
+                                            </span>
+                                            <span className="mb-2 text-lg font-semibold">Keep dependencies up to date</span>
+                                            <p className="text-muted-foreground text-sm">
+                                                Regularly update both Composer and npm dependencies to ensure security and compatibility.
+                                            </p>
+                                        </div>
+
+                                        <div className="dark:bg-muted/70 flex h-full flex-col items-start rounded-xl border bg-white/80 p-6 shadow-sm">
+                                            <span className="bg-secondary/10 text-secondary mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+                                                <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 17l4-4 4 4m0 0V7m0 10V7" />
+                                                </svg>
+                                            </span>
+                                            <span className="mb-2 text-lg font-semibold">Provide clear documentation</span>
+                                            <p className="text-muted-foreground text-sm">
+                                                Include a comprehensive README and usage instructions to help users get started quickly.
+                                            </p>
+                                        </div>
+
+                                        <div className="dark:bg-muted/70 flex h-full flex-col items-start rounded-xl border bg-white/80 p-6 shadow-sm">
+                                            <span className="bg-accent/10 text-accent mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+                                                <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                    />
+                                                </svg>
+                                            </span>
+                                            <span className="mb-2 text-lg font-semibold">Include example configurations</span>
+                                            <p className="text-muted-foreground text-sm">
+                                                Offer sample environment files or configuration examples for easier setup.
+                                            </p>
+                                        </div>
+
+                                        <div className="dark:bg-muted/70 flex h-full flex-col items-start rounded-xl border bg-white/80 p-6 shadow-sm">
+                                            <span className="bg-muted/10 text-muted-foreground mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+                                                <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                                                </svg>
+                                            </span>
+                                            <span className="mb-2 text-lg font-semibold">Maintain a clean and organized codebase</span>
+                                            <p className="text-muted-foreground text-sm">
+                                                Use consistent formatting, structure, and naming conventions throughout your project.
+                                            </p>
+                                        </div>
+
+                                        <div className="dark:bg-muted/70 flex h-full flex-col items-start rounded-xl border bg-white/80 p-6 shadow-sm">
+                                            <span className="bg-primary/10 text-primary mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+                                                <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M16 7a4 4 0 01-8 0m8 0V5a4 4 0 00-8 0v2m8 0a4 4 0 01-8 0"
+                                                    />
+                                                </svg>
+                                            </span>
+                                            <span className="mb-2 text-lg font-semibold">Follow Laravel's coding standards</span>
+                                            <p className="text-muted-foreground text-sm">
+                                                Adhere to official Laravel guidelines for code quality and style.
+                                            </p>
+                                        </div>
                                     </div>
                                 </section>
-                            </div>
 
-                            <div className="text-muted-foreground mt-12 border-t pt-6 text-sm">Last updated: April 2, 2025</div>
+                                <div className="text-muted-foreground mt-12 border-t pt-6 text-sm">Last updated: April 2, 2025</div>
+                            </div>
                         </div>
                     </div>
                 </div>
