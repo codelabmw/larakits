@@ -1,7 +1,9 @@
+import { Laravel } from '@/components/icons/laravel';
 import { GuestLayout } from '@/layouts/guest-layout';
 import { cn } from '@/lib/utils';
 import { Head } from '@inertiajs/react';
-import { CodeIcon, LightningBoltIcon } from '@radix-ui/react-icons';
+import { CodeIcon, GearIcon, LightningBoltIcon } from '@radix-ui/react-icons';
+import { Check, Code2, PenLine } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const sections = [
@@ -44,7 +46,7 @@ export default function Docs() {
                     {/* Side Navigation */}
                     <div className="hidden lg:block lg:w-64">
                         <div className="sticky top-24 space-y-4">
-                            <h6 className='font-medium'>On this page</h6>
+                            <h6 className="font-medium">On this page</h6>
 
                             <nav className="space-y-1">
                                 {sections.map((section) => (
@@ -230,9 +232,7 @@ export default function Docs() {
                                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                                         <div className="dark:bg-muted/70 flex h-full flex-col items-start rounded-xl border bg-white/80 p-6 shadow-sm">
                                             <span className="bg-primary/10 text-primary mb-4 flex h-12 w-12 items-center justify-center rounded-full">
-                                                <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                                </svg>
+                                                <Check />
                                             </span>
                                             <span className="mb-2 text-lg font-semibold">Keep dependencies up to date</span>
                                             <p className="text-muted-foreground text-sm">
@@ -241,10 +241,8 @@ export default function Docs() {
                                         </div>
 
                                         <div className="dark:bg-muted/70 flex h-full flex-col items-start rounded-xl border bg-white/80 p-6 shadow-sm">
-                                            <span className="bg-secondary/10 text-secondary mb-4 flex h-12 w-12 items-center justify-center rounded-full">
-                                                <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 17l4-4 4 4m0 0V7m0 10V7" />
-                                                </svg>
+                                            <span className="bg-primary/10 text-primary mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+                                                <PenLine />
                                             </span>
                                             <span className="mb-2 text-lg font-semibold">Provide clear documentation</span>
                                             <p className="text-muted-foreground text-sm">
@@ -253,14 +251,8 @@ export default function Docs() {
                                         </div>
 
                                         <div className="dark:bg-muted/70 flex h-full flex-col items-start rounded-xl border bg-white/80 p-6 shadow-sm">
-                                            <span className="bg-accent/10 text-accent mb-4 flex h-12 w-12 items-center justify-center rounded-full">
-                                                <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                    />
-                                                </svg>
+                                            <span className="bg-primary/10 text-primary mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+                                                <GearIcon className='h-6 w-6' />
                                             </span>
                                             <span className="mb-2 text-lg font-semibold">Include example configurations</span>
                                             <p className="text-muted-foreground text-sm">
@@ -269,10 +261,8 @@ export default function Docs() {
                                         </div>
 
                                         <div className="dark:bg-muted/70 flex h-full flex-col items-start rounded-xl border bg-white/80 p-6 shadow-sm">
-                                            <span className="bg-muted/10 text-muted-foreground mb-4 flex h-12 w-12 items-center justify-center rounded-full">
-                                                <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                                                </svg>
+                                            <span className="bg-primary/10 text-primary mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+                                                <Code2 />
                                             </span>
                                             <span className="mb-2 text-lg font-semibold">Maintain a clean and organized codebase</span>
                                             <p className="text-muted-foreground text-sm">
@@ -282,13 +272,7 @@ export default function Docs() {
 
                                         <div className="dark:bg-muted/70 flex h-full flex-col items-start rounded-xl border bg-white/80 p-6 shadow-sm">
                                             <span className="bg-primary/10 text-primary mb-4 flex h-12 w-12 items-center justify-center rounded-full">
-                                                <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M16 7a4 4 0 01-8 0m8 0V5a4 4 0 00-8 0v2m8 0a4 4 0 01-8 0"
-                                                    />
-                                                </svg>
+                                                <Laravel className="text-3xl" />
                                             </span>
                                             <span className="mb-2 text-lg font-semibold">Follow Laravel's coding standards</span>
                                             <p className="text-muted-foreground text-sm">
