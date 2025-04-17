@@ -68,9 +68,9 @@ export default function Index({ kits, filters }: Props) {
 
             <div className="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl py-8">
                 {/* Header */}
-                <div className="mb-8 py-8 text-center">
+                <div className="mb-8 py-8 text-center max-w-xl mx-auto">
                     <h1 className="mb-2 text-3xl font-bold tracking-wider">Browse starter kits</h1>
-                    <p className="text-muted-foreground">Find the perfect Laravel starter kit for your next project</p>
+                    <p className="text-muted-foreground">Find the perfect Laravel starter kit for your next project. You can narrow down your search by tags and stacks.</p>
                 </div>
 
                 {kits.data.length > 0 ? (
