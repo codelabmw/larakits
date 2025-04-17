@@ -16,7 +16,7 @@ class AboutController extends Controller
     public function __invoke(): Response
     {
         $totalKits = Kit::count();
-        $totalVisitors = 1;
+        $totalVisitors = 1; // TODO: Plug in results from analytics api
         $totalStars = Cache::get('stars');
 
         return Inertia::render('about', compact('totalKits', 'totalVisitors', 'totalStars'));
