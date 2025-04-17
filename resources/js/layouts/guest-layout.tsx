@@ -30,7 +30,7 @@ const navigation = [
             {
                 title: 'Documentation',
                 href: route('docs'),
-                description: 'Learn how to use and contribute to Larakits.',
+                description: 'Learn how to use and get your kits discovered on Larakits.',
             },
             {
                 title: 'Terms of Service',
