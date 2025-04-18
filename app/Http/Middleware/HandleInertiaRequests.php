@@ -56,23 +56,7 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
-            'stars' => Cache::remember('stars', 3600, fn () => $this->stars()),
+            'stars' => Cache::get('github-stars'),
         ];
-    }
-
-    /**
-     * Get projects repository stars.
-     */
-    private function stars(): ?int
-    {
-        $stars = null;
-
-        try {
-            $stars = $this->github->stars('codelabmw', 'larakits');
-        } catch (\Exception $e) {
-            //
-        }
-
-        return $stars;
     }
 }

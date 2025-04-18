@@ -64,7 +64,7 @@ final class Github
     public function stars(string $owner, string $repo, ?string $token = null): int
     {
         try {
-            $response = Http::retry(config('services.github.retry'), function (int $attempt, Exception $exception): int {
+            $request = Http::retry(config('services.github.retry'), function (int $attempt, Exception $exception): int {
                 return $attempt * 1000;
             }, function (Exception $exception, PendingRequest $request) {
                 if ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403, 401])) {
@@ -72,7 +72,13 @@ final class Github
                 }
 
                 return true;
-            })->withHeader('Authorization', "token {$token}")->get("{$this->baseUrl}/repos/{$owner}/{$repo}");
+            });
+
+            if ($token) {
+                $request->withHeader('Authorization', "token {$token}");
+            }
+
+            $response = $request->get("{$this->baseUrl}/repos/{$owner}/{$repo}");
         } catch (RequestException $exception) {
             throw new ConnectionException($exception->response, 'Failed to retrieve repository stars');
         }
