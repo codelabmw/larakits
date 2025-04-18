@@ -204,7 +204,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
             </header>
 
             {/* Main Content */}
-            <main className="mx-auto w-full max-w-7xl flex-1 px-2 py-6 sm:px-4 md:px-6 lg:px-0">{children}</main>
+            <main className="w-full flex-1 px-2 py-6 sm:px-4 md:px-6 lg:px-0">{children}</main>
 
             {/* Footer */}
             <footer className="bg-muted/40 mt-auto border-t">

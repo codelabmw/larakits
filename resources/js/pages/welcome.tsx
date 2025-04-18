@@ -64,27 +64,27 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
             />
 
             {/* Hero Section */}
-            <section className="relative flex min-h-[calc(100vh-4rem)] items-center">
+            <section className="relative flex min-h-[calc(100vh-4rem)] items-center px-2 sm:px-0">
                 <div className="container mx-auto">
                     <div className="mx-auto max-w-3xl text-center">
                         <Badge variant="outline" className="text-muted-foreground mb-4 rounded-full px-5 py-3">
                             <Rocket />
                             <span>Introducing Larakits!</span>
                         </Badge>
-                        <h1 className="mb-6 text-4xl font-light tracking-wider sm:text-5xl">
-                            one more reason to <span className="block text-7xl font-bold capitalize sm:text-9xl">ship faster</span>
+                        <h1 className="mb-6 text-3xl font-light tracking-wider sm:text-5xl">
+                            one more reason to <span className="block text-5xl font-bold capitalize sm:text-7xl md:text-9xl">ship faster</span>
                         </h1>
-                        <p className="text-muted-foreground text-md mb-8 sm:text-xl">
+                        <p className="text-muted-foreground mb-8 text-base sm:text-xl">
                             Discover community-maintained starter kits that help you build better Laravel applications faster.
                         </p>
-                        <div className="flex items-center justify-center gap-4">
-                            <Button asChild size="lg" className="group flex items-center gap-2">
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center sm:gap-4">
+                            <Button asChild size="lg" className="group flex w-full items-center gap-2 sm:w-auto">
                                 <Link href="/kits">
                                     <span>Browse Kits</span>
                                     <ArrowRightIcon className="transition-transform group-hover:-rotate-[38deg]" />
                                 </Link>
                             </Button>
-                            <Button variant="outline" size="lg" asChild>
+                            <Button variant="outline" size="lg" asChild className="w-full sm:w-auto">
                                 <a target="_blank" href="https://github.com/codelabmw/larakits">
                                     <GitHubLogoIcon />
                                     <span>Star on GitHub</span>
@@ -96,10 +96,10 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
             </section>
 
             {/* Featured Kits Section */}
-            <section className="bg-muted/40 border-t py-16">
+            <section className="bg-muted/40 rounded-2xl border-t px-2 py-12 sm:px-0 lg:rounded-none">
                 <div className="container mx-auto">
                     <div className="mx-auto max-w-7xl text-center">
-                        <h2 className="mb-8 text-3xl font-bold tracking-wider">Featured starter kits</h2>
+                        <h2 className="mb-8 text-2xl font-bold tracking-wider sm:text-3xl">Featured starter kits</h2>
                         <p className="text-muted-foreground mx-auto mb-8 max-w-2xl text-base">
                             Explore our carefully curated collection of Laravel starter kits, each designed to help you kickstart your next project
                             with ease.
@@ -107,13 +107,12 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
 
                         {trendingKits.length > 0 ? (
                             <Tabs defaultValue="trending" className="mx-auto">
-                                <div className="flex items-center justify-between">
-                                    <TabsList className="mb-8">
+                                <div className="flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center sm:gap-0">
+                                    <TabsList className="mb-4 w-full flex-nowrap overflow-x-auto sm:mb-8 sm:w-auto">
                                         <TabsTrigger value="trending">Trending</TabsTrigger>
                                         <TabsTrigger value="recent">Recently Added</TabsTrigger>
                                     </TabsList>
-
-                                    <Button asChild size="lg" variant="ghost" className="group">
+                                    <Button asChild size="lg" variant="ghost" className="group w-full sm:w-auto">
                                         <Link href="/kits">
                                             <span>View all</span>
                                             <ArrowRightIcon className="transition-transform group-hover:-rotate-[38deg]" />
@@ -150,14 +149,14 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
             </section>
 
             {/* Features Section */}
-            <section className="py-16">
+            <section className="px-2 py-12 sm:px-0">
                 <div className="container mx-auto">
                     <div className="mx-auto max-w-2xl text-center">
-                        <h2 className="mb-8 text-3xl font-bold tracking-wider">Why larakits?</h2>
-                        <p className="text-muted-foreground mb-8 text-lg">
+                        <h2 className="mb-8 text-2xl font-bold tracking-wider sm:text-3xl">Why larakits?</h2>
+                        <p className="text-muted-foreground mb-8 text-base sm:text-lg">
                             Larakits is a collection of Laravel starter kits that help you build better Laravel applications faster.
                         </p>
-                        <div className="grid gap-8 sm:grid-cols-2">
+                        <div className="grid gap-6 sm:grid-cols-2">
                             {features.map((feature) => (
                                 <div key={feature.title} className="group bg-background relative overflow-hidden rounded-lg border p-6 text-center">
                                     <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-cyan-50 opacity-0 transition-opacity duration-300 group-hover:opacity-10 dark:from-blue-950 dark:to-cyan-950" />
@@ -174,10 +173,10 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
             </section>
 
             {/* CTA Section */}
-            <section className="bg-muted/40 border-t py-16">
+            <section className="bg-muted/40 rounded-2xl border-t px-2 py-12 sm:px-0 lg:rounded-none">
                 <div className="container mx-auto">
                     <div className="mx-auto max-w-3xl text-center">
-                        <h2 className="mb-4 text-3xl font-bold tracking-wider">Ready to get started?</h2>
+                        <h2 className="mb-4 text-2xl font-bold tracking-wider sm:text-3xl">Ready to get started?</h2>
                         <p className="text-muted-foreground mb-8">
                             Browse our collection of Laravel starter kits and find the perfect foundation for your next project. Have your own starter
                             kit? Read our{' '}
