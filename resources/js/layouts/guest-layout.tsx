@@ -60,7 +60,7 @@ const footerNavigation = {
         { name: 'GitHub', href: 'https://github.com/codelabmw/larakits' },
         // { name: 'Discord', href: 'https://discord.gg/larakits' },
         // { name: 'Twitter', href: 'https://twitter.com/larakits' },
-        { name: 'Newsletter', href: '/newsletter' },
+        // { name: 'Newsletter', href: '/newsletter' },
     ],
     support: [
         { name: 'Documentation', href: route('docs') },
