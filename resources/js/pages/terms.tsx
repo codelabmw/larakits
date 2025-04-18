@@ -77,92 +77,126 @@ export default function Terms() {
                                 <section id="terms">
                                     <h2 className="!mt-0 text-lg font-bold">Terms</h2>
                                     <p className="mt-2">
-                                        By accessing LaraKits, you agree to be bound by these Terms of Service and to comply with all applicable laws
-                                        and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this
-                                        site.
+                                        Larakits is a community-driven, open-source platform for discovering, sharing, and maintaining Laravel starter
+                                        kits. By accessing or using Larakits, you agree to these Terms of Service and all applicable laws and
+                                        regulations. If you do not agree with any part of these terms, you may not use the platform.
                                     </p>
                                 </section>
 
                                 <section id="use-license">
                                     <h2 className="!mt-0 text-lg font-bold">Use License</h2>
                                     <p className="mt-2">
-                                        Permission is granted to temporarily access LaraKits for personal, non-commercial transitory viewing only.
-                                        This is the grant of a license, not a transfer of title, and under this license you may not:
+                                        Larakits grants you a limited, non-exclusive license to access and use the platform for personal and
+                                        non-commercial purposes, specifically for discovering, evaluating, and contributing Laravel starter kits. You
+                                        may not:
                                     </p>
-                                    <ul>
-                                        <li>Modify or copy the materials</li>
-                                        <li>Use the materials for any commercial purpose</li>
-                                        <li>Attempt to decompile or reverse engineer any software contained on LaraKits</li>
-                                        <li>Remove any copyright or other proprietary notations from the materials</li>
+                                    <ul className="bg-muted/40 mt-4 space-y-3 rounded-lg border p-4">
+                                        <li className="flex items-start gap-3">
+                                            <span className="text-primary mt-1">
+                                                <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                                    <path d="M5 12h14" />
+                                                </svg>
+                                            </span>
+                                            <span>
+                                                Modify or copy platform content except as permitted by kit licenses or contribution guidelines
+                                            </span>
+                                        </li>
+                                        <li className="flex items-start gap-3">
+                                            <span className="text-primary mt-1">
+                                                <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                                    <path d="M5 12h14" />
+                                                </svg>
+                                            </span>
+                                            <span>Use the platform or its content for commercial exploitation without permission</span>
+                                        </li>
+                                        <li className="flex items-start gap-3">
+                                            <span className="text-primary mt-1">
+                                                <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                                    <path d="M5 12h14" />
+                                                </svg>
+                                            </span>
+                                            <span>Reverse engineer, attempt to gain unauthorized access, or disrupt the platform’s operation</span>
+                                        </li>
+                                        <li className="flex items-start gap-3">
+                                            <span className="text-primary mt-1">
+                                                <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                                    <path d="M5 12h14" />
+                                                </svg>
+                                            </span>
+                                            <span>Remove or alter copyright notices or attributions from kits or platform content</span>
+                                        </li>
                                     </ul>
                                 </section>
 
                                 <section id="user-contributions">
                                     <h2 className="!mt-0 text-lg font-bold">User Contributions</h2>
-                                    <p>When submitting starter kits to La className="mt-2"raKits, you agree that:</p>
-                                    <ul>
-                                        <li>You own or have the rights to share the submitted content</li>
-                                        <li>Your submission doesn't infringe on any third party's intellectual property rights</li>
-                                        <li>You grant LaraKits a non-exclusive license to use, modify, and distribute your submission</li>
-                                        <li>You are responsible for maintaining and supporting your submitted starter kits</li>
-                                    </ul>
+                                    <p className="mt-2">
+                                        Larakits does not accept direct starter kit submissions. Instead, Larakits automatically curates publicly
+                                        available Laravel starter kits from Packagist. All kit information, metadata, and documentation are sourced
+                                        from Packagist and the respective public repositories. If you are a kit owner and wish to update or remove
+                                        your kit’s information on Larakits, please update your Packagist listing or contact Larakits support for
+                                        assistance.
+                                    </p>
                                 </section>
 
                                 <section id="disclaimer">
                                     <h2 className="!mt-0 text-lg font-bold">Disclaimer</h2>
                                     <p className="mt-2">
-                                        The materials on LaraKits are provided on an 'as is' basis. LaraKits makes no warranties, expressed or
-                                        implied, and hereby disclaims and negates all other warranties including, without limitation, implied
-                                        warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of
-                                        intellectual property or other violation of rights.
+                                        Larakits is provided as a community resource on an "as is" basis. While we strive to curate high-quality
+                                        starter kits and information, Larakits makes no warranties, expressed or implied, regarding the accuracy,
+                                        reliability, or suitability of any kits or content. Use of any kit or information from the platform is at your
+                                        own risk.
                                     </p>
                                 </section>
 
                                 <section id="limitations">
                                     <h2 className="!mt-0 text-lg font-bold">Limitations</h2>
                                     <p className="mt-2">
-                                        In no event shall LaraKits or its suppliers be liable for any damages (including, without limitation, damages
-                                        for loss of data or profit, or due to business interruption) arising out of the use or inability to use
-                                        LaraKits, even if LaraKits or a LaraKits authorized representative has been notified orally or in writing of
-                                        the possibility of such damage.
+                                        In no event shall Larakits, its maintainers, or contributors be liable for any damages arising from the use or
+                                        inability to use the platform or any starter kit, including but not limited to loss of data, profits, or
+                                        business interruption. Users are responsible for evaluating the suitability and security of any kit before
+                                        use.
                                     </p>
                                 </section>
 
                                 <section id="accuracy">
                                     <h2 className="!mt-0 text-lg font-bold">Accuracy of Materials</h2>
                                     <p className="mt-2">
-                                        The materials appearing on LaraKits could include technical, typographical, or photographic errors. LaraKits
-                                        does not warrant that any of the materials on its website are accurate, complete, or current.
+                                        Larakits aims to provide accurate and up-to-date information about Laravel starter kits, but does not
+                                        guarantee that all content is error-free, complete, or current. Kit details, documentation, and statistics are
+                                        provided by maintainers and the community, and may change at any time.
                                     </p>
                                 </section>
 
                                 <section id="links">
                                     <h2 className="!mt-0 text-lg font-bold">Links</h2>
                                     <p className="mt-2">
-                                        LaraKits has not reviewed all of the sites linked to its website and is not responsible for the contents of
-                                        any such linked site. The inclusion of any link does not imply endorsement by LaraKits of the site. Use of any
-                                        such linked website is at the user's own risk.
+                                        Larakits contains links to third-party sites, repositories, and resources. These links are provided for
+                                        convenience and do not imply endorsement. Larakits is not responsible for the content or availability of
+                                        external sites and resources.
                                     </p>
                                 </section>
 
                                 <section id="modifications">
                                     <h2 className="!mt-0 text-lg font-bold">Modifications</h2>
                                     <p className="mt-2">
-                                        LaraKits may revise these terms of service at any time without notice. By using this website, you are agreeing
-                                        to be bound by the then current version of these terms of service.
+                                        Larakits may update these Terms of Service at any time to reflect changes in the platform, community
+                                        guidelines, or legal requirements. Continued use of the platform after changes constitutes acceptance of the
+                                        revised terms.
                                     </p>
                                 </section>
 
                                 <section id="governing-law">
                                     <h2 className="!mt-0 text-lg font-bold">Governing Law</h2>
                                     <p className="mt-2">
-                                        These terms and conditions are governed by and construed in accordance with the laws of the United States and
-                                        you irrevocably submit to the exclusive jurisdiction of the courts in that location.
+                                        These terms are governed by and construed in accordance with the laws applicable to the platform’s operators.
+                                        Any disputes arising from these terms or the use of Larakits will be subject to the exclusive jurisdiction of
+                                        the relevant courts.
                                     </p>
                                 </section>
                             </div>
 
-                            <div className="text-muted-foreground mt-12 border-t pt-6 text-sm">Last updated: April 2, 2025</div>
+                            <div className="text-muted-foreground mt-12 border-t pt-6 text-sm">Last updated: April 18, 2025</div>
                         </div>
                     </div>
                 </div>
