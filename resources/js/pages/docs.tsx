@@ -46,8 +46,6 @@ export default function Docs() {
                     {/* Side Navigation */}
                     <div className="hidden lg:block lg:w-64">
                         <div className="sticky top-24 space-y-4">
-                            <h6 className="font-medium">On this page</h6>
-
                             <nav className="space-y-1">
                                 {sections.map((section) => (
                                     <a
