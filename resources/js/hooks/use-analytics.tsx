@@ -17,7 +17,7 @@ export default function useGA4Analytics() {
         });
     }
 
-    function sendEvent(category: 'navigation' | 'interaction', action: string, label?: string, value?: number): void {
+    function sendEvent(category: 'navigation' | 'engagement', action: string, label?: string, value?: number): void {
         ReactGA4.event({
             category: category,
             action: action,

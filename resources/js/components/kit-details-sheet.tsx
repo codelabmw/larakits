@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import useGA4Analytics from '@/hooks/use-analytics';
 import useClipboard from '@/hooks/use-clipboard';
 import type { Kit } from '@/types';
 import { GitHubLogoIcon, StarFilledIcon } from '@radix-ui/react-icons';
@@ -17,15 +18,25 @@ interface Props {
 }
 
 function KitDetailsSheet({ kit, onOpenChange }: Props) {
+    const { sendEvent } = useGA4Analytics();
     const { copy, recentlyCopied } = useClipboard();
 
     const parseKitName = (name: string) => {
         return name.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
     };
 
+    const handleHerdRedirect = () => {
+        sendEvent('engagement', 'button_click', 'Laravel Herd');
+    };
+
+    const handleCopy = (kit: Kit) => {
+        copy(`laravel new --using=${kit.vendor}/${kit.name}`);
+        sendEvent('engagement', 'button_click', 'Copy Command');
+    };
+
     return (
         <Sheet open={!!kit} onOpenChange={onOpenChange}>
-            <SheetContent className="p-4 md:p-8 w-[100%] md:max-w-xl">
+            <SheetContent className="w-[100%] p-4 md:max-w-xl md:p-8">
                 {kit && (
                     <ScrollArea className="h-full pr-6">
                         <div className="space-y-8">
@@ -37,7 +48,7 @@ function KitDetailsSheet({ kit, onOpenChange }: Props) {
 
                             {/* Installation */}
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-                                <Button asChild variant="destructive">
+                                <Button asChild variant="destructive" onClick={handleHerdRedirect}>
                                     <a target="_blank" href={`https://herd.laravel.com/new?starter-kit=${kit.vendor}/${kit.name}`}>
                                         <span>Laravel Herd</span>
                                     </a>
@@ -46,12 +57,7 @@ function KitDetailsSheet({ kit, onOpenChange }: Props) {
                                     <p className="line-clamp-1 flex-1">
                                         laravel new --using={kit.vendor}/{kit.name}
                                     </p>
-                                    <Button
-                                        onClick={() => copy(`laravel new --using=${kit.vendor}/${kit.name}`)}
-                                        variant="ghost"
-                                        size="icon"
-                                        className="w-10"
-                                    >
+                                    <Button onClick={() => handleCopy(kit)} variant="ghost" size="icon" className="w-10">
                                         {recentlyCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                                     </Button>
                                 </div>
