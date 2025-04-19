@@ -66,75 +66,74 @@ export default function Index({ kits, filters }: Props) {
         <GuestLayout>
             <Head title="Browse Starter Kits" />
 
-            <div className="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl py-8">
+            <div className="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-2 py-8 sm:px-4">
                 {/* Header */}
-                <div className="mb-8 py-8 text-center max-w-xl mx-auto">
+                <div className="mx-auto mb-8 max-w-xl py-8 text-center">
                     <h1 className="mb-2 text-3xl font-bold tracking-wider">Browse starter kits</h1>
-                    <p className="text-muted-foreground">Find the perfect Laravel starter kit for your next project. You can narrow down your search by tags and stacks.</p>
+                    <p className="text-muted-foreground">
+                        Find the perfect Laravel starter kit for your next project. You can narrow down your search by tags and stacks.
+                    </p>
                 </div>
 
                 {kits.data.length > 0 ? (
                     <>
                         {/* Search and Filters */}
-                        <div className="mb-8 flex items-center justify-between gap-4">
-                            <div className="relative w-[30%]">
+                        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                            <div className="relative w-full sm:w-[30%]">
                                 <MagnifyingGlassIcon className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
                                 <Input
                                     type="search"
                                     placeholder="Search kits..."
-                                    className="pl-9"
+                                    className="w-full pl-9"
                                     value={search}
                                     onChange={(e) => handleSearch(e.target.value)}
                                 />
                             </div>
 
-                            <div className="flex items-center gap-3">
+                            <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                                 <TagsSheet onChanged={handleTagsChange} />
-
                                 <StackSheet onChanged={handleStacksChange} />
                             </div>
                         </div>
 
                         {/* Kits Grid */}
-                        <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             {kits.data.map((kit) => (
                                 <KitCard key={kit.slug} kit={kit} onClick={() => setSelectedKit(kit)} />
                             ))}
                         </div>
 
-                        {/* Pagination */}
-                        {kits.total / kits.per_page > 1 && (
-                            <div className="flex items-center justify-between">
-                                <p className="text-muted-foreground text-sm">
-                                    Page {kits.current_page} of {kits.last_page}
-                                </p>
-                                <div className="flex items-center gap-2">
-                                    <Button asChild variant="outline">
-                                        <Link
-                                            href={kits.prev_page_url ?? ''}
-                                            className={`${kits.current_page === 1 ? 'pointer-events-none opacity-50' : ''}`}
-                                        >
-                                            <ChevronLeftIcon className="h-4 w-4" />
-                                        </Link>
-                                    </Button>
-
-                                    {kits.links.slice(1, -1).map((link) => (
-                                        <Button asChild key={link.url} variant={link.active ? 'default' : 'secondary'}>
-                                            <Link href={link.url ?? ''}>{link.label}</Link>
-                                        </Button>
-                                    ))}
-
-                                    <Button asChild variant="outline">
-                                        <Link
-                                            href={kits.next_page_url ?? ''}
-                                            className={`${kits.current_page === kits.last_page ? 'pointer-events-none opacity-50' : ''}`}
-                                        >
-                                            <ChevronRightIcon className="h-4 w-4" />
-                                        </Link>
-                                    </Button>
-                                </div>
+                        {/* Results Summary & Pagination */}
+                        <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+                            <div className="text-muted-foreground text-sm">
+                                Page {kits.current_page} of {kits.last_page}
                             </div>
-                        )}
+                            <div className="flex w-full flex-wrap justify-center gap-2 sm:w-auto sm:justify-start">
+                                <Button asChild variant="outline">
+                                    <Link
+                                        href={kits.prev_page_url ?? ''}
+                                        className={`${kits.current_page === 1 ? 'pointer-events-none opacity-50' : ''}`}
+                                    >
+                                        <ChevronLeftIcon className="h-4 w-4" />
+                                    </Link>
+                                </Button>
+
+                                {kits.links.slice(1, -1).map((link) => (
+                                    <Button asChild key={link.url} variant={link.active ? 'default' : 'secondary'}>
+                                        <Link href={link.url ?? ''}>{link.label}</Link>
+                                    </Button>
+                                ))}
+
+                                <Button asChild variant="outline">
+                                    <Link
+                                        href={kits.next_page_url ?? ''}
+                                        className={`${kits.current_page === kits.last_page ? 'pointer-events-none opacity-50' : ''}`}
+                                    >
+                                        <ChevronRightIcon className="h-4 w-4" />
+                                    </Link>
+                                </Button>
+                            </div>
+                        </div>
                     </>
                 ) : (
                     <div className="mx-auto flex h-96 max-w-4xl items-center justify-center rounded border">
@@ -142,7 +141,7 @@ export default function Index({ kits, filters }: Props) {
                             <div className="flex items-center justify-center">
                                 <PackageSearchIcon className="h-8 w-8" />
                             </div>
-                            <p className="mt-2">No kits found at the moment! Still curating...</p>
+                            <p className="mt-2">No kits found at the moment! Try adjusting your filters.</p>
                         </div>
                     </div>
                 )}
