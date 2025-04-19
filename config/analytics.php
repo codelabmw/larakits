@@ -5,7 +5,7 @@ return [
     /*
      * The property id of which you want to display data.
      */
-    'property_id' => env('ANALYTICS_PROPERTY_ID'),
+    'property_id' => env('GA_ANALYTICS_PROPERTY_ID'),
 
     /*
      * Path to the client secret json file. Take a look at the README of this package
@@ -30,4 +30,9 @@ return [
     'cache' => [
         'store' => 'file',
     ],
+
+    /*
+     * Start date for the analytics data.
+     */
+    'start_date' => '2025-01-01',
 ];

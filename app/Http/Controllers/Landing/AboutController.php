@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kit;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Analytics\Facades\Analytics;
+use Spatie\Analytics\Period;
 
 class AboutController extends Controller
 {
@@ -15,8 +18,19 @@ class AboutController extends Controller
      */
     public function __invoke(): Response
     {
+        $analytics = Analytics::fetchTotalVisitorsAndPageViews(Period::create(
+            Carbon::parse(config('analytics.start_date')),
+            now(),
+        ));
+
+        $activeUsers = 0;
+
+        $analytics->each(function ($entry) use (&$activeUsers) {
+            $activeUsers += $entry['activeUsers'];
+        });
+
         $totalKits = Kit::count();
-        $totalVisitors = 1; // TODO: Plug in results from analytics api
+        $totalVisitors = $activeUsers;
         $totalStars = Cache::get('github-stars');
 
         return Inertia::render('landing/about', compact('totalKits', 'totalVisitors', 'totalStars'));
