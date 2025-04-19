@@ -42,7 +42,7 @@ export default function Terms() {
         <GuestLayout>
             <Head title="Terms of Service" />
 
-            <div className="relative mx-auto max-w-7xl py-8">
+            <div className="relative mx-auto max-w-7xl py-8 px-4 sm:px-6 md:px-8">
                 <div className="lg:flex lg:gap-12">
                     {/* Side Navigation */}
                     <div className="hidden lg:block lg:w-64">
@@ -65,7 +65,7 @@ export default function Terms() {
                     </div>
 
                     {/* Main Content */}
-                    <div className="max-w-3xl min-w-0 flex-1">
+                    <div className="max-w-3xl min-w-0 flex-1 w-full">
                         <h1 className="mb-8 text-4xl font-bold tracking-tight text-left">Terms of Service</h1>
 
                         <div className="prose prose-slate dark:prose-invert max-w-none">
@@ -73,7 +73,7 @@ export default function Terms() {
                                 By using Larakits, you agree to these terms. Please read them carefully.
                             </p>
 
-                            <div className="my-12 space-y-12">
+                            <div className="my-12 space-y-12 sm:my-16 sm:space-y-16">
                                 <section id="terms">
                                     <h2 className="!mt-0 text-lg font-bold text-left">Terms</h2>
                                     <p className="mt-2 text-left">
