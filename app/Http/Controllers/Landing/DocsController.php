@@ -12,6 +12,6 @@ class DocsController extends Controller
      */
     public function __invoke()
     {
-        return Inertia::render('docs');
+        return Inertia::render('landing/docs');
     }
 }

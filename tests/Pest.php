@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Sleep;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -13,7 +16,11 @@
 
 pest()->extend(Tests\TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
-    ->in('Feature', 'Unit');
+    ->in('Feature', 'Unit')
+    ->beforeEach(function () {
+        Http::preventStrayRequests();
+        Sleep::fake();
+    });
 
 /*
 |--------------------------------------------------------------------------

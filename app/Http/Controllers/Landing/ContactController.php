@@ -13,6 +13,6 @@ class ContactController extends Controller
      */
     public function __invoke(): Response
     {
-        return Inertia::render('contact');
+        return Inertia::render('landing/contact');
     }
 }
