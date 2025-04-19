@@ -74,40 +74,39 @@ export default function StackSheet({ onChanged }: Props) {
                     )}
                 </Button>
             </SheetTrigger>
-            <SheetContent className="flex flex-col p-6">
-                <div>
-                    <h5>Stack</h5>
+            <SheetContent className="flex flex-col p-4 sm:p-6 w-[100%]">
+                <div className="mb-4">
+                    <h5 className="text-lg font-semibold">Stack</h5>
                 </div>
-
-                <div>
-                    {selectedStacks.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                            {selectedStacks.map((stack) => (
-                                <Badge
-                                    key={stack.slug}
-                                    variant="secondary"
-                                    className="cursor-pointer capitalize"
-                                    onClick={() => toggleSelection(stack)}
-                                >
-                                    <span>{stack.name}</span>
-                                    <X className="ml-2" />
-                                </Badge>
-                            ))}
-                        </div>
-                    )}
-                </div>
-
-                <div className="mt-2">
-                    <Input value={search} onChange={(e) => handleSearch(e.target.value)} placeholder="Search stack" />
-                </div>
-
-                <ScrollArea className="mt-2 w-full flex-1">
-                    <div className="space-y-1">
+                {selectedStacks.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                        {selectedStacks.map((stack) => (
+                            <Badge
+                                key={stack.slug}
+                                variant="secondary"
+                                className="cursor-pointer capitalize"
+                                onClick={() => toggleSelection(stack)}
+                            >
+                                <span>{stack.name}</span>
+                                <X className="ml-2" />
+                            </Badge>
+                        ))}
+                    </div>
+                )}
+                <Input
+                    type="search"
+                    placeholder="Search stacks..."
+                    className="mb-4 w-full"
+                    value={search}
+                    onChange={(e) => handleSearch(e.target.value)}
+                />
+                <ScrollArea className="flex-1">
+                    <div className="flex flex-col gap-2">
                         {stacks.map((stack) => (
                             <Button
                                 key={stack.slug}
-                                variant="ghost"
-                                className="h-auto w-full justify-between py-2 capitalize"
+                                variant={selectedStacks.includes(stack) ? 'secondary' : 'ghost'}
+                                className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm"
                                 onClick={() => toggleSelection(stack)}
                             >
                                 <span>{stack.name}</span>

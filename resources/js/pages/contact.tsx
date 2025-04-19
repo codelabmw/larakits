@@ -30,21 +30,21 @@ export default function Contact() {
             <Head title="Contact" />
 
             <div className="bg-grid-black/[0.02] dark:bg-grid-white/[0.02] min-h-[calc(100vh-4rem)]">
-                <div className="container mx-auto flex min-h-[calc(100vh-4rem)] max-w-7xl flex-col gap-12 px-4 py-12 lg:flex-row lg:items-center lg:justify-between lg:gap-24 lg:px-8">
-                    <div className="text-center lg:max-w-md lg:text-left">
-                        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Get in Touch</h2>
-                        <p className="text-muted-foreground mt-6 text-lg leading-8">
+                <div className="container mx-auto flex min-h-[calc(100vh-4rem)] max-w-7xl flex-col gap-12 px-4 py-12 sm:px-6 md:px-8 lg:flex-row lg:items-center lg:justify-between lg:gap-24">
+                    <div className="text-left lg:max-w-md">
+                        <h2 className="text-3xl font-bold tracking-tight text-left sm:text-4xl">Get in Touch</h2>
+                        <p className="text-muted-foreground mt-6 text-lg leading-8 text-left">
                             Have questions or feedback? We're here to help. Choose your preferred way to reach us.
                         </p>
                     </div>
 
-                    <div className="grid flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 w-full">
                         {contactMethods.map((method) => (
                             <Card key={method.name} className="hover:bg-muted/50 relative overflow-hidden transition-colors">
                                 <a href={method.href} target="_blank" rel="noopener noreferrer" className="block p-6">
                                     <method.icon className="text-primary h-6 w-6" />
-                                    <h3 className="mt-4 text-base font-semibold">{method.name}</h3>
-                                    <p className="text-muted-foreground mt-2 text-sm">{method.description}</p>
+                                    <h3 className="mt-4 text-base font-semibold text-left">{method.name}</h3>
+                                    <p className="text-muted-foreground mt-2 text-sm text-left">{method.description}</p>
                                 </a>
                             </Card>
                         ))}

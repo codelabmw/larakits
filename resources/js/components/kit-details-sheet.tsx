@@ -25,7 +25,7 @@ function KitDetailsSheet({ kit, onOpenChange }: Props) {
 
     return (
         <Sheet open={!!kit} onOpenChange={onOpenChange}>
-            <SheetContent className="p-8 sm:max-w-xl">
+            <SheetContent className="p-4 md:p-8 w-[100%] md:max-w-xl">
                 {kit && (
                     <ScrollArea className="h-full pr-6">
                         <div className="space-y-8">
@@ -36,7 +36,7 @@ function KitDetailsSheet({ kit, onOpenChange }: Props) {
                             </div>
 
                             {/* Installation */}
-                            <div className="flex items-center gap-4">
+                            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                                 <Button asChild variant="destructive">
                                     <a target="_blank" href={`https://herd.laravel.com/new?starter-kit=${kit.vendor}/${kit.name}`}>
                                         <span>Laravel Herd</span>

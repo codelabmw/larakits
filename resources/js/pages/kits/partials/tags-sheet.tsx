@@ -73,35 +73,36 @@ export default function TagsSheet({ onChanged }: Props) {
                     )}
                 </Button>
             </SheetTrigger>
-            <SheetContent className="flex flex-col p-6">
-                <div>
-                    <h5>Tags</h5>
+            <SheetContent className="flex flex-col p-4 sm:p-6 w-[100%]">
+                <div className="mb-4">
+                    <h5 className="text-lg font-semibold">Tags</h5>
                 </div>
 
-                <div>
-                    {selectedTags.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                            {selectedTags.map((tag) => (
-                                <Badge key={tag.slug} variant="secondary" className="cursor-pointer capitalize" onClick={() => toggleSelection(tag)}>
-                                    <span>{tag.name}</span>
-                                    <X className="ml-2" />
-                                </Badge>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                {selectedTags.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                        {selectedTags.map((tag) => (
+                            <Badge key={tag.slug} variant="secondary" className="cursor-pointer capitalize" onClick={() => toggleSelection(tag)}>
+                                <span>{tag.name}</span>
+                                <X className="ml-2" />
+                            </Badge>
+                        ))}
+                    </div>
+                )}
 
-                <div className="mt-2">
-                    <Input value={search} onChange={(e) => handleSearch(e.target.value)} placeholder="Search tags" />
-                </div>
-
-                <ScrollArea className="mt-2 w-full flex-1">
-                    <div className="space-y-1">
+                <Input
+                    type="search"
+                    placeholder="Search tags..."
+                    className="mb-4 w-full"
+                    value={search}
+                    onChange={(e) => handleSearch(e.target.value)}
+                />
+                <ScrollArea className="flex-1">
+                    <div className="flex flex-col gap-2">
                         {tags.map((tag) => (
                             <Button
                                 key={tag.slug}
-                                variant="ghost"
-                                className="h-auto w-full justify-between py-2 capitalize"
+                                variant={selectedTags.includes(tag) ? 'secondary' : 'ghost'}
+                                className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm"
                                 onClick={() => toggleSelection(tag)}
                             >
                                 <span>{tag.name}</span>
