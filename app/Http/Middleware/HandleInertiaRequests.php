@@ -57,6 +57,7 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             'stars' => Cache::get('github-stars'),
+            'sessionId' => $request->session()->getId(),
         ];
     }
 }
