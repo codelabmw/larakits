@@ -3,6 +3,7 @@ import { GuestLayout } from '@/layouts/guest-layout';
 import { Head } from '@inertiajs/react';
 import { GitHubLogoIcon, HeartFilledIcon, RocketIcon } from '@radix-ui/react-icons';
 import { MousePointerClickIcon, PackageCheckIcon, PackageOpenIcon } from 'lucide-react';
+import { useInView } from '@/hooks/use-in-view';
 
 const features = [
     {
@@ -32,6 +33,7 @@ interface Props {
 }
 
 export default function About({ totalKits, totalVisitors, totalStars }: Props) {
+    const [statsRef, statsInView] = useInView<HTMLDivElement>({ threshold: 0.3 });
     return (
         <GuestLayout>
             <Head title="About" />
@@ -76,7 +78,7 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
 
             {/* Stats */}
             <div className="border-t">
-                <div className="mx-auto max-w-7xl px-2 sm:px-4 py-12 sm:py-24">
+                <div ref={statsRef} className="mx-auto max-w-7xl px-2 sm:px-4 py-12 sm:py-24">
                     <div className="mx-auto max-w-2xl lg:max-w-none">
                         <div className="text-center">
                             <h2 className="text-2xl font-bold sm:text-3xl">Trusted by developers worldwide</h2>
@@ -90,7 +92,7 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
                                     <PackageOpenIcon className="text-primary h-8 w-8 sm:h-10 sm:w-10" />
                                 </div>
                                 <div className="z-10 text-center">
-                                    <AnimatedCounter value={totalKits} className="text-4xl sm:text-5xl font-extrabold" />
+                                    {statsInView && <AnimatedCounter value={totalKits} className="text-4xl sm:text-5xl font-extrabold" />}
                                     <p className="text-muted-foreground mt-1 text-sm sm:text-base">Starter Kits</p>
                                 </div>
                             </div>
@@ -101,7 +103,7 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
                                     <MousePointerClickIcon className="text-secondary h-8 w-8 sm:h-10 sm:w-10" />
                                 </div>
                                 <div className="z-10 text-center">
-                                    <AnimatedCounter value={totalVisitors} className="text-3xl sm:text-4xl font-extrabold" />
+                                    {statsInView && <AnimatedCounter value={totalVisitors} className="text-3xl sm:text-4xl font-extrabold" />}
                                     <p className="text-muted-foreground mt-1 text-sm sm:text-base">Daily Visitors</p>
                                 </div>
                             </div>
@@ -112,7 +114,7 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
                                     <GitHubLogoIcon className="text-foreground h-8 w-8 sm:h-10 sm:w-10" />
                                 </div>
                                 <div className="z-10 text-center">
-                                    <AnimatedCounter value={totalStars} className="text-3xl sm:text-4xl font-extrabold" />
+                                    {statsInView && <AnimatedCounter value={totalStars} className="text-3xl sm:text-4xl font-extrabold" />}
                                     <p className="text-muted-foreground mt-1 text-sm sm:text-base">Github Stars</p>
                                 </div>
                             </div>
