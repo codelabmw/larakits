@@ -28,6 +28,7 @@ export interface SharedData {
     auth: Auth;
     ziggy: Config & { location: string };
     stars?: number;
+    sessionId: string;
     [key: string]: unknown;
 }
 

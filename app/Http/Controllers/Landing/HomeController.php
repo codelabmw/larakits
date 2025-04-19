@@ -14,7 +14,7 @@ class HomeController extends Controller
         $trendingKits = Kit::query()->with('tags', 'stacks')->latest('downloads')->take(6)->get();
         $recentKits = Kit::query()->with('tags', 'stacks')->latest('created_at')->take(6)->get();
 
-        return Inertia::render('welcome', [
+        return Inertia::render('landing/welcome', [
             'trendingKits' => $trendingKits,
             'recentKits' => $recentKits,
         ]);

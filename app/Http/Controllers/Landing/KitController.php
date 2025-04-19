@@ -38,7 +38,7 @@ class KitController extends Controller
                 return $query->with(['stacks', 'tags'])->paginate()->withQueryString();
             });
 
-        return Inertia::render('kits/index', [
+        return Inertia::render('landing/kits/index', [
             'kits' => $kits,
             'filters' => [
                 'search' => $request->get('search'),

@@ -9,6 +9,6 @@ it('returns a successful response', function () {
     // Assert
     $response->assertStatus(200);
     $response->assertInertia(function (AssertableInertia $page) {
-        $page->component('about');
+        $page->component('landing/about');
     });
 });

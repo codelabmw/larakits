@@ -3,6 +3,8 @@ import { KitDetailsSheet } from '@/components/kit-details-sheet';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import useGA4Analytics from '@/hooks/use-analytics';
+import useOnce from '@/hooks/use-once';
 import { GuestLayout } from '@/layouts/guest-layout';
 import type { Kit } from '@/types';
 import { Head, Link } from '@inertiajs/react';
@@ -16,8 +18,13 @@ interface Props {
 }
 
 export default function Welcome({ trendingKits, recentKits }: Props) {
+    const { sendPageView } = useGA4Analytics();
     const [selectedKit, setSelectedKit] = useState<Kit | null>(null);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+    useOnce(function () {
+        sendPageView('welcome', 'Larakits - Welcome');
+    });
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {

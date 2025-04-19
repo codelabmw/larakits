@@ -13,6 +13,6 @@ class TermsController extends Controller
      */
     public function __invoke(): Response
     {
-        return Inertia::render('terms');
+        return Inertia::render('landing/terms');
     }
 }

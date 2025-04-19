@@ -9,7 +9,7 @@ it('returns a successful response', function () {
     // Assert
     $response->assertStatus(200);
     $response->assertInertia(function (AssertableInertia $page) {
-        $page->component('welcome')
+        $page->component('landing/welcome')
             ->has('trendingKits')
             ->has('recentKits');
     });

@@ -13,6 +13,6 @@ class PrivacyPolicyController extends Controller
      */
     public function __invoke(): Response
     {
-        return Inertia::render('privacy');
+        return Inertia::render('landing/privacy');
     }
 }

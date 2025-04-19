@@ -12,7 +12,7 @@ it('returns a successful response', function () {
     // Assert
     $response->assertStatus(200);
     $response->assertInertia(function (AssertableInertia $page) {
-        $page->component('kits/index')
+        $page->component('landing/kits/index')
             ->has('kits');
     });
 });
@@ -30,7 +30,7 @@ it('can filter kits by keyword', function () {
     // Assert
     $response->assertStatus(200);
     $response->assertInertia(function (AssertableInertia $page) {
-        $page->component('kits/index')
+        $page->component('landing/kits/index')
             ->has('kits')
             ->count('kits.data', 1);
     });
@@ -50,7 +50,7 @@ it('can filter kits by tags', function () {
     // Assert
     $response->assertStatus(200);
     $response->assertInertia(function (AssertableInertia $page) {
-        $page->component('kits/index')
+        $page->component('landing/kits/index')
             ->has('kits')
             ->count('kits.data', 1);
     });
@@ -70,7 +70,7 @@ it('can filter kits by stack', function () {
     // Assert
     $response->assertStatus(200);
     $response->assertInertia(function (AssertableInertia $page) {
-        $page->component('kits/index')
+        $page->component('landing/kits/index')
             ->has('kits')
             ->count('kits.data', 1);
     });
