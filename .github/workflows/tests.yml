@@ -44,8 +44,5 @@ jobs:
       - name: Generate Application Key
         run: php artisan key:generate
 
-      - name: Run Migrations
-        run: php artisan migrate --no-interaction
-
       - name: Run Tests
         run: composer test
