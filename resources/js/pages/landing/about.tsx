@@ -96,8 +96,8 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
                             {/* Stat Card 1 */}
                             <div className="group dark:bg-muted/60 hover:border-gradient-to-r hover:from-primary/60 hover:to-secondary/60 relative flex cursor-pointer flex-col items-center justify-center gap-4 overflow-hidden rounded-2xl border border-transparent bg-white/70 p-6 shadow-lg backdrop-blur-md transition-all duration-300 hover:shadow-xl sm:p-10">
                                 <span className="from-primary/10 to-secondary/10 absolute inset-0 z-0 rounded-2xl bg-gradient-to-br opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
-                                <div className="bg-primary/10 dark:bg-primary/20 z-10 mb-2 flex h-14 w-14 items-center justify-center rounded-full sm:h-16 sm:w-16">
-                                    <PackageOpenIcon className="text-primary h-8 w-8 sm:h-10 sm:w-10" />
+                                <div className="bg-muted/10 dark:bg-muted/20 z-10 mb-2 flex h-14 w-14 items-center justify-center rounded-full sm:h-16 sm:w-16">
+                                    <PackageOpenIcon className="text-foreground h-8 w-8 sm:h-10 sm:w-10" />
                                 </div>
                                 <div className="z-10 text-center">
                                     {statsInView && <AnimatedCounter value={totalKits} className="text-4xl font-extrabold sm:text-5xl" />}
@@ -107,12 +107,12 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
                             {/* Stat Card 2 */}
                             <div className="group dark:bg-muted/60 hover:border-gradient-to-r hover:from-primary/60 hover:to-secondary/60 relative flex cursor-pointer flex-col items-center justify-center gap-4 overflow-hidden rounded-2xl border border-transparent bg-white/70 p-6 shadow-lg backdrop-blur-md transition-all duration-300 hover:shadow-xl sm:p-10">
                                 <span className="from-primary/10 to-secondary/10 absolute inset-0 z-0 rounded-2xl bg-gradient-to-br opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
-                                <div className="bg-secondary/10 dark:bg-secondary/20 z-10 mb-2 flex h-14 w-14 items-center justify-center rounded-full sm:h-16 sm:w-16">
-                                    <MousePointerClickIcon className="text-secondary h-8 w-8 sm:h-10 sm:w-10" />
+                                <div className="bg-muted/10 dark:bg-muted/20 z-10 mb-2 flex h-14 w-14 items-center justify-center rounded-full sm:h-16 sm:w-16">
+                                    <MousePointerClickIcon className="text-foreground h-8 w-8 sm:h-10 sm:w-10" />
                                 </div>
                                 <div className="z-10 text-center">
                                     {statsInView && <AnimatedCounter value={totalVisitors} className="text-3xl font-extrabold sm:text-4xl" />}
-                                    <p className="text-muted-foreground mt-1 text-sm sm:text-base">Daily Visitors</p>
+                                    <p className="text-muted-foreground mt-1 text-sm sm:text-base">Site Visitors</p>
                                 </div>
                             </div>
                             {/* Stat Card 3 */}

@@ -10,7 +10,7 @@ import type { Kit } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { ArrowRightIcon, GearIcon, GitHubLogoIcon, HeartIcon, LightningBoltIcon, RocketIcon } from '@radix-ui/react-icons';
 import { PackageSearchIcon, Rocket } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface Props {
     trendingKits: Kit[];
@@ -20,20 +20,10 @@ interface Props {
 export default function Welcome({ trendingKits, recentKits }: Props) {
     const { sendPageView } = useGA4Analytics();
     const [selectedKit, setSelectedKit] = useState<Kit | null>(null);
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     useOnce(function () {
         sendPageView('welcome', 'Larakits - Welcome');
     });
-
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            setMousePosition({ x: e.clientX, y: e.clientY });
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
 
     const features = [
         {
@@ -61,14 +51,6 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
     return (
         <GuestLayout>
             <Head title="Welcome" />
-
-            {/* Glow Effect */}
-            <div
-                className="pointer-events-none fixed inset-0 z-30 transition duration-300"
-                style={{
-                    background: `radial-gradient(300px at ${mousePosition.x}px ${mousePosition.y}px, rgba(29, 78, 216, 0.15), transparent 80%)`,
-                }}
-            />
 
             {/* Hero Section */}
             <section className="relative flex min-h-[calc(100vh-4rem)] items-center px-2 sm:px-0">
