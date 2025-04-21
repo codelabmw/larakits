@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Models\Kit;
 use App\Models\Stack;
 
-test('to array', function () {
+test('to array', function (): void {
     // Arrange
     $stack = Stack::factory()->create();
 
@@ -21,7 +21,7 @@ test('to array', function () {
     ]);
 });
 
-it('has kits', function () {
+it('has kits', function (): void {
     // Arrange
     $kit = Kit::factory()->create();
     $stack = Stack::factory()->create();

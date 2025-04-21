@@ -28,7 +28,7 @@ class Stack implements Filter
         $stacks = $this->request->get('stacks');
 
         if ($stacks) {
-            $query->whereHas('stacks', function ($query) use ($stacks) {
+            $query->whereHas('stacks', function ($query) use ($stacks): void {
                 $query->whereIn('slug', $stacks);
             });
         }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Models\Kit;
 use App\Models\Tag;
 
-test('to array', function () {
+test('to array', function (): void {
     // Arrange
     $tag = Tag::factory()->create();
 
@@ -21,7 +21,7 @@ test('to array', function () {
     ]);
 });
 
-it('has kits', function () {
+it('has kits', function (): void {
     // Arrange
     $tag = Tag::factory()->create();
     $kit = Kit::factory()->create();

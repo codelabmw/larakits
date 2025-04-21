@@ -7,19 +7,19 @@ use App\Models\Stack;
 use App\Models\Tag;
 use Inertia\Testing\AssertableInertia;
 
-it('returns a successful response', function () {
+it('returns a successful response', function (): void {
     // Act
     $response = $this->get('/kits');
 
     // Assert
     $response->assertStatus(200);
-    $response->assertInertia(function (AssertableInertia $page) {
+    $response->assertInertia(function (AssertableInertia $page): void {
         $page->component('landing/kits/index')
             ->has('kits');
     });
 });
 
-it('can filter kits by keyword', function () {
+it('can filter kits by keyword', function (): void {
     // Arrange
     Kit::factory()->create(['name' => 'test']);
     Kit::factory()->count(4)->create();
@@ -31,14 +31,14 @@ it('can filter kits by keyword', function () {
 
     // Assert
     $response->assertStatus(200);
-    $response->assertInertia(function (AssertableInertia $page) {
+    $response->assertInertia(function (AssertableInertia $page): void {
         $page->component('landing/kits/index')
             ->has('kits')
             ->count('kits.data', 1);
     });
 });
 
-it('can filter kits by tags', function () {
+it('can filter kits by tags', function (): void {
     // Arrange
     $kit = Kit::factory()->create(['name' => 'test']);
     Kit::factory()->count(4)->create();
@@ -51,14 +51,14 @@ it('can filter kits by tags', function () {
 
     // Assert
     $response->assertStatus(200);
-    $response->assertInertia(function (AssertableInertia $page) {
+    $response->assertInertia(function (AssertableInertia $page): void {
         $page->component('landing/kits/index')
             ->has('kits')
             ->count('kits.data', 1);
     });
 });
 
-it('can filter kits by stack', function () {
+it('can filter kits by stack', function (): void {
     // Arrange
     $kit = Kit::factory()->create(['name' => 'test']);
     Kit::factory()->count(4)->create();
@@ -71,7 +71,7 @@ it('can filter kits by stack', function () {
 
     // Assert
     $response->assertStatus(200);
-    $response->assertInertia(function (AssertableInertia $page) {
+    $response->assertInertia(function (AssertableInertia $page): void {
         $page->component('landing/kits/index')
             ->has('kits')
             ->count('kits.data', 1);

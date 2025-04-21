@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use App\Services\Packagist\ValueObjects\Agent;
 
-it('is stringangle', function () {
+it('is stringangle', function (): void {
     expect(Agent::class)->toImplement(Stringable::class);
 });
 
-it('has a name & email', function () {
+it('has a name & email', function (): void {
     // Arrange
     $agent = new Agent(name: 'Test User', email: 'test@example.com');
 
@@ -17,7 +17,7 @@ it('has a name & email', function () {
     expect($agent->email)->toBe('test@example.com');
 });
 
-it('parses to string', function () {
+it('parses to string', function (): void {
     // Arrange
     $agent = new Agent(name: 'Test User', email: 'test@example.com');
 

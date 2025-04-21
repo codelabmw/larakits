@@ -10,79 +10,79 @@ use App\Guessors\Stack\Volt;
 use App\Guessors\Stack\Vue;
 use App\ValueObjects\StackPayload;
 
-test('it guesses react stack', function () {
+test('it guesses react stack', function (): void {
     // Arrange
     $payload = new StackPayload([
         'npm' => ['react', 'react-dom', 'vue', 'livewire'],
     ]);
 
     // Act
-    (new React())->handle($payload, fn ($payload) => null);
+    (new React())->handle($payload, fn ($payload): null => null);
 
     // Assert
     expect($payload->getStacks())->toBe(['react']);
 });
 
-test('it guesses vue stack', function () {
+test('it guesses vue stack', function (): void {
     // Arrange
     $payload = new StackPayload([
         'npm' => ['vue', 'vue-router', 'react', 'react-dom'],
     ]);
 
     // Act
-    (new Vue())->handle($payload, fn ($payload) => null);
+    (new Vue())->handle($payload, fn ($payload): null => null);
 
     // Assert
     expect($payload->getStacks())->toBe(['vue']);
 });
 
-test('it guesses livewire stack', function () {
+test('it guesses livewire stack', function (): void {
     // Arrange
     $payload = new StackPayload([
         'composer' => ['pestphp/pest', 'livewire/livewire', 'laravel/framework'],
     ]);
 
     // Act
-    (new Livewire())->handle($payload, fn ($payload) => null);
+    (new Livewire())->handle($payload, fn ($payload): null => null);
 
     // Assert
     expect($payload->getStacks())->toBe(['livewire']);
 });
 
-test('it guesses tailwindcss stack', function () {
+test('it guesses tailwindcss stack', function (): void {
     // Arrange
     $payload = new StackPayload([
         'npm' => ['tailwindcss', 'vue', 'react', 'react-dom'],
     ]);
 
     // Act
-    (new Tailwindcss())->handle($payload, fn ($payload) => null);
+    (new Tailwindcss())->handle($payload, fn ($payload): null => null);
 
     // Assert
     expect($payload->getStacks())->toBe(['tailwindcss']);
 });
 
-it('it guesses volt stack', function () {
+it('it guesses volt stack', function (): void {
     // Arrange
     $payload = new StackPayload([
         'composer' => ['pestphp/pest', 'livewire/livewire', 'laravel/framework', 'livewire/volt'],
     ]);
 
     // Act
-    (new Volt())->handle($payload, fn ($payload) => null);
+    (new Volt())->handle($payload, fn ($payload): null => null);
 
     // Assert
     expect($payload->getStacks())->toBe(['volt']);
 });
 
-it('it guesses bootstrap stack', function () {
+it('it guesses bootstrap stack', function (): void {
     // Arrange
     $payload = new StackPayload([
         'npm' => ['bootstrap', 'vue', 'react', 'react-dom'],
     ]);
 
     // Act
-    (new Bootstrap())->handle($payload, fn ($payload) => null);
+    (new Bootstrap())->handle($payload, fn ($payload): null => null);
 
     // Assert
     expect($payload->getStacks())->toBe(['bootstrap']);

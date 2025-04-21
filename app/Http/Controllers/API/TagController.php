@@ -28,9 +28,7 @@ class TagController
 
         $tags = Pipeline::send($query)
             ->through($filters)
-            ->then(function (Builder $query) {
-                return $query->limit(10)->get();
-            });
+            ->then(fn (Builder $query) => $query->limit(10)->get());
 
         return Response::json($tags);
     }

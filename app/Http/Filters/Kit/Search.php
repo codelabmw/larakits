@@ -28,7 +28,7 @@ class Search implements Filter
         $keyword = $this->request->get('search');
 
         if ($keyword) {
-            $query->where(function ($query) use ($keyword) {
+            $query->where(function ($query) use ($keyword): void {
                 $query->where('name', 'like', "%{$keyword}%")
                     ->orWhere('description', 'like', "%{$keyword}%");
             });

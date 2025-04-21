@@ -11,13 +11,13 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use InvalidArgumentException;
 
-final class Github
+final readonly class Github
 {
     /**
      * Creates a new Github instance.
      */
     public function __construct(
-        private readonly string $baseUrl = 'https://api.github.com',
+        private string $baseUrl = 'https://api.github.com',
     ) {
         //
     }
@@ -43,15 +43,7 @@ final class Github
     public function contents(string $owner, string $repo, string $path): string
     {
         try {
-            $response = Http::retry(config('services.github.retry'), function (int $attempt, Exception $exception): int {
-                return $attempt * 1000;
-            }, function (Exception $exception, PendingRequest $request) {
-                if ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403])) {
-                    return false;
-                }
-
-                return true;
-            })->withHeader('Accept', 'application/vnd.github.v3+json')->get(
+            $response = Http::retry(config('services.github.retry'), fn (int $attempt, Exception $exception): int => $attempt * 1000, fn (Exception $exception, PendingRequest $request): bool => ! ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403])))->withHeader('Accept', 'application/vnd.github.v3+json')->get(
                 url: "{$this->baseUrl}/repos/{$owner}/{$repo}/contents/{$path}",
             );
         } catch (RequestException $exception) {
@@ -67,17 +59,9 @@ final class Github
     public function stars(string $owner, string $repo, ?string $token = null): int
     {
         try {
-            $request = Http::retry(config('services.github.retry'), function (int $attempt, Exception $exception): int {
-                return $attempt * 1000;
-            }, function (Exception $exception, PendingRequest $request) {
-                if ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403, 401])) {
-                    return false;
-                }
+            $request = Http::retry(config('services.github.retry'), fn (int $attempt, Exception $exception): int => $attempt * 1000, fn (Exception $exception, PendingRequest $request): bool => ! ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403, 401])));
 
-                return true;
-            });
-
-            if ($token) {
+            if ($token !== null && $token !== '' && $token !== '0') {
                 $request->withHeader('Authorization', "token {$token}");
             }
 

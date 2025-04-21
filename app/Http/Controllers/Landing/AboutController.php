@@ -27,7 +27,7 @@ class AboutController extends Controller
 
         $activeUsers = 0;
 
-        $analytics->each(function ($entry) use (&$activeUsers) {
+        $analytics->each(function (array $entry) use (&$activeUsers): void {
             $activeUsers += $entry['activeUsers'];
         });
 
@@ -35,6 +35,6 @@ class AboutController extends Controller
         $totalVisitors = $activeUsers;
         $totalStars = Cache::get('github-stars');
 
-        return Inertia::render('landing/about', compact('totalKits', 'totalVisitors', 'totalStars'));
+        return Inertia::render('landing/about', ['totalKits' => $totalKits, 'totalVisitors' => $totalVisitors, 'totalStars' => $totalStars]);
     }
 }

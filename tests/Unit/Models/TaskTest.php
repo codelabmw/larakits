@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Enums\TaskStatus;
 use App\Models\Task;
 
-test('to array', function () {
+test('to array', function (): void {
     // Arrange
     $task = Task::first();
 
@@ -23,7 +23,7 @@ test('to array', function () {
     ]);
 });
 
-it('marks task as failed', function () {
+it('marks task as failed', function (): void {
     // Arrange
     $task = Task::first();
 
@@ -34,7 +34,7 @@ it('marks task as failed', function () {
     expect($task->status)->toBe(TaskStatus::FAILED);
 });
 
-it('marks task as successful', function () {
+it('marks task as successful', function (): void {
     // Arrange
     $task = Task::first();
 
@@ -45,7 +45,7 @@ it('marks task as successful', function () {
     expect($task->status)->toBe(TaskStatus::SUCCESS);
 });
 
-it('checks if task should run', function () {
+it('checks if task should run', function (): void {
     // Arrange
     $task = Task::first();
 
@@ -56,7 +56,7 @@ it('checks if task should run', function () {
     expect($shouldRun)->toBeTrue();
 });
 
-it('gets current task', function () {
+it('gets current task', function (): void {
     // Arrange
     $task = Task::first();
 
@@ -67,7 +67,7 @@ it('gets current task', function () {
     expect($currentTask->id)->toBe($task->id);
 });
 
-it('checks if task run successfully', function () {
+it('checks if task run successfully', function (): void {
     // Arrange
     $task = Task::first();
     $task->updateStatus(TaskStatus::SUCCESS);

@@ -13,14 +13,14 @@ use Stringable;
  * @property-read string $name
  * @property-read string $email
  */
-final class Agent implements Stringable
+final readonly class Agent implements Stringable
 {
     /**
      * Creates a new instance of the Agent class.
      */
     public function __construct(
-        public readonly string $name,
-        public readonly string $email
+        public string $name,
+        public string $email
     ) {
         //
     }

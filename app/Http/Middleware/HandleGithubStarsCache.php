@@ -37,7 +37,7 @@ class HandleGithubStarsCache
         }
         // @codeCoverageIgnoreEnd
 
-        Cache::remember('github-stars', 3600, fn () => $this->getGithubStars($github));
+        Cache::remember('github-stars', 3600, fn (): ?int => $this->getGithubStars($github));
     }
 
     /**
@@ -49,7 +49,7 @@ class HandleGithubStarsCache
 
         try {
             $stars = $github->stars('codelabmw', 'larakits');
-        } catch (Exception $exception) {
+        } catch (Exception) {
             //
         }
 

@@ -6,7 +6,7 @@ use App\Models\Kit;
 use App\Models\Stack;
 use App\Models\Tag;
 
-test('to array', function () {
+test('to array', function (): void {
     // Arrange
     $kit = Kit::factory()->create();
 
@@ -31,7 +31,7 @@ test('to array', function () {
     ]);
 });
 
-it('has stacks', function () {
+it('has stacks', function (): void {
     // Arrange
     $kit = Kit::factory()->create();
     $stack = Stack::factory()->create();
@@ -43,7 +43,7 @@ it('has stacks', function () {
     expect($kit->stacks()->first()->slug)->toEqual($stack->slug);
 });
 
-it('has tags', function () {
+it('has tags', function (): void {
     // Arrange
     $kit = Kit::factory()->create();
     $tag = Tag::factory()->create();
@@ -55,7 +55,7 @@ it('has tags', function () {
     expect($kit->tags()->first()->slug)->toEqual($tag->slug);
 });
 
-it('checks if kit exists corresponding to package name', function () {
+it('checks if kit exists corresponding to package name', function (): void {
     // Arrange
     Kit::factory()->create([
         'slug' => 'test-kit',

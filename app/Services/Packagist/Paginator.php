@@ -27,9 +27,9 @@ final class Paginator
      */
     public function __construct(
         array $items,
-        private ?Closure $getNextPage,
+        private readonly ?Closure $getNextPage,
         private ?string $next = null,
-        private ?int $perPage = null,
+        private readonly ?int $perPage = null,
     ) {
         $this->items = Collection::make($items);
     }
@@ -57,10 +57,10 @@ final class Paginator
      */
     public function next(): bool
     {
-        if ($this->next && $this->getNextPage !== null) {
+        if ($this->next && $this->getNextPage instanceof Closure) {
             $data = ($this->getNextPage)($this->next);
 
-            $items = array_map(fn ($item) => Package::fromArray($item), $data['results'] ?? []);
+            $items = array_map(fn ($item): Package => Package::fromArray($item), $data['results'] ?? []);
 
             // @phpstan-ignore-next-line
             $this->items = Collection::make($items);

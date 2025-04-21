@@ -6,11 +6,11 @@ use App\Exceptions\ConnectionException;
 use App\Services\Github\Github;
 use Illuminate\Http\Client\Request;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Http::preventStrayRequests();
 });
 
-it('gets file contents', function () {
+it('gets file contents', function (): void {
     // Arrange
     Http::fake([
         'https://api.github.com/repos/laravel/framework/contents/example.json' => Http::response([
@@ -27,12 +27,10 @@ it('gets file contents', function () {
 
     // Assert
     expect(base64_decode($result))->toBe('Hello World');
-    Http::assertSent(function (Request $request) {
-        return $request->url() === 'https://api.github.com/repos/laravel/framework/contents/example.json';
-    });
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api.github.com/repos/laravel/framework/contents/example.json');
 });
 
-it('retries on failure', function () {
+it('retries on failure', function (): void {
     // Arrange
     Http::fake([
         'https://api.github.com/repos/laravel/framework/contents/example.json' => Http::sequence()
@@ -50,12 +48,10 @@ it('retries on failure', function () {
 
     // Assert
     expect(base64_decode($result))->toBe('Hello World');
-    Http::assertSent(function (Request $request) {
-        return $request->url() === 'https://api.github.com/repos/laravel/framework/contents/example.json';
-    });
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api.github.com/repos/laravel/framework/contents/example.json');
 });
 
-it('ignores retrying on common client errors', function () {
+it('ignores retrying on common client errors', function (): void {
     // Arrange
     Http::fake([
         'https://api.github.com/repos/laravel/framework/contents/example.json' => Http::sequence()
@@ -71,7 +67,7 @@ it('ignores retrying on common client errors', function () {
     $github->contents('laravel', 'framework', 'example.json');
 })->throws(ConnectionException::class);
 
-it('parses owner and repository from URL', function () {
+it('parses owner and repository from URL', function (): void {
     // Arrange
     $url = 'https://github.com/laravel/framework';
 
@@ -82,7 +78,7 @@ it('parses owner and repository from URL', function () {
     expect($result)->toBe(['laravel', 'framework']);
 });
 
-it('throws on invalid URL', function () {
+it('throws on invalid URL', function (): void {
     // Arrange
     $url = 'https://laravel.com/laravel';
 
@@ -90,7 +86,7 @@ it('throws on invalid URL', function () {
     Github::ownerAndRepo($url);
 })->throws(InvalidArgumentException::class);
 
-it('gets a repositories stars', function () {
+it('gets a repositories stars', function (): void {
     // Arrange
     Http::fake([
         'https://api.github.com/repos/laravel/framework' => Http::response([
@@ -107,12 +103,10 @@ it('gets a repositories stars', function () {
 
     // Assert
     expect($result)->toBe(1000);
-    Http::assertSent(function (Request $request) {
-        return $request->url() === 'https://api.github.com/repos/laravel/framework';
-    });
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api.github.com/repos/laravel/framework');
 });
 
-it('gets a repositories stars with token', function () {
+it('gets a repositories stars with token', function (): void {
     // Arrange
     Http::fake([
         'https://api.github.com/repos/laravel/framework' => Http::response([
@@ -129,12 +123,10 @@ it('gets a repositories stars with token', function () {
 
     // Assert
     expect($result)->toBe(1000);
-    Http::assertSent(function (Request $request) {
-        return $request->hasHeader('Authorization', 'token token');
-    });
+    Http::assertSent(fn (Request $request) => $request->hasHeader('Authorization', 'token token'));
 });
 
-it('retries getting stars on failure', function () {
+it('retries getting stars on failure', function (): void {
     // Arrange
     Http::fake([
         'https://api.github.com/repos/laravel/framework' => Http::sequence()
@@ -152,12 +144,10 @@ it('retries getting stars on failure', function () {
 
     // Assert
     expect($result)->toBe(1000);
-    Http::assertSent(function (Request $request) {
-        return $request->url() === 'https://api.github.com/repos/laravel/framework';
-    });
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://api.github.com/repos/laravel/framework');
 });
 
-it('ignores retrying getting stars on common client errors', function () {
+it('ignores retrying getting stars on common client errors', function (): void {
     // Arrange
     Http::fake([
         'https://api.github.com/repos/laravel/framework' => Http::sequence()

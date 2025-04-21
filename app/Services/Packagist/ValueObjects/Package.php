@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace App\Services\Packagist\ValueObjects;
 
-final class Package
+final readonly class Package
 {
     /**
      * Creates a Package instance.
      */
     public function __construct(
-        public readonly ?string $name,
-        public readonly ?string $description,
-        public readonly ?string $time,
-        public readonly ?array $maintainers,
-        public readonly ?string $homepage,
-        public readonly ?array $keywords,
-        public readonly ?array $licenses,
-        public readonly ?array $authors,
-        public readonly ?array $source,
-        public readonly ?array $require,
-        public readonly ?array $requireDev,
-        public readonly ?string $type,
-        public readonly mixed $abandoned,
-        public readonly ?int $downloads,
-        public readonly ?int $stars,
+        public ?string $name,
+        public ?string $description,
+        public ?string $time,
+        public ?array $maintainers,
+        public ?string $homepage,
+        public ?array $keywords,
+        public ?array $licenses,
+        public ?array $authors,
+        public ?array $source,
+        public ?array $require,
+        public ?array $requireDev,
+        public ?string $type,
+        public mixed $abandoned,
+        public ?int $downloads,
+        public ?int $stars,
     ) {
         //
     }
@@ -37,11 +37,7 @@ final class Package
         $downloads = 0;
 
         if (isset($data['downloads'])) {
-            if (is_numeric($data['downloads'])) {
-                $downloads = (int) $data['downloads'];
-            } else {
-                $downloads = (int) $data['downloads']['total'];
-            }
+            $downloads = is_numeric($data['downloads']) ? (int) $data['downloads'] : (int) $data['downloads']['total'];
         }
 
         $currentVersion = [];

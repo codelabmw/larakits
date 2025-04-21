@@ -28,7 +28,7 @@ class Tag implements Filter
         $tags = $this->request->get('tags');
 
         if ($tags) {
-            $query->whereHas('tags', function ($query) use ($tags) {
+            $query->whereHas('tags', function ($query) use ($tags): void {
                 $query->whereIn('slug', $tags);
             });
         }

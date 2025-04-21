@@ -36,9 +36,7 @@ class KitController extends Controller
 
         $kits = Pipeline::send($query)
             ->through($filters)
-            ->then(function (Builder $query) {
-                return $query->with(['stacks', 'tags'])->paginate()->withQueryString();
-            });
+            ->then(fn (Builder $query) => $query->with(['stacks', 'tags'])->paginate()->withQueryString());
 
         return Inertia::render('landing/kits/index', [
             'kits' => $kits,

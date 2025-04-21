@@ -21,7 +21,7 @@ jobs:
         with:
           php-version: 8.3
           tools: composer:v2
-          coverage: xdebug
+          coverage: pcov
 
       - name: Setup Node
         uses: actions/setup-node@v4

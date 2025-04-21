@@ -12,11 +12,11 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Tests\Fixtures\Packages;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Http::preventStrayRequests();
 });
 
-it('searches packages by type', function () {
+it('searches packages by type', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/search.json?*' => Http::response([
@@ -49,13 +49,11 @@ it('searches packages by type', function () {
     expect($result->items())->toBeInstanceOf(Collection::class);
     expect($result->items()->first())->toBeInstanceOf(Package::class);
 
-    Http::assertSent(function (Request $request) {
-        return $request->hasHeader('User-Agent', 'Test User (test@example.com)') &&
-            $request->url() === 'https://packagist.org/search.json?type=project';
-    });
+    Http::assertSent(fn (Request $request): bool => $request->hasHeader('User-Agent', 'Test User (test@example.com)') &&
+        $request->url() === 'https://packagist.org/search.json?type=project');
 });
 
-it('searches packages by tags', function () {
+it('searches packages by tags', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/search.json?*' => Http::response([
@@ -88,13 +86,11 @@ it('searches packages by tags', function () {
     expect($result->items())->toBeInstanceOf(Collection::class);
     expect($result->items()->first())->toBeInstanceOf(Package::class);
 
-    Http::assertSent(function (Request $request) {
-        return $request->hasHeader('User-Agent', 'Test User (test@example.com)') &&
-            $request->url() === 'https://packagist.org/search.json?tags%5B0%5D=laravel&tags%5B1%5D=starter-kit';
-    });
+    Http::assertSent(fn (Request $request): bool => $request->hasHeader('User-Agent', 'Test User (test@example.com)') &&
+        $request->url() === 'https://packagist.org/search.json?tags%5B0%5D=laravel&tags%5B1%5D=starter-kit');
 });
 
-it('retries search request on failure', function () {
+it('retries search request on failure', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/search.json?*' => Http::sequence()
@@ -130,13 +126,11 @@ it('retries search request on failure', function () {
     expect($result->items())->toBeInstanceOf(Collection::class);
     expect($result->items()->first())->toBeInstanceOf(Package::class);
 
-    Http::assertSent(function (Request $request) {
-        return $request->hasHeader('User-Agent', 'Test User (test@example.com)') &&
-            $request->url() === 'https://packagist.org/search.json?type=project';
-    });
+    Http::assertSent(fn (Request $request): bool => $request->hasHeader('User-Agent', 'Test User (test@example.com)') &&
+        $request->url() === 'https://packagist.org/search.json?type=project');
 });
 
-it('ignores retrying on common client errors', function () {
+it('ignores retrying on common client errors', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/search.json?*' => Http::sequence()
@@ -171,7 +165,7 @@ it('ignores retrying on common client errors', function () {
     $packagist->search(type: 'project');
 })->throws(ConnectionException::class);
 
-it('searches with page limit', function () {
+it('searches with page limit', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/search.json?*' => Http::response([
@@ -211,13 +205,11 @@ it('searches with page limit', function () {
     // Assert
     expect($result->perPage())->toBe(2);
 
-    Http::assertSent(function (Request $request) {
-        return $request->hasHeader('User-Agent', 'Test User (test@example.com)') &&
-            $request->url() === 'https://packagist.org/search.json?type=project&per_page=2';
-    });
+    Http::assertSent(fn (Request $request): bool => $request->hasHeader('User-Agent', 'Test User (test@example.com)') &&
+        $request->url() === 'https://packagist.org/search.json?type=project&per_page=2');
 });
 
-it('gets specific package', function () {
+it('gets specific package', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/packages/*' => Http::response([
@@ -235,13 +227,11 @@ it('gets specific package', function () {
     // Assert
     expect($result)->toBeInstanceOf(Package::class);
 
-    Http::assertSent(function (Request $request) {
-        return $request->hasHeader('User-Agent', 'Test User (test@example.com)') &&
-            $request->url() === 'https://packagist.org/packages/laravel/laravel.json';
-    });
+    Http::assertSent(fn (Request $request): bool => $request->hasHeader('User-Agent', 'Test User (test@example.com)') &&
+        $request->url() === 'https://packagist.org/packages/laravel/laravel.json');
 });
 
-it('retries getting deatils on failure', function () {
+it('retries getting deatils on failure', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/packages/*' => Http::sequence()
@@ -262,13 +252,11 @@ it('retries getting deatils on failure', function () {
     // Assert
     expect($result)->toBeInstanceOf(Package::class);
 
-    Http::assertSent(function (Request $request) {
-        return $request->hasHeader('User-Agent', 'Test User (test@example.com)') &&
-            $request->url() === 'https://packagist.org/packages/laravel/laravel.json';
-    });
+    Http::assertSent(fn (Request $request): bool => $request->hasHeader('User-Agent', 'Test User (test@example.com)') &&
+        $request->url() === 'https://packagist.org/packages/laravel/laravel.json');
 });
 
-it('ignores retrying getting details on common client errors', function () {
+it('ignores retrying getting details on common client errors', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/packages/*' => Http::sequence()

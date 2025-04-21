@@ -58,7 +58,7 @@ class FetchCommand extends Command
     /**
      * Creates a new command instance.
      */
-    public function __construct(private Timer $timer)
+    public function __construct(private readonly Timer $timer)
     {
         parent::__construct();
     }
@@ -66,13 +66,13 @@ class FetchCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(Packagist $packagist, EnsureIsLaravelProject $isLaravelProject)
+    public function handle(Packagist $packagist, EnsureIsLaravelProject $isLaravelProject): void
     {
         $this->timer->start();
 
         $task = Task::openTask();
 
-        if (! $task || ! $task->shouldRun()) {
+        if (! $task instanceof Task || ! $task->shouldRun()) {
             return;
         }
 
@@ -95,7 +95,7 @@ class FetchCommand extends Command
             );
 
             do {
-                $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject, $baseUrl, $debug, $new) {
+                $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject, $baseUrl, $debug, $new): void {
                     if ($new && Kit::hasPackage($package->name)) {
                         if ($debug) {
                             $this->warn('Skipping package: '.$package->name);
@@ -225,9 +225,9 @@ class FetchCommand extends Command
                         $packageJson['dependencies'] ?? [],
                         $packageJson['devDependencies'] ?? [],
                     ));
-                } catch (ConnectionException $exception) {
+                } catch (ConnectionException) {
                     //
-                } catch (InvalidArgumentException $exception) {
+                } catch (InvalidArgumentException) {
                     // TODO: Handle other reposioty types.
                 }
             }
@@ -251,7 +251,7 @@ class FetchCommand extends Command
             $stacks = $stackPayload->getStacks();
 
             DB::transaction(function () use ($package, $stacks): void {
-                [$vendor, $name] = explode('/', $package->name);
+                [$vendor, $name] = explode('/', (string) $package->name);
 
                 $metadata = [
                     'description' => $package->description,
@@ -281,7 +281,7 @@ class FetchCommand extends Command
 
                 $keywords = array_filter(
                     $package->keywords,
-                    fn ($keyword) => ! in_array($keyword, [
+                    fn ($keyword): bool => ! in_array($keyword, [
                         'laravel',
                         'starter',
                         'kit',
@@ -298,7 +298,7 @@ class FetchCommand extends Command
                     try {
                         $tag = Tag::firstOrCreate(['slug' => Str::slug($keyword), 'name' => $keyword]);
                         $kit->tags()->attach($tag);
-                    } catch (UniqueConstraintViolationException $e) {
+                    } catch (UniqueConstraintViolationException) {
                         //
                     }
                 }
@@ -307,7 +307,7 @@ class FetchCommand extends Command
                     try {
                         $stack = Stack::firstOrCreate(['slug' => Str::slug($stack), 'name' => $stack]);
                         $kit->stacks()->attach($stack);
-                    } catch (UniqueConstraintViolationException $e) {
+                    } catch (UniqueConstraintViolationException) {
                         //
                     }
                 }

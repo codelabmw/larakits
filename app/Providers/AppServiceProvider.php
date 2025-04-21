@@ -20,16 +20,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(Agent::class, fn () => new Agent(
+        $this->app->bind(Agent::class, fn (): Agent => new Agent(
             name: config('app.agent.name'),
             email: config('app.agent.email'),
         ));
 
-        $this->app->bind(Packagist::class, fn () => new Packagist(
+        $this->app->bind(Packagist::class, fn (): Packagist => new Packagist(
             agent: $this->app->make(Agent::class),
         ));
 
-        $this->app->bind(Github::class, fn () => new Github());
+        $this->app->bind(Github::class, fn (): Github => new Github());
     }
 
     /**

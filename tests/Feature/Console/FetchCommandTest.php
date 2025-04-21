@@ -12,11 +12,11 @@ use App\Services\Packagist\Packagist;
 use App\Services\Packagist\ValueObjects\Agent;
 use Tests\Fixtures\Packages;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Http::preventStrayRequests();
 });
 
-it('fetches & stores kits', function () {
+it('fetches & stores kits', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/search.json?*' => Http::response([
@@ -52,7 +52,7 @@ it('fetches & stores kits', function () {
     expect(Tag::count())->toBeGreaterThan(0);
 });
 
-it('fetches through paginated results', function () {
+it('fetches through paginated results', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/search.json?type=project&tags%5B0%5D=laravel&tags%5B1%5D=starter-kit&tags%5B2%5D=starter%20kit&tags%5B3%5D=laravel-starter-kit&tags%5B4%5D=laravel%20starter%20kit&per_page=50' => Http::response([
@@ -93,7 +93,7 @@ it('fetches through paginated results', function () {
     expect(Tag::count())->toBeGreaterThan(0);
 });
 
-it('updates existing kits', function () {
+it('updates existing kits', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/search.json?*' => Http::response([
@@ -142,7 +142,7 @@ it('updates existing kits', function () {
     expect($kit->downloads)->toBe(491);
 });
 
-it('updates existing kits that has tags/stacks', function () {
+it('updates existing kits that has tags/stacks', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/search.json?*' => Http::response([
@@ -206,7 +206,7 @@ it('updates existing kits that has tags/stacks', function () {
     expect($kit->stacks()->count())->toBe(3);
 });
 
-it('updates current task on success', function () {
+it('updates current task on success', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/search.json?*' => Http::response([
@@ -240,7 +240,7 @@ it('updates current task on success', function () {
     expect(Task::first()->status)->toBe(TaskStatus::SUCCESS);
 });
 
-it('updates current task on failure', function () {
+it('updates current task on failure', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/search.json?*' => Http::response('Server error', 500),
@@ -260,7 +260,7 @@ it('updates current task on failure', function () {
     expect(Task::first()->status)->toBe(TaskStatus::FAILED);
 });
 
-it('schedules next task', function () {
+it('schedules next task', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/search.json?*' => Http::response([
@@ -294,7 +294,7 @@ it('schedules next task', function () {
     expect(Task::count())->toBe(2);
 });
 
-it('fetches kits in debug mode', function () {
+it('fetches kits in debug mode', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/search.json?*' => Http::response([
@@ -328,7 +328,7 @@ it('fetches kits in debug mode', function () {
     $result->assertExitCode(0);
 });
 
-it('fetches new kits only', function () {
+it('fetches new kits only', function (): void {
     // Arrange
     Http::fake([
         'https://packagist.org/search.json?*' => Http::response([
@@ -371,7 +371,5 @@ it('fetches new kits only', function () {
 
     // Assert
     $result->assertExitCode(0);
-    Http::assertNotSent(function (Request $request) {
-        return $request->url() === 'https://packagist.org/packages/laravel/wave';
-    });
+    Http::assertNotSent(fn (Request $request): bool => $request->url() === 'https://packagist.org/packages/laravel/wave');
 });
