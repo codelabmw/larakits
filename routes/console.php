@@ -6,9 +6,9 @@ use App\Console\Commands\FetchCommand;
 
 Schedule::command(FetchCommand::class)
     ->name('fetch:packages')
-    ->hourly()
+    ->everyMinute()
     ->withoutOverlapping()
     ->evenInMaintenanceMode()
     ->when(function () {
-        return Task::currentTask()?->shouldRun();
+        return Task::openTask()?->shouldRun();
     });

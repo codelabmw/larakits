@@ -68,7 +68,14 @@ class FetchCommand extends Command
     {
         $this->timer->start();
 
-        $task = Task::currentTask();
+        $task = Task::openTask();
+
+        if (!$task || !$task->shouldRun()) {
+            return;
+        }
+
+        $task->markPending();
+
         $baseUrl = $this->option('packagist');
         $debug = $this->option('debug');
         $new = $this->option('new');
