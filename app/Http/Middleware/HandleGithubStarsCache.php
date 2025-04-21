@@ -1,30 +1,27 @@
 <?php
 
-declare(strict_types=1);
-
-namespace App\Providers;
+namespace App\Http\Middleware;
 
 use App\Services\Github\Github;
+use Closure;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\ServiceProvider;
+use Symfony\Component\HttpFoundation\Response;
 
-class CachedDataServiceProvider extends ServiceProvider
+class HandleGithubStarsCache
 {
     /**
-     * Register services.
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function register(): void
+    public function handle(Request $request, Closure $next): Response
     {
-        //
-    }
+        $this->cacheGithubStars(App::make(Github::class));
 
-    /**
-     * Bootstrap services.
-     */
-    public function boot(): void
-    {
-        $this->cacheGithubStars(app()->make(Github::class));
+        return $next($request);
     }
 
     /**
