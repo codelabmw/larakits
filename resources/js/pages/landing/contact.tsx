@@ -9,7 +9,7 @@ const contactMethods = [
     {
         name: 'Email',
         description: 'Send us an email for general inquiries',
-        href: 'mailto:hello@larakits.dev',
+        href: 'mailto:larakits@codelabmw.dev',
         icon: EnvelopeClosedIcon,
     },
     {
