@@ -44,5 +44,11 @@ jobs:
       - name: Generate Application Key
         run: php artisan key:generate
 
-      - name: Run Tests
-        run: composer test
+      - name: Tests / Modern Code
+        run: composer test:refactor
+
+      - name: Tests / Types
+        run: composer test:types
+
+      - name: Tests / Unit
+        run: composer test:unit
