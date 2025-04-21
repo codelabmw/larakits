@@ -241,8 +241,8 @@ export default function Privacy() {
                                     <h2 className="!mt-0 text-left text-lg font-bold">Contact Us</h2>
                                     <p className="mt-2 text-left">
                                         If you have any questions or concerns about this Privacy Policy, please contact us at{' '}
-                                        <a href="mailto:privacy@larakits.dev" className="text-primary hover:underline">
-                                            privacy@larakits.dev
+                                        <a href="mailto:larakits@codelabmw.dev" className="text-primary hover:underline">
+                                            larakits@codelabmw.dev
                                         </a>
                                         .
                                     </p>
