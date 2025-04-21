@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Models\Tag;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -19,7 +20,7 @@ class TagSeeder extends Seeder
         foreach ($tags as $tag) {
             Tag::create([
                 'slug' => Str::slug($tag),
-                'name' => $tag
+                'name' => $tag,
             ]);
         }
     }

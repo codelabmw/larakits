@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Packagist\ValueObjects;
 
 final class Package
@@ -8,21 +10,21 @@ final class Package
      * Creates a Package instance.
      */
     public function __construct(
-        public readonly string|null $name,
-        public readonly string|null $description,
-        public readonly string|null $time,
-        public readonly array|null $maintainers,
-        public readonly string|null $homepage,
-        public readonly array|null $keywords,
-        public readonly array|null $licenses,
-        public readonly array|null $authors,
-        public readonly array|null $source,
-        public readonly array|null $require,
-        public readonly array|null $requireDev,
-        public readonly string|null $type,
-        public readonly bool|null $abandoned,
-        public readonly int|null $downloads,
-        public readonly int|null $stars,
+        public readonly ?string $name,
+        public readonly ?string $description,
+        public readonly ?string $time,
+        public readonly ?array $maintainers,
+        public readonly ?string $homepage,
+        public readonly ?array $keywords,
+        public readonly ?array $licenses,
+        public readonly ?array $authors,
+        public readonly ?array $source,
+        public readonly ?array $require,
+        public readonly ?array $requireDev,
+        public readonly ?string $type,
+        public readonly mixed $abandoned,
+        public readonly ?int $downloads,
+        public readonly ?int $stars,
     ) {
         //
     }

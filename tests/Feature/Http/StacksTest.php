@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Stack;
 use Illuminate\Testing\Fluent\AssertableJson;
 
@@ -25,7 +27,7 @@ it('can filter stacks by keyword', function () {
     $keyword = 'test';
 
     // Act
-    $response = $this->getJson('/api/stacks?search=' . $keyword);
+    $response = $this->getJson('/api/stacks?search='.$keyword);
 
     // Assert
     $response->assertStatus(200);

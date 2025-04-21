@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Services\Github\Github;
+use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
-use Exception;
 
 class CachedDataServiceProvider extends ServiceProvider
 {
@@ -36,7 +38,7 @@ class CachedDataServiceProvider extends ServiceProvider
         }
         // @codeCoverageIgnoreEnd
 
-        Cache::remember('github-stars', 3600, fn() => $this->getGithubStars($github));
+        Cache::remember('github-stars', 3600, fn () => $this->getGithubStars($github));
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Services\Packagist\ValueObjects\Agent;
 
 it('is stringangle', function () {

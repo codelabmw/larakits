@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Guessors\Stack\Bootstrap;
+use App\Guessors\Stack\Livewire;
 use App\Guessors\Stack\React;
 use App\Guessors\Stack\Tailwindcss;
 use App\Guessors\Stack\Volt;
 use App\Guessors\Stack\Vue;
-use App\Guessors\Stack\Livewire;
 use App\ValueObjects\StackPayload;
 
 test('it guesses react stack', function () {
@@ -15,7 +17,7 @@ test('it guesses react stack', function () {
     ]);
 
     // Act
-    (new React)->handle($payload, fn($payload) => null);
+    (new React())->handle($payload, fn ($payload) => null);
 
     // Assert
     expect($payload->getStacks())->toBe(['react']);
@@ -28,7 +30,7 @@ test('it guesses vue stack', function () {
     ]);
 
     // Act
-    (new Vue)->handle($payload, fn($payload) => null);
+    (new Vue())->handle($payload, fn ($payload) => null);
 
     // Assert
     expect($payload->getStacks())->toBe(['vue']);
@@ -41,7 +43,7 @@ test('it guesses livewire stack', function () {
     ]);
 
     // Act
-    (new Livewire)->handle($payload, fn($payload) => null);
+    (new Livewire())->handle($payload, fn ($payload) => null);
 
     // Assert
     expect($payload->getStacks())->toBe(['livewire']);
@@ -54,7 +56,7 @@ test('it guesses tailwindcss stack', function () {
     ]);
 
     // Act
-    (new Tailwindcss)->handle($payload, fn($payload) => null);
+    (new Tailwindcss())->handle($payload, fn ($payload) => null);
 
     // Assert
     expect($payload->getStacks())->toBe(['tailwindcss']);
@@ -67,7 +69,7 @@ it('it guesses volt stack', function () {
     ]);
 
     // Act
-    (new Volt)->handle($payload, fn($payload) => null);
+    (new Volt())->handle($payload, fn ($payload) => null);
 
     // Assert
     expect($payload->getStacks())->toBe(['volt']);
@@ -80,7 +82,7 @@ it('it guesses bootstrap stack', function () {
     ]);
 
     // Act
-    (new Bootstrap)->handle($payload, fn($payload) => null);
+    (new Bootstrap())->handle($payload, fn ($payload) => null);
 
     // Assert
     expect($payload->getStacks())->toBe(['bootstrap']);

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\TaskStatus;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\CarbonInterface;
 
 /**
  * @property int $id
@@ -40,6 +42,14 @@ class Task extends Model
         'status' => TaskStatus::class,
         'should_run_at' => 'datetime',
     ];
+
+    /**
+     * Gets the current task.
+     */
+    public static function openTask(): ?self
+    {
+        return self::query()->where('status', TaskStatus::OPEN->value)->latest()->first();
+    }
 
     /**
      * Checks if the task was run successfully.
@@ -82,14 +92,6 @@ class Task extends Model
     public function markSuccessful(): void
     {
         $this->updateStatus(TaskStatus::SUCCESS);
-    }
-
-    /**
-     * Gets the current task.
-     */
-    public static function openTask(): ?Task
-    {
-        return self::query()->where('status', TaskStatus::OPEN->value)->latest()->first();
     }
 
     /**

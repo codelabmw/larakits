@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Guessors\Kit;
 
 use App\Contracts\Guessor;
@@ -20,8 +22,8 @@ final class ByKeyword implements Guessor
 
     /**
      * Determines if the package is a kit based on its keywords.
-     * 
-     * @param KitPayload $payload 
+     *
+     * @param  KitPayload  $payload
      */
     public function handle(mixed $payload, Closure $next): mixed
     {

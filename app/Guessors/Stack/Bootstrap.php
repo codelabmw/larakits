@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Guessors\Stack;
 
 use App\Contracts\Guessor;
@@ -15,8 +17,8 @@ final class Bootstrap implements Guessor
 
     /**
      * Guesses tailwindcss stack.
-     * 
-     * @param StackPayload $payload
+     *
+     * @param  StackPayload  $payload
      */
     public function handle(mixed $payload, Closure $next): mixed
     {

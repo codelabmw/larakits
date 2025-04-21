@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kit;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Kit;
 
 class HomeController extends Controller
 {

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Actions\EnsureIsLaravelProject;
+use App\Contracts\Guessor;
 use App\Enums\TaskStatus;
 use App\Exceptions\ConnectionException;
 use App\Guessors\Kit\ByDescription;
@@ -18,9 +21,10 @@ use App\Models\Kit;
 use App\Models\Stack;
 use App\Models\Tag;
 use App\Models\Task;
+use App\Services\Github\Github;
 use App\Services\Packagist\Packagist;
 use App\Services\Timer;
-use App\ValueObjects\KitPayload as KitPayload;
+use App\ValueObjects\KitPayload;
 use App\ValueObjects\StackPayload;
 use Exception;
 use Illuminate\Console\Command;
@@ -28,9 +32,7 @@ use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Pipeline;
-use App\Contracts\Guessor;
 use Illuminate\Support\Str;
-use App\Services\Github\Github;
 use InvalidArgumentException;
 
 // @codeCoverageIgnoreStart
@@ -70,7 +72,7 @@ class FetchCommand extends Command
 
         $task = Task::openTask();
 
-        if (!$task || !$task->shouldRun()) {
+        if (! $task || ! $task->shouldRun()) {
             return;
         }
 
@@ -96,11 +98,11 @@ class FetchCommand extends Command
                 $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject, $baseUrl, $debug, $new) {
                     if ($new && Kit::hasPackage($package->name)) {
                         if ($debug) {
-                            $this->warn('Skipping package: ' . $package->name);
+                            $this->warn('Skipping package: '.$package->name);
                         }
                     } else {
                         if ($debug) {
-                            $this->info('Processing package: ' . $package->name);
+                            $this->info('Processing package: '.$package->name);
                         }
 
                         try {
@@ -124,10 +126,10 @@ class FetchCommand extends Command
                             }
                         } catch (ConnectionException $exception) {
                             if ($debug) {
-                                $this->error('Failed to process package: ' . $package->name);
+                                $this->error('Failed to process package: '.$package->name);
                             }
 
-                            if (!in_array($exception->response->status(), [404, 401, 403])) {
+                            if (! in_array($exception->response->status(), [404, 401, 403])) {
                                 throw $exception;
                             }
                         }
@@ -136,12 +138,12 @@ class FetchCommand extends Command
             } while ($paginator->next());
         } catch (Exception $exception) {
             if ($debug) {
-                $this->error('Failed to fetch kits from Packagist with exception: ' . $exception->getMessage());
+                $this->error('Failed to fetch kits from Packagist with exception: '.$exception->getMessage());
             }
 
             if ($exception instanceof ConnectionException) {
 
-                $task?->markFailed(json_encode([
+                $task->markFailed(json_encode([
                     'message' => $exception->getMessage(),
                     'code' => $exception->getCode(),
                     'file' => $exception->getFile(),
@@ -151,10 +153,10 @@ class FetchCommand extends Command
                         'status' => $exception->response->status(),
                         'body' => $exception->response->body(),
                         'headers' => $exception->response->headers(),
-                    ]
+                    ],
                 ]));
             } else {
-                $task?->markFailed(json_encode([
+                $task->markFailed(json_encode([
                     'message' => $exception->getMessage(),
                     'code' => $exception->getCode(),
                     'file' => $exception->getFile(),
@@ -162,10 +164,10 @@ class FetchCommand extends Command
                 ]));
             }
         } finally {
-            $task?->refresh();
+            $task->refresh();
         }
 
-        if ($task?->status === TaskStatus::PENDING) {
+        if ($task->status === TaskStatus::PENDING) {
             $task->markSuccessful();
         }
 
@@ -187,10 +189,9 @@ class FetchCommand extends Command
         $this->timer->stop();
 
         if ($debug) {
-            $this->info('Finished fetching kits in ' . number_format($this->timer->duration(), 2) . ' seconds');
+            $this->info('Finished fetching kits in '.number_format($this->timer->duration(), 2).' seconds');
         }
     }
-
 
     /**
      * Saves the kit to the database.
@@ -226,7 +227,7 @@ class FetchCommand extends Command
                     ));
                 } catch (ConnectionException $exception) {
                     //
-                } catch (InvalidArgumentException $exception){
+                } catch (InvalidArgumentException $exception) {
                     // TODO: Handle other reposioty types.
                 }
             }
@@ -248,7 +249,6 @@ class FetchCommand extends Command
                 ->thenReturn();
 
             $stacks = $stackPayload->getStacks();
-
 
             DB::transaction(function () use ($package, $stacks): void {
                 [$vendor, $name] = explode('/', $package->name);
@@ -281,14 +281,14 @@ class FetchCommand extends Command
 
                 $keywords = array_filter(
                     $package->keywords,
-                    fn($keyword) => !in_array($keyword, [
+                    fn ($keyword) => ! in_array($keyword, [
                         'laravel',
                         'starter',
                         'kit',
                         'starter-kit',
                         'starter kit',
                         'laravel starter kit',
-                        'framework'
+                        'framework',
                     ])
                 );
 

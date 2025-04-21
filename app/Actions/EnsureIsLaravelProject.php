@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions;
 
 use App\Services\Packagist\ValueObjects\Package;
@@ -14,6 +16,6 @@ class EnsureIsLaravelProject
     {
         $requiresLaravel = Collection::make($package->require)->has('laravel/framework');
 
-        return $package->type === 'project' && $requiresLaravel && !$package->abandoned;
+        return $package->type === 'project' && $requiresLaravel && ! $package->abandoned;
     }
 }

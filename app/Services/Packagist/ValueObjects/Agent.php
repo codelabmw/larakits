@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Packagist\ValueObjects;
 
 use Stringable;
@@ -7,7 +9,7 @@ use Stringable;
 /**
  * Represents an agent with a name and email
  * as required by Packagist.
- * 
+ *
  * @property-read string $name
  * @property-read string $email
  */
@@ -26,8 +28,8 @@ final class Agent implements Stringable
     /**
      * Gets a string representation of the object.
      */
-    public function __tostring(): string
+    public function __toString(): string
     {
-        return $this->name . ' (' . $this->email . ')';
+        return $this->name.' ('.$this->email.')';
     }
 }

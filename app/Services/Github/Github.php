@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Github;
 
 use App\Exceptions\ConnectionException;
@@ -7,6 +9,7 @@ use Exception;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
+use InvalidArgumentException;
 
 final class Github
 {
@@ -17,6 +20,21 @@ final class Github
         private readonly string $baseUrl = 'https://api.github.com',
     ) {
         //
+    }
+
+    /**
+     * Returns the owner and repository name from a repository URL.
+     */
+    public static function ownerAndRepo(string $url): array
+    {
+
+        preg_match('/^https?:\/\/github\.com\/([^\/]+)\/([^\/]+)\/?$/', $url, $matches);
+
+        if (count($matches) !== 3) {
+            throw new InvalidArgumentException('Invalid repository URL');
+        }
+
+        return [$matches[1], $matches[2]];
     }
 
     /**
@@ -34,28 +52,13 @@ final class Github
 
                 return true;
             })->withHeader('Accept', 'application/vnd.github.v3+json')->get(
-                    url: "{$this->baseUrl}/repos/{$owner}/{$repo}/contents/{$path}",
-                );
+                url: "{$this->baseUrl}/repos/{$owner}/{$repo}/contents/{$path}",
+            );
         } catch (RequestException $exception) {
             throw new ConnectionException($exception->response, 'Failed to retrieve file contents');
         }
 
         return $response->json()['content'];
-    }
-
-    /**
-     * Returns the owner and repository name from a repository URL.
-     */
-    public static function ownerAndRepo(string $url): array
-    {
-
-        preg_match('/^https?:\/\/github\.com\/([^\/]+)\/([^\/]+)\/?$/', $url, $matches);
-
-        if (count($matches) !== 3) {
-            throw new \InvalidArgumentException('Invalid repository URL');
-        }
-
-        return [$matches[1], $matches[2]];
     }
 
     /**

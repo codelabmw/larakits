@@ -1,23 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Collection;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property-read int $id
  * @property-read string $slug
  * @property-read string $name
- * 
  * @property-read CarbonInterface $updated_at
  * @property-read CarbonInterface $created_at
- * 
- * @property-read Collection<Kit, Tag> $kits
- * 
+ * @property-read Collection<Kit> $kits
+ *
  * @method BelongsToMany<Kit, Tag> kits()
  */
 class Tag extends Model
@@ -37,7 +37,7 @@ class Tag extends Model
 
     /**
      * The attributes that should be hidden.
-     * 
+     *
      * @var list<string>
      */
     protected $hidden = [
@@ -46,8 +46,8 @@ class Tag extends Model
 
     /**
      * The kits that belong to the tag.
-     * 
-     * @return BelongsToMany<Kit, Tag>
+     *
+     * @return BelongsToMany<Kit, $this>
      */
     public function kits(): BelongsToMany
     {

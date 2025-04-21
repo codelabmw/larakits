@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Kit;
 use App\Models\Stack;
 use App\Models\Tag;
@@ -25,7 +27,7 @@ it('can filter kits by keyword', function () {
     $keyword = 'test';
 
     // Act
-    $response = $this->get('/kits?search=' . $keyword);
+    $response = $this->get('/kits?search='.$keyword);
 
     // Assert
     $response->assertStatus(200);
@@ -45,7 +47,7 @@ it('can filter kits by tags', function () {
     $kit->tags()->attach($tag);
 
     // Act
-    $response = $this->get('/kits?tags[]=' . $tag->slug);
+    $response = $this->get('/kits?tags[]='.$tag->slug);
 
     // Assert
     $response->assertStatus(200);
@@ -65,7 +67,7 @@ it('can filter kits by stack', function () {
     $kit->stacks()->attach($stack);
 
     // Act
-    $response = $this->get('/kits?stacks[]=' . $stack->slug);
+    $response = $this->get('/kits?stacks[]='.$stack->slug);
 
     // Assert
     $response->assertStatus(200);

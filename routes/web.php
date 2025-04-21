@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Http\Controllers\Landing\AboutController;
+use App\Http\Controllers\Landing\ContactController;
+use App\Http\Controllers\Landing\DocsController;
 use App\Http\Controllers\Landing\HomeController;
 use App\Http\Controllers\Landing\KitController;
-use App\Http\Controllers\Landing\AboutController;
-use App\Http\Controllers\Landing\DocsController;
-use App\Http\Controllers\Landing\ContactController;
 use App\Http\Controllers\Landing\PrivacyPolicyController;
 use App\Http\Controllers\Landing\TermsController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', HomeController::class)->name('home');
 

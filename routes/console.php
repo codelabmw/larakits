@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Console\Commands\FetchCommand;
 use App\Models\Task;
 use Illuminate\Support\Facades\Schedule;
-use App\Console\Commands\FetchCommand;
 
 Schedule::command(FetchCommand::class)
     ->name('fetch:packages')

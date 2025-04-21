@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Filters\Tag;
 
 use App\Contracts\Filter;
@@ -25,7 +27,7 @@ final class Search implements Filter
     {
         $this->request->whenHas('search', function (?string $keyword) use ($query) {
             if ($keyword) {
-                $query->whereLike('name', '%' . $keyword . '%');
+                $query->whereLike('name', '%'.$keyword.'%');
             }
         });
 

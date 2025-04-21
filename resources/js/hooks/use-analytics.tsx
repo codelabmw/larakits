@@ -22,8 +22,8 @@ export default function useGA4Analytics() {
             category: category,
             action: action,
             label: label,
-            value: value
-        })
+            value: value,
+        });
     }
 
     return { initialize, sendPageView, sendEvent };
