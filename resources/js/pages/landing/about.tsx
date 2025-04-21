@@ -112,7 +112,7 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
                                 </div>
                                 <div className="z-10 text-center">
                                     {statsInView && <AnimatedCounter value={totalVisitors} className="text-3xl font-extrabold sm:text-4xl" />}
-                                    <p className="text-muted-foreground mt-1 text-sm sm:text-base">Daily Visitors</p>
+                                    <p className="text-muted-foreground mt-1 text-sm sm:text-base">Visitors</p>
                                 </div>
                             </div>
                             {/* Stat Card 3 */}

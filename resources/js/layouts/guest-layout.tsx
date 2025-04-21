@@ -15,6 +15,7 @@ import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { MenuIcon, XIcon } from 'lucide-react';
 import numeral from 'numeral';
 import { PropsWithChildren, useState } from 'react';
+import logo from '../../assets/larakits-icon.svg';
 
 const navigation = [
     {
@@ -83,8 +84,9 @@ export function GuestLayout({ children }: PropsWithChildren) {
                     <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                         <div className="flex items-center gap-4">
                             {/* Logo */}
-                            <Link href="/" className="flex items-center gap-2 text-lg font-bold">
-                                <span>Larakits.</span>
+                            <Link href="/" className="flex items-center gap-2 text-lg font-medium">
+                                <img src={logo} alt="Larakits" className="w-6 h-6" />
+                                <span>Larakits</span>
                             </Link>
 
                             {/* Desktop Navigation */}
@@ -215,8 +217,9 @@ export function GuestLayout({ children }: PropsWithChildren) {
                         {/* App Info */}
                         <div className="grid gap-8 py-10 sm:py-12 lg:grid-cols-12 lg:gap-12">
                             <div className="lg:col-span-4">
-                                <Link href="/" className="mb-4 flex items-center gap-2 text-lg font-semibold">
-                                    <span>Larakits.</span>
+                                <Link href="/" className="mb-4 flex items-center gap-2 text-lg font-medium">
+                                    <img src={logo} alt="Larakits" className="w-6 h-6" />
+                                    <span>Larakits</span>
                                 </Link>
                                 <p className="text-muted-foreground text-sm">
                                     Larakits is a curated collection of community-maintained Laravel starter kits that help you kickstart your next
