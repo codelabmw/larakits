@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TaskStatus;
 use App\Models\Task;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -21,7 +22,7 @@ return new class extends Migration
         });
 
         Task::create([
-            'status' => 'pending',
+            'status' => TaskStatus::OPEN->value,
             'should_run_at' => now(),
         ]);
     }

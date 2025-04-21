@@ -59,7 +59,7 @@ it('gets current task', function () {
     $task = Task::first();
 
     // Act
-    $currentTask = Task::currentTask();
+    $currentTask = Task::openTask();
 
     // Assert
     expect($currentTask->id)->toBe($task->id);

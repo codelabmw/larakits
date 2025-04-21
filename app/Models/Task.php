@@ -59,6 +59,14 @@ class Task extends Model
     }
 
     /**
+     * Marks the task as pending.
+     */
+    public function markPending(): void
+    {
+        $this->updateStatus(TaskStatus::PENDING);
+    }
+
+    /**
      * Marks the task as failed.
      */
     public function markFailed(?string $exception = null): void
@@ -79,9 +87,9 @@ class Task extends Model
     /**
      * Gets the current task.
      */
-    public static function currentTask(): ?Task
+    public static function openTask(): ?Task
     {
-        return self::query()->where('status', TaskStatus::PENDING->value)->latest()->first();
+        return self::query()->where('status', TaskStatus::OPEN->value)->latest()->first();
     }
 
     /**
