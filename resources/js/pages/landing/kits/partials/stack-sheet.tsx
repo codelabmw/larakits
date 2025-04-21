@@ -74,19 +74,14 @@ export default function StackSheet({ onChanged }: Props) {
                     )}
                 </Button>
             </SheetTrigger>
-            <SheetContent className="flex flex-col p-4 sm:p-6 w-[100%]">
+            <SheetContent className="flex w-[100%] flex-col p-4 sm:p-6">
                 <div className="mb-4">
                     <h5 className="text-lg font-semibold">Stack</h5>
                 </div>
                 {selectedStacks.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="mb-4 flex flex-wrap gap-2">
                         {selectedStacks.map((stack) => (
-                            <Badge
-                                key={stack.slug}
-                                variant="secondary"
-                                className="cursor-pointer capitalize"
-                                onClick={() => toggleSelection(stack)}
-                            >
+                            <Badge key={stack.slug} variant="secondary" className="cursor-pointer capitalize" onClick={() => toggleSelection(stack)}>
                                 <span>{stack.name}</span>
                                 <X className="ml-2" />
                             </Badge>

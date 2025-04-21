@@ -1,5 +1,5 @@
-import { ThemeToggle } from '@/components/theme-toggle';
 import { CookieBanner } from '@/components/cookie-banner';
+import { ThemeToggle } from '@/components/theme-toggle';
 import {
     NavigationMenu,
     NavigationMenuContent,

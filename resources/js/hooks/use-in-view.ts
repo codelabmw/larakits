@@ -7,10 +7,7 @@ export function useInView<T extends HTMLElement = HTMLElement>(options?: Interse
     useEffect(() => {
         const node = ref.current;
         if (!node) return;
-        const observer = new window.IntersectionObserver(
-            ([entry]) => setInView(entry.isIntersecting),
-            options
-        );
+        const observer = new window.IntersectionObserver(([entry]) => setInView(entry.isIntersecting), options);
         observer.observe(node);
         return () => observer.disconnect();
     }, [options]);
