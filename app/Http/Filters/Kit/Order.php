@@ -25,7 +25,7 @@ class Order implements Filter
      */
     public function handle(Builder|Relation $query, Closure $next)
     {
-        $orderBy = $this->request->get('orderBy') ?? 'created_at';
+        $orderBy = $this->request->get('orderBy') ?? 'downloads';
         $sort = $this->request->get('sort') ?? 'desc';
 
         $query->orderBy($orderBy, $sort);
