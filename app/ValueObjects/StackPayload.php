@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\ValueObjects;
 
 class StackPayload
@@ -11,8 +13,8 @@ class StackPayload
 
     /**
      * Creates a new Payload instance.
-     * 
-     * @param array{composer: array<int, string>, npm: array<int, string>} $dependencies
+     *
+     * @param  array{composer: array<int, string>, npm: array<int, string>}  $dependencies
      */
     public function __construct(
         public readonly array $dependencies,
@@ -22,7 +24,7 @@ class StackPayload
 
     /**
      * Returns the stacks.
-     * 
+     *
      * @return array<int, string>
      */
     public function getStacks(): array
@@ -40,7 +42,7 @@ class StackPayload
 
     /**
      * Returns the composer dependencies.
-     * 
+     *
      * @return array<int, string>
      */
     public function getComposerDependencies(): array
@@ -50,7 +52,7 @@ class StackPayload
 
     /**
      * Returns the npm dependencies.
-     * 
+     *
      * @return array<int, string>
      */
     public function getNpmDependencies(): array

@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\API;
 
+use App\Contracts\Filter;
+use App\Http\Filters\Stack\Search;
 use App\Models\Stack;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Support\Facades\Response;
-use App\Http\Filters\Stack\Search;
-use App\Contracts\Filter;
 
 class StackController
 {

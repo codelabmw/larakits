@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Tag;
 use Illuminate\Testing\Fluent\AssertableJson;
 
@@ -25,7 +27,7 @@ it('can filter tags by keyword', function () {
     $keyword = 'test';
 
     // Act
-    $response = $this->getJson('/api/tags?search=' . $keyword);
+    $response = $this->getJson('/api/tags?search='.$keyword);
 
     // Assert
     $response->assertStatus(200);

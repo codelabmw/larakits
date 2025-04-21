@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Services\Github\Github;
 use App\Services\Packagist\Packagist;
 use App\Services\Packagist\ValueObjects\Agent;
 use Carbon\CarbonImmutable;
+use Date;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
-use Date;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,16 +20,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(Agent::class, fn() => new Agent(
+        $this->app->bind(Agent::class, fn () => new Agent(
             name: config('app.agent.name'),
             email: config('app.agent.email'),
         ));
 
-        $this->app->bind(Packagist::class, fn() => new Packagist(
+        $this->app->bind(Packagist::class, fn () => new Packagist(
             agent: $this->app->make(Agent::class),
         ));
 
-        $this->app->bind(Github::class, fn() => new Github());
+        $this->app->bind(Github::class, fn () => new Github());
     }
 
     /**
@@ -63,6 +65,6 @@ class AppServiceProvider extends ServiceProvider
      */
     private function configureModels(): void
     {
-        Model::shouldBeStrict(!$this->app->isProduction());
+        Model::shouldBeStrict(! $this->app->isProduction());
     }
 }

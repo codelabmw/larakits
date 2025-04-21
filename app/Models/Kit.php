@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use Exception;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Collection;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Str;
 
 /**
@@ -23,13 +24,11 @@ use Str;
  * @property-read array $maintainers
  * @property-read array $authors
  * @property-read array $licenses
- * 
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
- * 
  * @property-read Collection<Stack> $stacks
- * @property-read Collection<Tag, Kit> $tags
- * 
+ * @property-read Collection<Tag> $tags
+ *
  * @method BelongsToMany<Stack, Kit> stacks()
  * @method BelongsToMany<Tag, Kit> tags()
  */
@@ -60,7 +59,7 @@ class Kit extends Model
     /**
      * The attributes that should be cast.
      *
-     * @var list<string>
+     * @var array<string, string>
      */
     protected $casts = [
         'stars' => 'integer',
@@ -80,9 +79,19 @@ class Kit extends Model
     ];
 
     /**
+     * Checks if a kit with the given name exists.
+     */
+    public static function hasPackage(string $name): bool
+    {
+        $name = Str::slug(implode('-', explode('/', $name)));
+
+        return self::where('slug', $name)->exists();
+    }
+
+    /**
      * The kits that belong to the kit.
      *
-     * @return BelongsToMany<Stack, Kit>
+     * @return BelongsToMany<Stack, $this>
      */
     public function stacks(): BelongsToMany
     {
@@ -91,21 +100,11 @@ class Kit extends Model
 
     /**
      * The tags that belong to the kit.
-     * 
-     * @return BelongsToMany<Tag, Kit>
+     *
+     * @return BelongsToMany<Tag, $this>
      */
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
-    }
-
-    /**
-     * Checks if a kit with the given name exists.
-     */
-    public static function hasPackage(string $name): bool
-    {
-        $name = Str::slug(implode('-', explode('/', $name)));
-
-        return self::where('slug', $name)->exists();
     }
 }

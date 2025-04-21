@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Exceptions\ConnectionException;
 use App\Services\Packagist\Packagist;
 use App\Services\Packagist\Paginator;
@@ -20,12 +22,12 @@ it('searches packages by type', function () {
         'https://packagist.org/search.json?*' => Http::response([
             'results' => [
                 [
-                    "name" => "[vendor]/[package]",
-                    "description" => "[description]",
-                    "url" => "https://packagist.org/packages/[vendor]/[package]",
-                    "repository" => '[repository url]',
-                    "downloads" => 1,
-                    "favers" => 1,
+                    'name' => '[vendor]/[package]',
+                    'description' => '[description]',
+                    'url' => 'https://packagist.org/packages/[vendor]/[package]',
+                    'repository' => '[repository url]',
+                    'downloads' => 1,
+                    'favers' => 1,
                 ],
             ],
             'total' => 1,
@@ -59,12 +61,12 @@ it('searches packages by tags', function () {
         'https://packagist.org/search.json?*' => Http::response([
             'results' => [
                 [
-                    "name" => "[vendor]/[package]",
-                    "description" => "[description]",
-                    "url" => "https://packagist.org/packages/[vendor]/[package]",
-                    "repository" => '[repository url]',
-                    "downloads" => 1,
-                    "favers" => 1,
+                    'name' => '[vendor]/[package]',
+                    'description' => '[description]',
+                    'url' => 'https://packagist.org/packages/[vendor]/[package]',
+                    'repository' => '[repository url]',
+                    'downloads' => 1,
+                    'favers' => 1,
                 ],
             ],
             'total' => 1,
@@ -101,12 +103,12 @@ it('retries search request on failure', function () {
             ->push([
                 'results' => [
                     [
-                        "name" => "[vendor]/[package]",
-                        "description" => "[description]",
-                        "url" => "https://packagist.org/packages/[vendor]/[package]",
-                        "repository" => '[repository url]',
-                        "downloads" => 1,
-                        "favers" => 1,
+                        'name' => '[vendor]/[package]',
+                        'description' => '[description]',
+                        'url' => 'https://packagist.org/packages/[vendor]/[package]',
+                        'repository' => '[repository url]',
+                        'downloads' => 1,
+                        'favers' => 1,
                     ],
                 ],
                 'total' => 1,
@@ -144,12 +146,12 @@ it('ignores retrying on common client errors', function () {
                 'body' => json_encode([
                     'results' => [
                         [
-                            "name" => "[vendor]/[package]",
-                            "description" => "[description]",
-                            "url" => "https://packagist.org/packages/[vendor]/[package]",
-                            "repository" => '[repository url]',
-                            "downloads" => 1,
-                            "favers" => 1,
+                            'name' => '[vendor]/[package]',
+                            'description' => '[description]',
+                            'url' => 'https://packagist.org/packages/[vendor]/[package]',
+                            'repository' => '[repository url]',
+                            'downloads' => 1,
+                            'favers' => 1,
                         ],
                     ],
                     'total' => 1,
@@ -158,7 +160,7 @@ it('ignores retrying on common client errors', function () {
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],
-            ], 200)
+            ], 200),
     ]);
 
     $packagist = new Packagist(
@@ -175,20 +177,20 @@ it('searches with page limit', function () {
         'https://packagist.org/search.json?*' => Http::response([
             'results' => [
                 [
-                    "name" => "[vendor]/[package]",
-                    "description" => "[description]",
-                    "url" => "https://packagist.org/packages/[vendor]/[package]",
-                    "repository" => '[repository url]',
-                    "downloads" => 1,
-                    "favers" => 1,
+                    'name' => '[vendor]/[package]',
+                    'description' => '[description]',
+                    'url' => 'https://packagist.org/packages/[vendor]/[package]',
+                    'repository' => '[repository url]',
+                    'downloads' => 1,
+                    'favers' => 1,
                 ],
                 [
-                    "name" => "[vendor]/[package]",
-                    "description" => "[description]",
-                    "url" => "https://packagist.org/packages/[vendor]/[package]",
-                    "repository" => '[repository url]',
-                    "downloads" => 1,
-                    "favers" => 1,
+                    'name' => '[vendor]/[package]',
+                    'description' => '[description]',
+                    'url' => 'https://packagist.org/packages/[vendor]/[package]',
+                    'repository' => '[repository url]',
+                    'downloads' => 1,
+                    'favers' => 1,
                 ],
             ],
             'total' => 4,

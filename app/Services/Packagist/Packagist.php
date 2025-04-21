@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Packagist;
 
 use App\Exceptions\ConnectionException;
-use App\Services\Packagist\Actions\SearchPackages;
 use App\Services\Packagist\ValueObjects\Agent;
 use App\Services\Packagist\ValueObjects\Package;
 use Exception;
@@ -26,8 +27,8 @@ final class Packagist
 
     /**
      * Searches for packages and returns a pagination object.
-     * 
-     * @param array<int, string>|null $tags
+     *
+     * @param  array<int, string>|null  $tags
      * @return Paginator<Package>
      */
     public function search(?string $type = null, ?array $tags = null, ?int $perPage = null, ?string $baseUrl = null): Paginator
@@ -52,24 +53,52 @@ final class Packagist
 
         $data = $this->searchPackages(
             agent: $this->agent,
-            url: $baseUrl . '/search.json',
+            url: $baseUrl.'/search.json',
             filters: $parameters,
         );
 
-        $items = array_map(fn($item) => Package::fromArray($item), $data['results']);
-
+        $items = array_map(fn ($item) => Package::fromArray($item), $data['results']);
 
         return new Paginator(
             items: $items,
-            total: $data['total'],
             next: $data['next'] ?? null,
             perPage: $data['per_page'] ?? null,
-            getNextPage: fn(string $url) => $this->getNextPage(
+            getNextPage: fn (string $url) => $this->getNextPage(
                 Url::fromString($url)->withHost(
                     Url::fromString($baseUrl)->getHost(),
                 ),
             ),
         );
+    }
+
+    /**
+     * Gets a specific package.
+     */
+    public function get(string $name, ?string $baseUrl = null): Package
+    {
+        if ($baseUrl === null) {
+            $baseUrl = $this->baseUrl;
+        }
+
+        try {
+            $response = Http::retry(config('services.packagist.retry'), function (int $attempt, Exception $exception): int {
+                return $attempt * 1000;
+            }, function (Exception $exception, PendingRequest $request) {
+                if ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403])) {
+                    return false;
+                }
+
+                return true;
+            })->withUserAgent((string) $this->agent)->get(
+                url: $baseUrl.'/packages/'.$name.'.json',
+            );
+        } catch (RequestException $exception) {
+            throw new ConnectionException(response: $exception->response);
+        }
+
+        $data = $response->json();
+
+        return Package::fromArray($data['package']);
     }
 
     /**
@@ -96,45 +125,15 @@ final class Packagist
                 }
 
                 return true;
-            })->withUserAgent($agent)->get(
-                    url: $url,
-                    query: $filters,
-                );
+            })->withUserAgent((string) $agent)->get(
+                url: $url,
+                query: $filters,
+            );
 
         } catch (RequestException $exception) {
             throw new ConnectionException(response: $exception->response);
         }
 
         return $response->json();
-    }
-
-    /**
-     * Gets a specific package.
-     */
-    public function get(string $name, ?string $baseUrl = null): Package
-    {
-        if ($baseUrl === null) {
-            $baseUrl = $this->baseUrl;
-        }
-
-        try {
-            $response = Http::retry(config('services.packagist.retry'), function (int $attempt, Exception $exception): int {
-                return $attempt * 1000;
-            }, function (Exception $exception, PendingRequest $request) {
-                if ($exception instanceof RequestException && in_array($exception->response->status(), [404, 403])) {
-                    return false;
-                }
-    
-                return true;
-            })->withUserAgent($this->agent)->get(
-                    url: $baseUrl . '/packages/' . $name . '.json',
-                );
-        } catch (RequestException $exception) {
-            throw new ConnectionException(response: $exception->response);
-        }
-
-        $data = $response->json();
-
-        return Package::fromArray($data['package']);
     }
 }

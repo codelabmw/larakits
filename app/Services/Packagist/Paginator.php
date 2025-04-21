@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Packagist;
 
 use App\Services\Packagist\ValueObjects\Package;
@@ -8,7 +10,7 @@ use Illuminate\Support\Collection;
 
 /**
  * @template Item
- * 
+ *
  * @property-read Collection<int, Item> $name
  */
 final class Paginator
@@ -20,12 +22,11 @@ final class Paginator
 
     /**
      * Creates a Paginator instance.
-     * 
-     * @param array<int, Item> $items
+     *
+     * @param  array<int, Item>  $items
      */
     public function __construct(
         array $items,
-        private int $total,
         private ?Closure $getNextPage,
         private ?string $next = null,
         private ?int $perPage = null,
@@ -43,7 +44,7 @@ final class Paginator
 
     /**
      * Gets the items.
-     * 
+     *
      * @return Collection<int, Item>
      */
     public function items(): Collection
@@ -59,8 +60,9 @@ final class Paginator
         if ($this->next && $this->getNextPage !== null) {
             $data = ($this->getNextPage)($this->next);
 
-            $items = array_map(fn($item) => Package::fromArray($item), $data['results'] ?? []);
+            $items = array_map(fn ($item) => Package::fromArray($item), $data['results'] ?? []);
 
+            // @phpstan-ignore-next-line
             $this->items = Collection::make($items);
 
             $this->next = $data['next'] ?? null;

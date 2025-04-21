@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Exceptions\ConnectionException;
 use App\Services\Github\Github;
 use Illuminate\Http\Client\Request;
@@ -86,7 +88,7 @@ it('throws on invalid URL', function () {
 
     // Act
     Github::ownerAndRepo($url);
-})->throws(\InvalidArgumentException::class);
+})->throws(InvalidArgumentException::class);
 
 it('gets a repositories stars', function () {
     // Arrange

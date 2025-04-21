@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Guessors\Kit;
 
 use App\Contracts\Guessor;
 use App\ValueObjects\KitPayload;
-use Illuminate\Support\Str;
 use Closure;
+use Illuminate\Support\Str;
 
 class ByName implements Guessor
 {
@@ -21,8 +23,8 @@ class ByName implements Guessor
 
     /**
      * Determines if the package is a kit based on its name.
-     * 
-     * @param KitPayload $payload 
+     *
+     * @param  KitPayload  $payload
      */
     public function handle(mixed $payload, Closure $next): mixed
     {

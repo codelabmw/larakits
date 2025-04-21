@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Enums\TaskStatus;
 use App\Models\Kit;
 use App\Models\Stack;
@@ -23,11 +25,11 @@ it('fetches & stores kits', function () {
             'next' => null,
         ]),
         'https://packagist.org/packages/*' => Http::sequence(array_map(
-            fn($package) => Http::response($package),
+            fn ($package) => Http::response($package),
             Packages::$detailed
         )),
         'https://api.github.com/repos/*' => Http::sequence(array_map(
-            fn($packageJson) => Http::response([
+            fn ($packageJson) => Http::response([
                 'content' => base64_encode(json_encode($packageJson)),
             ]),
             Packages::$packageJsons
@@ -64,11 +66,11 @@ it('fetches through paginated results', function () {
             'next' => null,
         ]),
         'https://packagist.org/packages/*' => Http::sequence(array_map(
-            fn($package) => Http::response($package),
+            fn ($package) => Http::response($package),
             Packages::$detailed
         )),
         'https://api.github.com/repos/*' => Http::sequence(array_map(
-            fn($packageJson) => Http::response([
+            fn ($packageJson) => Http::response([
                 'content' => base64_encode(json_encode($packageJson)),
             ]),
             Packages::$packageJsons
@@ -100,11 +102,11 @@ it('updates existing kits', function () {
             'next' => null,
         ]),
         'https://packagist.org/packages/*' => Http::sequence(array_map(
-            fn($package) => Http::response($package),
+            fn ($package) => Http::response($package),
             Packages::$detailed
         )),
         'https://api.github.com/repos/*' => Http::sequence(array_map(
-            fn($packageJson) => Http::response([
+            fn ($packageJson) => Http::response([
                 'content' => base64_encode(json_encode($packageJson)),
             ]),
             Packages::$packageJsons
@@ -119,7 +121,7 @@ it('updates existing kits', function () {
         'source_url' => 'https://github.com/thedevdojo/wave',
         'source_type' => 'git',
         'stars' => 100,
-        'downloads' => 1000
+        'downloads' => 1000,
     ]);
 
     $packagist = new Packagist(
@@ -149,11 +151,11 @@ it('updates existing kits that has tags/stacks', function () {
             'next' => null,
         ]),
         'https://packagist.org/packages/*' => Http::sequence(array_map(
-            fn($package) => Http::response($package),
+            fn ($package) => Http::response($package),
             Packages::$detailed
         )),
         'https://api.github.com/repos/*' => Http::sequence(array_map(
-            fn($packageJson) => Http::response([
+            fn ($packageJson) => Http::response([
                 'content' => base64_encode(json_encode($packageJson)),
             ]),
             Packages::$packageJsons
@@ -162,12 +164,12 @@ it('updates existing kits that has tags/stacks', function () {
 
     $tag = Tag::factory()->create([
         'slug' => 'saas',
-        'name' => 'saas'
+        'name' => 'saas',
     ]);
 
     $stack = Stack::factory()->create([
         'slug' => 'laravel-livewire',
-        'name' => 'laravel-livewire'
+        'name' => 'laravel-livewire',
     ]);
 
     $kit = Kit::factory()->create([
@@ -178,7 +180,7 @@ it('updates existing kits that has tags/stacks', function () {
         'source_url' => 'https://github.com/thedevdojo/wave',
         'source_type' => 'git',
         'stars' => 100,
-        'downloads' => 1000
+        'downloads' => 1000,
     ]);
 
     $kit->tags()->attach($tag);
@@ -213,11 +215,11 @@ it('updates current task on success', function () {
             'next' => null,
         ]),
         'https://packagist.org/packages/*' => Http::sequence(array_map(
-            fn($package) => Http::response($package),
+            fn ($package) => Http::response($package),
             Packages::$detailed
         )),
         'https://api.github.com/repos/*' => Http::sequence(array_map(
-            fn($packageJson) => Http::response([
+            fn ($packageJson) => Http::response([
                 'content' => base64_encode(json_encode($packageJson)),
             ]),
             Packages::$packageJsons
@@ -267,11 +269,11 @@ it('schedules next task', function () {
             'next' => null,
         ]),
         'https://packagist.org/packages/*' => Http::sequence(array_map(
-            fn($package) => Http::response($package),
+            fn ($package) => Http::response($package),
             Packages::$detailed
         )),
         'https://api.github.com/repos/*' => Http::sequence(array_map(
-            fn($packageJson) => Http::response([
+            fn ($packageJson) => Http::response([
                 'content' => base64_encode(json_encode($packageJson)),
             ]),
             Packages::$packageJsons
@@ -301,11 +303,11 @@ it('fetches kits in debug mode', function () {
             'next' => null,
         ]),
         'https://packagist.org/packages/*' => Http::sequence(array_map(
-            fn($package) => Http::response($package),
+            fn ($package) => Http::response($package),
             Packages::$detailed
         )),
         'https://api.github.com/repos/*' => Http::sequence(array_map(
-            fn($packageJson) => Http::response([
+            fn ($packageJson) => Http::response([
                 'content' => base64_encode(json_encode($packageJson)),
             ]),
             Packages::$packageJsons
@@ -335,11 +337,11 @@ it('fetches new kits only', function () {
             'next' => null,
         ]),
         'https://packagist.org/packages/*' => Http::sequence(array_map(
-            fn($package) => Http::response($package),
+            fn ($package) => Http::response($package),
             Packages::$detailed
         )),
         'https://api.github.com/repos/*' => Http::sequence(array_map(
-            fn($packageJson) => Http::response([
+            fn ($packageJson) => Http::response([
                 'content' => base64_encode(json_encode($packageJson)),
             ]),
             Packages::$packageJsons
@@ -354,7 +356,7 @@ it('fetches new kits only', function () {
         'source_url' => 'https://github.com/thedevdojo/wave',
         'source_type' => 'git',
         'stars' => 100,
-        'downloads' => 1000
+        'downloads' => 1000,
     ]);
 
     $packagist = new Packagist(

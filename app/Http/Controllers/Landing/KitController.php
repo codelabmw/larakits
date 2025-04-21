@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Landing;
 
+use App\Contracts\Filter;
 use App\Http\Controllers\Controller;
 use App\Http\Filters\Kit\Order;
 use App\Http\Filters\Kit\Search;
-use App\Http\Filters\Kit\Tag as TagFilter;
 use App\Http\Filters\Kit\Stack as StackFilter;
+use App\Http\Filters\Kit\Tag as TagFilter;
+use App\Models\Kit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Pipeline;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Kit;
-use App\Contracts\Filter;
 
 class KitController extends Controller
 {
