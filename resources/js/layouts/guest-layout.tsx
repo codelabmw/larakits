@@ -85,7 +85,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
                         <div className="flex items-center gap-4">
                             {/* Logo */}
                             <Link href="/" className="flex items-center gap-2 text-lg font-medium">
-                                <img src={logo} alt="Larakits" className="w-6 h-6" />
+                                <img src={logo} alt="Larakits" className="h-6 w-6" />
                                 <span>Larakits</span>
                             </Link>
 
@@ -218,7 +218,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
                         <div className="grid gap-8 py-10 sm:py-12 lg:grid-cols-12 lg:gap-12">
                             <div className="lg:col-span-4">
                                 <Link href="/" className="mb-4 flex items-center gap-2 text-lg font-medium">
-                                    <img src={logo} alt="Larakits" className="w-6 h-6" />
+                                    <img src={logo} alt="Larakits" className="h-6 w-6" />
                                     <span>Larakits</span>
                                 </Link>
                                 <p className="text-muted-foreground text-sm">
