@@ -7,7 +7,11 @@ use Spatie\Analytics\Facades\Analytics;
 
 it('returns a successful response', function (): void {
     // Arrange
-    Analytics::fake();
+    Analytics::fake(collect([
+        [
+            'activeUsers' => 100,
+        ],
+    ]));
 
     // Act
     $response = $this->get('/about');
