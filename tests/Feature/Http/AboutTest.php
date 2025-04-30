@@ -3,8 +3,16 @@
 declare(strict_types=1);
 
 use Inertia\Testing\AssertableInertia;
+use Spatie\Analytics\Facades\Analytics;
 
 it('returns a successful response', function (): void {
+    // Arrange
+    Analytics::fake(collect([
+        [
+            'activeUsers' => 100,
+        ],
+    ]));
+
     // Act
     $response = $this->get('/about');
 

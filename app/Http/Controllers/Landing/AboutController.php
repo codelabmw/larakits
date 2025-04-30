@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Landing;
 use App\Http\Controllers\Controller;
 use App\Models\Kit;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -23,19 +22,14 @@ class AboutController extends Controller
     {
         $activeUsers = 0;
 
-        // TODO: Remove condition when package calls can be faked in tests.
-        // @codeCoverageIgnoreStart
-        if (App::isProduction()) {
-            $analytics = Analytics::fetchTotalVisitorsAndPageViews(Period::create(
-                Carbon::parse(config('analytics.start_date')),
-                now(),
-            ));
+        $analytics = Analytics::fetchTotalVisitorsAndPageViews(Period::create(
+            Carbon::parse(config('analytics.start_date')),
+            now(),
+        ));
 
-            $analytics->each(function (array $entry) use (&$activeUsers): void {
-                $activeUsers += $entry['activeUsers'];
-            });
-        }
-        // @codeCoverageIgnoreEnd
+        $analytics->each(function (array $entry) use (&$activeUsers): void {
+            $activeUsers += $entry['activeUsers'];
+        });
 
         $totalKits = Kit::count();
         $totalVisitors = $activeUsers;
