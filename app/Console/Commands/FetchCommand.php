@@ -45,7 +45,6 @@ class FetchCommand extends Command
      */
     protected $signature = 'fetch:kits 
                             {--packagist= : Base URL of Packagist}
-                            {--debug : Enable debug mode}
                             {--new : Only fetch new kits}';
 
     /**
@@ -72,21 +71,16 @@ class FetchCommand extends Command
 
         $task = Task::openTask();
 
-        if (! $task instanceof Task || ! $task->shouldRun()) {
+        if (!$task instanceof Task || !$task->shouldRun()) {
             return;
         }
 
         $task->markPending();
 
         $baseUrl = $this->option('packagist');
-        $debug = $this->option('debug');
-        $new = $this->option('new');
+        $onlyNew = $this->option('new');
 
         try {
-            if ($debug) {
-                $this->info('Fetching kits from Packagist...');
-            }
-
             $paginator = $packagist->search(
                 type: 'project',
                 tags: ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'],
@@ -95,16 +89,8 @@ class FetchCommand extends Command
             );
 
             do {
-                $paginator->items()->each(function ($package) use ($packagist, $isLaravelProject, $baseUrl, $debug, $new): void {
-                    if ($new && Kit::hasPackage($package->name)) {
-                        if ($debug) {
-                            $this->warn('Skipping package: '.$package->name);
-                        }
-                    } else {
-                        if ($debug) {
-                            $this->info('Processing package: '.$package->name);
-                        }
-
+                $paginator->items()->each(
+                    function ($package) use ($packagist, $isLaravelProject, $baseUrl, $onlyNew): void {
                         try {
                             $package = $packagist->get($package->name, baseUrl: $baseUrl);
 
@@ -125,22 +111,14 @@ class FetchCommand extends Command
                                 $this->saveKit($kitPayload);
                             }
                         } catch (ConnectionException $exception) {
-                            if ($debug) {
-                                $this->error('Failed to process package: '.$package->name);
-                            }
-
-                            if (! in_array($exception->response->status(), [404, 401, 403])) {
+                            if (!in_array($exception->response->status(), [404, 401, 403])) {
                                 throw $exception;
                             }
                         }
                     }
-                });
+                );
             } while ($paginator->next());
         } catch (Exception $exception) {
-            if ($debug) {
-                $this->error('Failed to fetch kits from Packagist with exception: '.$exception->getMessage());
-            }
-
             if ($exception instanceof ConnectionException) {
 
                 $task->markFailed(json_encode([
@@ -187,10 +165,6 @@ class FetchCommand extends Command
         ]);
 
         $this->timer->stop();
-
-        if ($debug) {
-            $this->info('Finished fetching kits in '.number_format($this->timer->duration(), 2).' seconds');
-        }
     }
 
     /**
@@ -281,7 +255,7 @@ class FetchCommand extends Command
 
                 $keywords = array_filter(
                     $package->keywords,
-                    fn ($keyword): bool => ! in_array($keyword, [
+                    fn($keyword): bool => !in_array($keyword, [
                         'laravel',
                         'starter',
                         'kit',
