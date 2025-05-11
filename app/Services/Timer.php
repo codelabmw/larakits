@@ -39,4 +39,12 @@ class Timer
     {
         return $this->endTime - $this->startTime;
     }
+
+    /**
+     * Get the duration of the timer from start to now.
+     */
+    public function durationUntilNow(): float
+    {
+        return microtime(true) - $this->startTime;
+    }
 }

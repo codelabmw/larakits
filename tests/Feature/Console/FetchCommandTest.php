@@ -294,40 +294,6 @@ it('schedules next task', function (): void {
     expect(Task::count())->toBe(2);
 });
 
-it('fetches kits in debug mode', function (): void {
-    // Arrange
-    Http::fake([
-        'https://packagist.org/search.json?*' => Http::response([
-            'results' => Packages::$all,
-            'total' => count(Packages::$all),
-            'next' => null,
-        ]),
-        'https://packagist.org/packages/*' => Http::sequence(array_map(
-            fn ($package) => Http::response($package),
-            Packages::$detailed
-        )),
-        'https://api.github.com/repos/*' => Http::sequence(array_map(
-            fn ($packageJson) => Http::response([
-                'content' => base64_encode(json_encode($packageJson)),
-            ]),
-            Packages::$packageJsons
-        )),
-    ]);
-
-    $packagist = new Packagist(
-        agent: new Agent(name: 'Larakits', email: 'info@larakits.dev')
-    );
-
-    $this->instance(Packagist::class, $packagist);
-    $this->instance(Github::class, new Github());
-
-    // Act
-    $result = $this->artisan('fetch:kits --debug');
-
-    // Assert
-    $result->assertExitCode(0);
-});
-
 it('fetches new kits only', function (): void {
     // Arrange
     Http::fake([

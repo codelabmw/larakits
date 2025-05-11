@@ -129,6 +129,13 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'fetch' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/fetch.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'replace_placeholders' => true,
+        ],
+
     ],
 
 ];
