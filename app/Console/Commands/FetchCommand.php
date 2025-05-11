@@ -31,6 +31,7 @@ use Illuminate\Console\Command;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -55,11 +56,19 @@ class FetchCommand extends Command
     protected $description = 'Fetch kits from Packagist.';
 
     /**
+     * The logger instance.
+     *
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
+
+    /**
      * Creates a new command instance.
      */
     public function __construct(private readonly Timer $timer)
     {
         parent::__construct();
+        $this->logger = Log::channel('fetch');
     }
 
     /**
@@ -71,7 +80,7 @@ class FetchCommand extends Command
 
         $task = Task::openTask();
 
-        if (!$task instanceof Task || !$task->shouldRun()) {
+        if (! $task instanceof Task || ! $task->shouldRun()) {
             return;
         }
 
@@ -81,6 +90,8 @@ class FetchCommand extends Command
         $onlyNew = $this->option('new');
 
         try {
+            $this->logger->info('------ Fetching kits from Packagist ------');
+
             $paginator = $packagist->search(
                 type: 'project',
                 tags: ['laravel', 'starter-kit', 'starter kit', 'laravel-starter-kit', 'laravel starter kit'],
@@ -88,11 +99,23 @@ class FetchCommand extends Command
                 baseUrl: $baseUrl,
             );
 
+            $this->logger->info('Fetched kits from Packagist. Took '.number_format($this->timer->durationUntilNow(), 2).' seconds.');
+
             do {
                 $paginator->items()->each(
                     function ($package) use ($packagist, $isLaravelProject, $baseUrl, $onlyNew): void {
+                        if ($onlyNew && Kit::hasPackage($package->name)) {
+                            $this->logger->info('Kit '.$package->name.' already exists. Skipping...');
+
+                            return;
+                        }
+
+                        $this->logger->info('Fetching kit '.$package->name.'...');
+
                         try {
                             $package = $packagist->get($package->name, baseUrl: $baseUrl);
+
+                            $this->logger->info('Fetched kit '.$package->name.'. Took '.number_format($this->timer->durationUntilNow(), 2).' seconds.');
 
                             if ($isLaravelProject($package)) {
                                 $kitPayload = new KitPayload(package: $package, isKit: false);
@@ -111,7 +134,9 @@ class FetchCommand extends Command
                                 $this->saveKit($kitPayload);
                             }
                         } catch (ConnectionException $exception) {
-                            if (!in_array($exception->response->status(), [404, 401, 403])) {
+                            $this->logger->error('Failed to fetch kit '.$package->name.'. Took '.number_format($this->timer->durationUntilNow(), 2).' seconds.');
+
+                            if (! in_array($exception->response->status(), [404, 401, 403])) {
                                 throw $exception;
                             }
                         }
@@ -119,6 +144,8 @@ class FetchCommand extends Command
                 );
             } while ($paginator->next());
         } catch (Exception $exception) {
+            $this->logger->error('Failed to fetch kits from Packagist. Took '.number_format($this->timer->durationUntilNow(), 2).' seconds.');
+
             if ($exception instanceof ConnectionException) {
 
                 $task->markFailed(json_encode([
@@ -165,6 +192,7 @@ class FetchCommand extends Command
         ]);
 
         $this->timer->stop();
+        $this->logger->info('------ Fetch kits task completed. Took '.number_format($this->timer->duration(), 2).' seconds. ------');
     }
 
     /**
@@ -255,7 +283,7 @@ class FetchCommand extends Command
 
                 $keywords = array_filter(
                     $package->keywords,
-                    fn($keyword): bool => !in_array($keyword, [
+                    fn ($keyword): bool => ! in_array($keyword, [
                         'laravel',
                         'starter',
                         'kit',
