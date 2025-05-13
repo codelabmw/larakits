@@ -77,3 +77,28 @@ it('can filter kits by stack', function (): void {
             ->count('kits.data', 1);
     });
 });
+
+it('can sort kits by downloads', function (): void {
+    // Arrange
+    Kit::factory()->create(['downloads' => 1]);
+    Kit::factory()->create(['downloads' => 2]);
+    Kit::factory()->create(['downloads' => 3]);
+    Kit::factory()->create(['downloads' => 4]);
+    Kit::factory()->create(['downloads' => 5]);
+
+    // Act
+    $response = $this->get('/kits?sort=downloads&order=desc');
+
+    // Assert
+    $response->assertStatus(200);
+    $response->assertInertia(function (AssertableInertia $page): void {
+        $page->component('landing/kits/index')
+            ->has('kits')
+            ->count('kits.data', 5)
+            ->where('kits.data.0.downloads', 5)
+            ->where('kits.data.1.downloads', 4)
+            ->where('kits.data.2.downloads', 3)
+            ->where('kits.data.3.downloads', 2)
+            ->where('kits.data.4.downloads', 1);
+    });
+});
