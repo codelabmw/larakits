@@ -37,6 +37,10 @@
     </style>
 
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
+    <meta name="description"
+        content="one more reason to ship faster. Discover community-maintained starter kits that help you build better Laravel applications faster.">
+    <meta name="keywords" content="laravel, laravel starter kits, laravel packages, laravel community, laravel kits">
+    <meta name="author" content="Chikondi Kamwendo">
 
     @routes
     @viteReactRefresh
