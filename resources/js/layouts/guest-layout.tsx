@@ -142,7 +142,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
 
                         <div className="flex items-center gap-4 sm:gap-6">
                             {/* Donate */}
-                            <Button asChild variant="ghost" className='text-muted-foreground hover:text-foreground'>
+                            <Button asChild variant="ghost" className="text-muted-foreground hover:text-foreground">
                                 <Link href={route('donate')} aria-label="Donate to Larakits">
                                     Donate
                                 </Link>
