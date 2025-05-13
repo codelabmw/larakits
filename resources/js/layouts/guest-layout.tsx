@@ -1,5 +1,6 @@
 import { CookieBanner } from '@/components/cookie-banner';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { Button } from '@/components/ui/button';
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -81,7 +82,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
             <div className="relative flex min-h-screen flex-col">
                 {/* Header */}
                 <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
-                    <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+                    <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
                         <div className="flex items-center gap-4">
                             {/* Logo */}
                             <Link href="/" className="flex items-center gap-2 text-lg font-medium">
@@ -140,6 +141,13 @@ export function GuestLayout({ children }: PropsWithChildren) {
                         </div>
 
                         <div className="flex items-center gap-4 sm:gap-6">
+                            {/* Donate */}
+                            <Button asChild variant="ghost" className='text-muted-foreground hover:text-foreground'>
+                                <Link href={route('donate')} aria-label="Donate to Larakits">
+                                    Donate
+                                </Link>
+                            </Button>
+
                             {/* GitHub */}
                             <a
                                 href="https://github.com/codelabmw/larakits"
