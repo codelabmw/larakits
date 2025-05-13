@@ -32,7 +32,7 @@ class Order implements Filter
         $orderBy = Str::lower($orderBy);
         $sort = Str::lower($sort);
 
-        if (! in_array($orderBy, ['downloads', 'created_at'])) {
+        if (! in_array($orderBy, ['downloads', 'stars', 'created_at'])) {
             $orderBy = 'downloads';
         }
 
