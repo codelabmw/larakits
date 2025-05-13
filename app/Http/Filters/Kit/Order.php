@@ -9,6 +9,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Str;
 
 class Order implements Filter
 {
@@ -25,8 +26,19 @@ class Order implements Filter
      */
     public function handle(Builder|Relation $query, Closure $next)
     {
-        $orderBy = $this->request->get('orderBy') ?? 'downloads';
-        $sort = $this->request->get('sort') ?? 'desc';
+        $orderBy = $this->request->get('sort', 'downloads');
+        $sort = $this->request->get('order', 'desc');
+
+        $orderBy = Str::lower($orderBy);
+        $sort = Str::lower($sort);
+
+        if (! in_array($orderBy, ['downloads', 'stars', 'created_at'])) {
+            $orderBy = 'downloads';
+        }
+
+        if (! in_array($sort, ['asc', 'desc'])) {
+            $sort = 'desc';
+        }
 
         $query->orderBy($orderBy, $sort);
 

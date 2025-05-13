@@ -22,6 +22,7 @@ pest()->extend(Tests\TestCase::class)
     ->beforeEach(function (): void {
         Http::preventStrayRequests();
         Sleep::fake();
+        $this->freezeTime();
     });
 
 /*

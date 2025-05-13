@@ -2,6 +2,8 @@ import KitCard from '@/components/kit-card';
 import { KitDetailsSheet } from '@/components/kit-details-sheet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
 import { GuestLayout } from '@/layouts/guest-layout';
 import type { Kit, Paginator, Stack, Tag } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -18,6 +20,8 @@ interface Props {
         search: string;
         tags: string[];
         stacks: string[];
+        sort: string;
+        order: string;
     };
 }
 
@@ -26,20 +30,24 @@ export default function Index({ kits, filters }: Props) {
     const [search, setSearch] = useState(filters.search || '');
     const [selectedTags, setSelectedTags] = useState<string[]>(filters.tags || []);
     const [selectedStacks, setSelectedStacks] = useState<string[]>(filters.stacks || []);
+    const [sort, setSort] = useState(filters.sort || 'downloads');
+    const [order, setOrder] = useState(filters.order || 'desc');
 
     const updateFilters = useCallback(
-        (params: { search?: string; tags?: string[]; stacks?: string[] }) => {
+        (params: { search?: string; tags?: string[]; stacks?: string[]; sort?: string; order?: string }) => {
             router.get(
                 '/kits',
                 {
                     search: params.search ?? search,
                     tags: params.tags ?? selectedTags,
                     stacks: params.stacks ?? selectedStacks,
+                    sort: params.sort ?? sort,
+                    order: params.order ?? order,
                 },
                 { preserveState: true, preserveScroll: true },
             );
         },
-        [search, selectedTags, selectedStacks],
+        [search, selectedTags, selectedStacks, sort, order],
     );
 
     const debouncedSearch = useCallback(
@@ -62,6 +70,16 @@ export default function Index({ kits, filters }: Props) {
         updateFilters({ stacks: stacks.map((stack) => stack.slug) });
     };
 
+    const handleSortChange = (value: string) => {
+        setSort(value);
+        updateFilters({ sort: value });
+    };
+
+    const handleOrderChange = (value: string) => {
+        setOrder(value);
+        updateFilters({ order: value });
+    };
+
     return (
         <GuestLayout>
             <Head title="Browse Starter Kits" />
@@ -79,7 +97,43 @@ export default function Index({ kits, filters }: Props) {
                     <>
                         {/* Search and Filters */}
                         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                            <div className="relative w-full sm:w-[30%]">
+                            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+                                <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
+                                    <TagsSheet onChanged={handleTagsChange} />
+                                    <StackSheet onChanged={handleStacksChange} />
+                                </div>
+
+                                <div className="hidden h-5 sm:block">
+                                    <Separator orientation="vertical" />
+                                </div>
+
+                                <div className="flex flex-col items-center gap-3 sm:flex-row">
+                                    <Select onValueChange={handleSortChange}>
+                                        <SelectTrigger className="w-full sm:w-[110px]">
+                                            <SelectValue placeholder="Sort By" />
+                                        </SelectTrigger>
+
+                                        <SelectContent>
+                                            <SelectItem value="downloads">Downloads</SelectItem>
+                                            <SelectItem value="stars">GitHub stars</SelectItem>
+                                            <SelectItem value="created_at">Date curated</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+
+                                    <Select onValueChange={handleOrderChange}>
+                                        <SelectTrigger className="w-full sm:w-[110px]">
+                                            <SelectValue placeholder="Order" />
+                                        </SelectTrigger>
+
+                                        <SelectContent>
+                                            <SelectItem value="asc">Ascending</SelectItem>
+                                            <SelectItem value="desc">Descending</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+
+                            <div className="relative order-first w-full sm:order-2 sm:w-[30%]">
                                 <MagnifyingGlassIcon className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
                                 <Input
                                     type="search"
@@ -88,11 +142,6 @@ export default function Index({ kits, filters }: Props) {
                                     value={search}
                                     onChange={(e) => handleSearch(e.target.value)}
                                 />
-                            </div>
-
-                            <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
-                                <TagsSheet onChanged={handleTagsChange} />
-                                <StackSheet onChanged={handleStacksChange} />
                             </div>
                         </div>
 
