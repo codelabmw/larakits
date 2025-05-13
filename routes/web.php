@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Landing\AboutController;
 use App\Http\Controllers\Landing\ContactController;
-use App\Http\Controllers\Landing\DonateController;
 use App\Http\Controllers\Landing\DocsController;
+use App\Http\Controllers\Landing\DonateController;
 use App\Http\Controllers\Landing\HomeController;
 use App\Http\Controllers\Landing\KitController;
 use App\Http\Controllers\Landing\PrivacyPolicyController;
