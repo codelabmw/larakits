@@ -103,12 +103,12 @@ export default function Index({ kits, filters }: Props) {
                                     <StackSheet onChanged={handleStacksChange} />
                                 </div>
 
-                                <div className="h-5 hidden sm:block">
+                                <div className="hidden h-5 sm:block">
                                     <Separator orientation="vertical" />
                                 </div>
 
                                 <div className="flex flex-col items-center gap-3 sm:flex-row">
-                                    <Select onValueChange={handleSortChange} >
+                                    <Select onValueChange={handleSortChange}>
                                         <SelectTrigger className="w-full sm:w-[110px]">
                                             <SelectValue placeholder="Sort By" />
                                         </SelectTrigger>
@@ -133,7 +133,7 @@ export default function Index({ kits, filters }: Props) {
                                 </div>
                             </div>
 
-                            <div className="relative w-full order-first sm:w-[30%] sm:order-2">
+                            <div className="relative order-first w-full sm:order-2 sm:w-[30%]">
                                 <MagnifyingGlassIcon className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
                                 <Input
                                     type="search"
