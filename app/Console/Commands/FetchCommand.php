@@ -99,7 +99,7 @@ class FetchCommand extends Command
                 baseUrl: $baseUrl,
             );
 
-            $this->logger->info('Fetched kits from Packagist. Took '.number_format($this->timer->durationUntilNow(), 2).' seconds.');
+            $this->logger->info('Fetched kits from Packagist.');
 
             do {
                 $paginator->items()->each(
@@ -115,7 +115,7 @@ class FetchCommand extends Command
                         try {
                             $package = $packagist->get($package->name, baseUrl: $baseUrl);
 
-                            $this->logger->info('Fetched kit '.$package->name.'. Took '.number_format($this->timer->durationUntilNow(), 2).' seconds.');
+                            $this->logger->info('Fetched kit '.$package->name.'.');
 
                             if ($isLaravelProject($package)) {
                                 $kitPayload = new KitPayload(package: $package, isKit: false);
@@ -134,7 +134,7 @@ class FetchCommand extends Command
                                 $this->saveKit($kitPayload);
                             }
                         } catch (ConnectionException $exception) {
-                            $this->logger->error('Failed to fetch kit '.$package->name.'. Took '.number_format($this->timer->durationUntilNow(), 2).' seconds.');
+                            $this->logger->error('Failed to fetch kit '.$package->name.'.');
 
                             if (! in_array($exception->response->status(), [404, 401, 403])) {
                                 throw $exception;
@@ -144,7 +144,7 @@ class FetchCommand extends Command
                 );
             } while ($paginator->next());
         } catch (Exception $exception) {
-            $this->logger->error('Failed to fetch kits from Packagist. Took '.number_format($this->timer->durationUntilNow(), 2).' seconds.');
+            $this->logger->error('Failed to fetch kits from Packagist.');
 
             if ($exception instanceof ConnectionException) {
 
@@ -187,7 +187,7 @@ class FetchCommand extends Command
         }
 
         Task::create([
-            'status' => TaskStatus::PENDING,
+            'status' => TaskStatus::OPEN->value,
             'should_run_at' => $nextRunTime,
         ]);
 
