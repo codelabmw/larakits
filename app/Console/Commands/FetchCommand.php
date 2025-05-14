@@ -187,7 +187,7 @@ class FetchCommand extends Command
         }
 
         Task::create([
-            'status' => TaskStatus::PENDING,
+            'status' => TaskStatus::OPEN->value,
             'should_run_at' => $nextRunTime,
         ]);
 
