@@ -10,3 +10,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Initial release
+
+## [1.0.1] - 2025-05-14
+
+### Changed
+
+- Default status of new tasks to "open" in fetch command.
+
+### Removed
+
+- Incorrect timelapse values for log activities in fetch command.
+- Removed unused timer class.
