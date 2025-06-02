@@ -138,7 +138,7 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
             </section>
 
             {/* Features Section */}
-            <section className="px-2 my-12 py-12 sm:px-0">
+            <section className="my-12 px-2 py-12 sm:px-0">
                 <div className="container mx-auto">
                     <div className="mx-auto max-w-2xl text-center">
                         <h2 className="mb-8 text-2xl font-bold tracking-wider sm:text-3xl">Why larakits?</h2>
@@ -162,7 +162,7 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
             </section>
 
             {/* How it Works Section */}
-            <section className="px-2 my-12 p-12 sm:px-0">
+            <section className="my-12 p-12 px-2 sm:px-0">
                 <div className="container mx-auto">
                     <div className="mx-auto max-w-3xl text-center">
                         {/* Title Container */}
@@ -179,7 +179,7 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
 
                         <div className="relative mt-20">
                             {/* Process Timeline */}
-                            <div className="via-primary/20 hidden sm:block  absolute top-[250px] right-0 left-0 h-0.5 bg-gradient-to-r from-transparent to-transparent">
+                            <div className="via-primary/20 absolute top-[250px] right-0 left-0 hidden h-0.5 bg-gradient-to-r from-transparent to-transparent sm:block">
                                 <div className="bg-background absolute top-1/2 left-[14.5%] h-5 w-5 -translate-y-1/2 rounded-full border-2 border-red-500 shadow-lg"></div>
                                 <div className="bg-background absolute top-1/2 left-1/2 h-5 w-5 -translate-y-1/2 rounded-full border-2 border-red-500 shadow-lg"></div>
                                 <div className="bg-background absolute top-1/2 left-[84%] h-5 w-5 -translate-y-1/2 rounded-full border-2 border-red-500 shadow-lg"></div>
@@ -199,7 +199,7 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
                                         </div>
                                         <div className="bg-background absolute -bottom-[14px] left-1/2 h-7 w-7 -translate-x-1/2 rotate-45 border-r border-b border-neutral-800"></div>
                                     </div>
-                                    <div className="mt-20 md:mt-40 text-center">
+                                    <div className="mt-20 text-center md:mt-40">
                                         <p className="text-muted-foreground text-left text-sm">
                                             We automatically identify Laravel starter kits on Packagist using specialized criteria and keywords.
                                         </p>
@@ -218,7 +218,7 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
                                         </div>
                                         <div className="bg-background absolute -bottom-[14px] left-1/2 h-7 w-7 -translate-x-1/2 rotate-45 border-r border-b border-neutral-800"></div>
                                     </div>
-                                    <div className="mt-20 md:mt-40 text-center">
+                                    <div className="mt-20 text-center md:mt-40">
                                         <p className="text-muted-foreground text-center text-sm">
                                             Each kit is analyzed for its tech stack and features to enable Laravel-specific filtering.
                                         </p>
@@ -237,7 +237,7 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
                                         </div>
                                         <div className="bg-background absolute -bottom-[14px] left-1/2 h-7 w-7 -translate-x-1/2 rotate-45 border-r border-b border-neutral-800"></div>
                                     </div>
-                                    <div className="mt-20 md:mt-40 text-center">
+                                    <div className="mt-20 text-center md:mt-40">
                                         <p className="text-muted-foreground text-center text-sm">
                                             Information is continuously synchronized with Packagist to ensure you get the latest updates.
                                         </p>
@@ -259,7 +259,7 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
             </section>
 
             {/* FAQs Section */}
-            <section className="px-2 my-12 py-12 sm:px-0">
+            <section className="my-12 px-2 py-12 sm:px-0">
                 <div className="container mx-auto">
                     <div className="mx-auto max-w-3xl text-center">
                         <h2 className="mb-8 text-2xl font-bold tracking-wider sm:text-3xl">Frequently Asked Questions</h2>
