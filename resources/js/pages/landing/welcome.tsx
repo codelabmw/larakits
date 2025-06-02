@@ -286,8 +286,7 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
                                 <p className="text-muted-foreground text-sm">
                                     We follow Laravel's official recommendation of publishing starter kits on Packagist. This approach ensures broader
                                     coverage beyond GitHub, integrates with Laravel's package ecosystem, and maintains compatibility with tools like
-                                    Laravel Herd and the Laravel installer. Plus, Packagist's package metadata helps us provide more accurate
-                                    filtering and discovery features.
+                                    Laravel Herd and the Laravel installer.
                                 </p>
                             </div>
                             <div className="group bg-background relative rounded-xl border p-6">
