@@ -1,0 +1,59 @@
+name: Build and Deploy Frontend
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build assets
+        run: npm run build
+        env:
+          NODE_ENV: production
+          VITE_APP_NAME: ${{ secrets.APP_NAME }}
+          VITE_GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
+
+      - name: Deploy to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./public/build/
+          server-dir: /build/
+          exclude: |
+            **/.git* 
+            **/.git*/**
+            **/node_modules/**
+            **/README.md
+            **/LICENSE
+            **/CHANGELOG.md
+            **/.github/**
+            **/.gitignore
+            **/.editorconfig
+            **/.prettierrc
+            **/.eslintrc
+            **/tsconfig.json
+            **/vite.config.ts
+            **/package*.json
+            **/phpunit.xml
+            **/storage/**
+            **/tests/**
+            **/vendor/**
+            **/*.env*
