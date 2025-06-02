@@ -173,7 +173,7 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
                             </h2>
                             <div className="bg-primary/5 mb-2 inline-flex -rotate-2 items-center gap-2 rounded-full px-4 py-2">
                                 <BadgeCheck className="text-primary h-5 w-5" />
-                                <span className="text-sm font-medium">Laravel's ecosystem approach</span>
+                                <span className="text-sm font-medium">Built for Laravel developers</span>
                             </div>
                         </div>
 
