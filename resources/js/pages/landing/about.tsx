@@ -7,26 +7,6 @@ import { Head } from '@inertiajs/react';
 import { GearIcon, GitHubLogoIcon, HeartFilledIcon, RocketIcon } from '@radix-ui/react-icons';
 import { BadgeCheck, Braces, BrainCircuit, MousePointerClickIcon, PackageCheckIcon, PackageOpenIcon, PackageSearchIcon, Rocket } from 'lucide-react';
 
-// const features = [
-//     {
-//         name: 'Community-Driven',
-//         description:
-//             'Larakits is an open-source platform, built by the community, for the community. We curate Laravel starter kits that help developers kickstart their projects faster.',
-//         icon: HeartFilledIcon,
-//     },
-//     {
-//         name: 'One-Stop Shop',
-//         description:
-//             'Larakits collects all public Laravel starter kits in one place, making it easier to find the perfect starting point for your next project with Laravel specific search filters.',
-//         icon: PackageCheckIcon,
-//     },
-//     {
-//         name: 'Always Evolving',
-//         description: 'We encourage kit maintainers to keep starter kits up-to-date with the latest Laravel features and security updates.',
-//         icon: RocketIcon,
-//     },
-// ];
-
 interface Props {
     totalKits: number;
     totalVisitors: number;
