@@ -71,7 +71,7 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
 
             {/* Hero section */}
             <div className="mx-auto max-w-7xl px-2 sm:px-4">
-                <div className="mx-auto max-w-3xl py-12 text-left sm:py-24 sm:text-center">
+                <div className="mx-auto max-w-3xl py-12 sm:py-24 text-center">
                     <h1 className="text-3xl font-bold sm:text-6xl">The Story Behind Larakits</h1>
                     <p className="text-muted-foreground mt-4 text-base leading-7 sm:text-lg sm:leading-8">
                         Born from the Laravel community's needs, Larakits bridges the gap between starter kit creators and developers looking for the
@@ -193,7 +193,7 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
 
             {/* How It Works */}
             <div className="bg-muted/50">
-                <div className="container py-16 mx-auto">
+                <div className="container p-16 mx-auto">
                     <div className="mx-auto max-w-3xl text-center">
                         {/* Title Container */}
                         <div className="mx-auto mb-16 max-w-fit rounded-4xl p-6">
@@ -209,7 +209,7 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
 
                         <div className="relative mt-20">
                             {/* Process Timeline */}
-                            <div className="via-primary/20 absolute top-[250px] right-0 left-0 h-0.5 bg-gradient-to-r from-transparent to-transparent">
+                            <div className="via-primary/20 hidden sm:block absolute top-[250px] right-0 left-0 h-0.5 bg-gradient-to-r from-transparent to-transparent">
                                 <div className="bg-background absolute top-1/2 left-[14.5%] h-5 w-5 -translate-y-1/2 rounded-full border-2 border-red-500 shadow-lg"></div>
                                 <div className="bg-background absolute top-1/2 left-1/2 h-5 w-5 -translate-y-1/2 rounded-full border-2 border-red-500 shadow-lg"></div>
                                 <div className="bg-background absolute top-1/2 left-[84%] h-5 w-5 -translate-y-1/2 rounded-full border-2 border-red-500 shadow-lg"></div>
@@ -229,7 +229,7 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
                                         </div>
                                         <div className="bg-background absolute -bottom-[14px] left-1/2 h-7 w-7 -translate-x-1/2 rotate-45 border-r border-b border-neutral-800"></div>
                                     </div>
-                                    <div className="mt-40 text-center">
+                                    <div className="mt-20 md:mt-40 text-center">
                                         <p className="text-muted-foreground text-left text-sm">
                                             We automatically identify Laravel starter kits on Packagist using specialized criteria and keywords.
                                         </p>
@@ -248,7 +248,7 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
                                         </div>
                                         <div className="bg-background absolute -bottom-[14px] left-1/2 h-7 w-7 -translate-x-1/2 rotate-45 border-r border-b border-neutral-800"></div>
                                     </div>
-                                    <div className="mt-40 text-center">
+                                    <div className="mt-20 md:mt-40 text-center">
                                         <p className="text-muted-foreground text-center text-sm">
                                             Each kit is analyzed for its tech stack and features to enable Laravel-specific filtering.
                                         </p>
@@ -267,7 +267,7 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
                                         </div>
                                         <div className="bg-background absolute -bottom-[14px] left-1/2 h-7 w-7 -translate-x-1/2 rotate-45 border-r border-b border-neutral-800"></div>
                                     </div>
-                                    <div className="mt-40 text-center">
+                                    <div className="mt-20 md:mt-40 text-center">
                                         <p className="text-muted-foreground text-center text-sm">
                                             Information is continuously synchronized with Packagist to ensure you get the latest updates.
                                         </p>
