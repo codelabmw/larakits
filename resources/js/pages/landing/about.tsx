@@ -97,7 +97,6 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
                                 {/* Brain Illustration */}
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <div className="relative w-full max-w-md aspect-square">
-                                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,theme(colors.neutral.200),transparent)] dark:bg-[radial-gradient(circle_at_center,theme(colors.neutral.800),transparent)] opacity-40"></div>
                                         <BrainCircuit className="w-full h-full text-neutral-400 dark:text-neutral-600" strokeWidth={0.5} />
                                     </div>
                                 </div>
@@ -114,7 +113,7 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
                                 <div className="mb-3 inline-flex rounded-full bg-neutral-100 dark:bg-neutral-800 px-3 py-1">
                                     <span className="text-neutral-600 dark:text-neutral-400 text-xs font-medium">{sections[1].highlight}</span>
                                 </div>
-                                <p className="text-muted-foreground text-sm leading-relaxed">{sections[1].description}</p>
+                                <p className="text-muted-foreground text-sm leading-relaxed w-[80%]">{sections[1].description}</p>
                             </div>
                             <Braces className="absolute bottom-0 right-0 w-24 h-24 text-neutral-200 dark:text-neutral-800" strokeWidth={0.5} />
                         </div>
@@ -126,10 +125,10 @@ export default function About({ totalKits, totalVisitors, totalStars }: Props) {
                                 <div className="mb-3 inline-flex rounded-full bg-red-50 dark:bg-red-950/50 px-3 py-1">
                                     <span className="text-red-600 dark:text-red-400 text-xs font-medium">{sections[2].highlight}</span>
                                 </div>
-                                <p className="text-muted-foreground text-sm leading-relaxed">{sections[2].description}</p>
+                                <p className="text-muted-foreground text-sm leading-relaxed w-[100%]">{sections[2].description}</p>
                             </div>
                             {/* Minimalist Window Frame */}
-                            <div className="absolute bottom-0 right-0 w-64 h-48 border-t border-l rounded-tl-xl bg-neutral-50 dark:bg-neutral-900/50">
+                            <div className="absolute bottom-0 right-0 w-40 h-28 md:w-64 md:h-48 border-t border-l rounded-tl-xl bg-neutral-50 dark:bg-neutral-900/50">
                                 <div className="absolute top-2 left-3 flex gap-1.5">
                                     <div className="w-2 h-2 rounded-full bg-red-400/50"></div>
                                     <div className="w-2 h-2 rounded-full bg-neutral-400/50"></div>
