@@ -78,7 +78,7 @@ export default function TagsSheet({ onChanged }: Props) {
                     <h5 className="text-lg font-semibold">Tags</h5>
                 </div>
 
-                {selectedTags.length > 0 && (
+                {selectedTags.length > 0 ? (
                     <div className="mb-4 flex flex-wrap gap-2">
                         {selectedTags.map((tag) => (
                             <Badge key={tag.slug} variant="secondary" className="cursor-pointer capitalize" onClick={() => toggleSelection(tag)}>
@@ -86,6 +86,10 @@ export default function TagsSheet({ onChanged }: Props) {
                                 <X className="ml-2" />
                             </Badge>
                         ))}
+                    </div>
+                ) : (
+                    <div className="text-muted-foreground mb-4 px-1 text-left text-sm">
+                        <p>Not all tags are shown. Try searching for a specific tag.</p>
                     </div>
                 )}
 
@@ -96,6 +100,7 @@ export default function TagsSheet({ onChanged }: Props) {
                     value={search}
                     onChange={(e) => handleSearch(e.target.value)}
                 />
+
                 <ScrollArea className="flex-1">
                     <div className="flex flex-col gap-2">
                         {tags.map((tag) => (

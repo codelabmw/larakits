@@ -78,7 +78,8 @@ export default function StackSheet({ onChanged }: Props) {
                 <div className="mb-4">
                     <h5 className="text-lg font-semibold">Stack</h5>
                 </div>
-                {selectedStacks.length > 0 && (
+
+                {selectedStacks.length > 0 ? (
                     <div className="mb-4 flex flex-wrap gap-2">
                         {selectedStacks.map((stack) => (
                             <Badge key={stack.slug} variant="secondary" className="cursor-pointer capitalize" onClick={() => toggleSelection(stack)}>
@@ -87,7 +88,12 @@ export default function StackSheet({ onChanged }: Props) {
                             </Badge>
                         ))}
                     </div>
+                ) : (
+                    <div className="text-muted-foreground mb-4 px-1 text-left text-sm">
+                        <p>Not all stacks are shown. Try searching for a specific stack.</p>
+                    </div>
                 )}
+
                 <Input
                     type="search"
                     placeholder="Search stacks..."
