@@ -76,13 +76,13 @@ class FetchCommand extends Command
      */
     public function handle(Packagist $packagist, EnsureIsLaravelProject $isLaravelProject): void
     {
-        $this->timer->start();
-
         $task = Task::openTask();
 
         if (! $task instanceof Task || ! $task->shouldRun()) {
             return;
         }
+
+        $this->timer->start();
 
         $task->markPending();
 
@@ -181,7 +181,8 @@ class FetchCommand extends Command
         $nextRunTime = $task->should_run_at;
 
         if ($task->status === TaskStatus::SUCCESS) {
-            $nextRunTime = $nextRunTime->addDay()->addMinutes(random_int(10, 120));
+            $nextRunTime = $nextRunTime->addDay()
+                ->setTime(random_int(0, 23), random_int(0, 59));
         } else {
             $nextRunTime = $nextRunTime->addMinutes(random_int(10, 120));
         }
