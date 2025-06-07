@@ -8,9 +8,8 @@ use Illuminate\Support\Facades\Schedule;
 
 Schedule::command(FetchCommand::class)
     ->name('fetch:packages')
-    ->everyMinute()
+    ->everyThirtyMinutes()
     ->withoutOverlapping()
-    ->evenInMaintenanceMode()
     ->when(function () {
         return Task::openTask()?->shouldRun();
     });
