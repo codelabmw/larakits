@@ -80,6 +80,22 @@ export default function Index({ kits, filters }: Props) {
         updateFilters({ order: value });
     };
 
+    const clearFilters = () => {
+        setSearch('');
+        setSelectedTags([]);
+        setSelectedStacks([]);
+        setSort('downloads');
+        setOrder('desc');
+        
+        updateFilters({
+            search: '',
+            tags: [],
+            stacks: [],
+            sort: 'downloads',
+            order: 'desc',
+        });
+    };
+
     return (
         <GuestLayout>
             <Head title="Browse Starter Kits" />
@@ -93,58 +109,58 @@ export default function Index({ kits, filters }: Props) {
                     </p>
                 </div>
 
-                {kits.data.length > 0 ? (
-                    <>
-                        {/* Search and Filters */}
-                        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-                                <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
-                                    <TagsSheet onChanged={handleTagsChange} />
-                                    <StackSheet onChanged={handleStacksChange} />
-                                </div>
-
-                                <div className="hidden h-5 sm:block">
-                                    <Separator orientation="vertical" />
-                                </div>
-
-                                <div className="flex flex-col items-center gap-3 sm:flex-row">
-                                    <Select onValueChange={handleSortChange} defaultValue="downloads">
-                                        <SelectTrigger className="w-full sm:w-[10rem]">
-                                            <SelectValue placeholder="Sort By" />
-                                        </SelectTrigger>
-
-                                        <SelectContent>
-                                            <SelectItem value="downloads">Downloads</SelectItem>
-                                            <SelectItem value="stars">GitHub stars</SelectItem>
-                                            <SelectItem value="created_at">Date curated</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-
-                                    <Select onValueChange={handleOrderChange} defaultValue="desc">
-                                        <SelectTrigger className="w-full sm:w-[9rem]">
-                                            <SelectValue placeholder="Order" />
-                                        </SelectTrigger>
-
-                                        <SelectContent>
-                                            <SelectItem value="asc">Ascending</SelectItem>
-                                            <SelectItem value="desc">Descending</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            </div>
-
-                            <div className="relative order-first w-full sm:order-2 sm:w-[30%]">
-                                <MagnifyingGlassIcon className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-                                <Input
-                                    type="search"
-                                    placeholder="Search kits..."
-                                    className="w-full pl-9"
-                                    value={search}
-                                    onChange={(e) => handleSearch(e.target.value)}
-                                />
-                            </div>
+                {/* Search and Filters */}
+                <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+                        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
+                            <TagsSheet onChanged={handleTagsChange} />
+                            <StackSheet onChanged={handleStacksChange} />
                         </div>
 
+                        <div className="hidden h-5 sm:block">
+                            <Separator orientation="vertical" />
+                        </div>
+
+                        <div className="flex flex-col items-center gap-3 sm:flex-row">
+                            <Select onValueChange={handleSortChange} defaultValue="downloads">
+                                <SelectTrigger className="w-full sm:w-[10rem]">
+                                    <SelectValue placeholder="Sort By" />
+                                </SelectTrigger>
+
+                                <SelectContent>
+                                    <SelectItem value="downloads">Downloads</SelectItem>
+                                    <SelectItem value="stars">GitHub stars</SelectItem>
+                                    <SelectItem value="created_at">Date curated</SelectItem>
+                                </SelectContent>
+                            </Select>
+
+                            <Select onValueChange={handleOrderChange} defaultValue="desc">
+                                <SelectTrigger className="w-full sm:w-[9rem]">
+                                    <SelectValue placeholder="Order" />
+                                </SelectTrigger>
+
+                                <SelectContent>
+                                    <SelectItem value="asc">Ascending</SelectItem>
+                                    <SelectItem value="desc">Descending</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+
+                    <div className="relative order-first w-full sm:order-2 sm:w-[30%]">
+                        <MagnifyingGlassIcon className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+                        <Input
+                            type="search"
+                            placeholder="Search kits..."
+                            className="w-full pl-9"
+                            value={search}
+                            onChange={(e) => handleSearch(e.target.value)}
+                        />
+                    </div>
+                </div>
+
+                {kits.data.length > 0 ? (
+                    <>
                         {/* Kits Grid */}
                         <div className="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             {kits.data.map((kit) => (
@@ -185,12 +201,17 @@ export default function Index({ kits, filters }: Props) {
                         </div>
                     </>
                 ) : (
-                    <div className="mx-auto flex h-96 max-w-4xl items-center justify-center rounded border">
+                    <div className="mx-auto flex h-96 max-w-7xl items-center justify-center">
                         <div className="text-muted-foreground text-center">
                             <div className="flex items-center justify-center">
                                 <PackageSearchIcon className="h-8 w-8" />
                             </div>
                             <p className="mt-2">No kits found at the moment! Try adjusting your filters.</p>
+                            <div className="mt-4">
+                                <Button variant="outline" onClick={clearFilters}>
+                                    Clear filters
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 )}
