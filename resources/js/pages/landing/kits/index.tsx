@@ -86,7 +86,7 @@ export default function Index({ kits, filters }: Props) {
         setSelectedStacks([]);
         setSort('downloads');
         setOrder('desc');
-        
+
         updateFilters({
             search: '',
             tags: [],
