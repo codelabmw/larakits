@@ -217,10 +217,10 @@ export function GuestLayout({ children }: PropsWithChildren) {
                 </header>
 
                 {/* Main Content */}
-                <main className="w-full flex-1 px-2 py-6 sm:px-4 md:px-6 lg:px-0">{children}</main>
+                <main className="w-full flex-1 px-2 sm:px-4 md:px-6 lg:px-0">{children}</main>
 
                 {/* Footer */}
-                <footer className="bg-muted/40 mt-auto border-t">
+                <footer className="bg-muted/40 mt-0 border-t">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         {/* App Info */}
                         <div className="grid gap-8 py-10 sm:py-12 lg:grid-cols-12 lg:gap-12">
