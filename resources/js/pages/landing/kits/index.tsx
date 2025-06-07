@@ -108,8 +108,8 @@ export default function Index({ kits, filters }: Props) {
                                 </div>
 
                                 <div className="flex flex-col items-center gap-3 sm:flex-row">
-                                    <Select onValueChange={handleSortChange}>
-                                        <SelectTrigger className="w-full sm:w-[110px]">
+                                    <Select onValueChange={handleSortChange} defaultValue="downloads">
+                                        <SelectTrigger className="w-full sm:w-[10rem]">
                                             <SelectValue placeholder="Sort By" />
                                         </SelectTrigger>
 
@@ -120,8 +120,8 @@ export default function Index({ kits, filters }: Props) {
                                         </SelectContent>
                                     </Select>
 
-                                    <Select onValueChange={handleOrderChange}>
-                                        <SelectTrigger className="w-full sm:w-[110px]">
+                                    <Select onValueChange={handleOrderChange} defaultValue="desc">
+                                        <SelectTrigger className="w-full sm:w-[9rem]">
                                             <SelectValue placeholder="Order" />
                                         </SelectTrigger>
 
