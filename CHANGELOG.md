@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Incorrect timelapse values for log activities in fetch command.
 - Removed unused timer class.
 
-## Unreleased
+## [1.1.0] - 2025-06-07
 
 ### Added
 
