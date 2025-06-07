@@ -30,4 +30,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added FAQs section in home page
 - Added Larakits story and approach taken in about page
 - Added frontend deployment workflow
+
+### Changed
+
 - Optimized fetch command for efficiency
+- Improved user experience when showing filters and search results
