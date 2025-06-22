@@ -90,7 +90,7 @@ class FetchCommand extends Command
         $onlyNew = $this->option('new');
 
         try {
-            $this->logger->info('------ Fetching kits from Packagist ------');
+            $this->logger->info('Starting kit fetch process');
 
             $paginator = $packagist->search(
                 type: 'project',
@@ -99,23 +99,15 @@ class FetchCommand extends Command
                 baseUrl: $baseUrl,
             );
 
-            $this->logger->info('Fetched kits from Packagist.');
-
             do {
                 $paginator->items()->each(
                     function ($package) use ($packagist, $isLaravelProject, $baseUrl, $onlyNew): void {
                         if ($onlyNew && Kit::hasPackage($package->name)) {
-                            $this->logger->info('Kit '.$package->name.' already exists. Skipping...');
-
                             return;
                         }
 
-                        $this->logger->info('Fetching kit '.$package->name.'...');
-
                         try {
                             $package = $packagist->get($package->name, baseUrl: $baseUrl);
-
-                            $this->logger->info('Fetched kit '.$package->name.'.');
 
                             if ($isLaravelProject($package)) {
                                 $kitPayload = new KitPayload(package: $package, isKit: false);
@@ -193,7 +185,7 @@ class FetchCommand extends Command
         ]);
 
         $this->timer->stop();
-        $this->logger->info('------ Fetch kits task completed. Took '.number_format($this->timer->duration(), 2).' seconds. ------');
+        $this->logger->info('Kit fetch completed in '.number_format($this->timer->duration(), 2).'s. Status: '.$task->status->value);
     }
 
     /**

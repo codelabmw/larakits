@@ -41,3 +41,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Added author filtering in kits page
+
+### Changed
+
+- Updated fetch command to only log important events
