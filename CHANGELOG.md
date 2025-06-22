@@ -35,3 +35,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Optimized fetch command for efficiency
 - Improved user experience when showing filters and search results
+
+## Unreleased
+
+### Added
+
+- Added author filtering in kits page
