@@ -1,4 +1,5 @@
 import type { Kit } from '@/types';
+import { Link } from '@inertiajs/react';
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { DownloadIcon } from 'lucide-react';
 import numeral from 'numeral';
@@ -12,26 +13,25 @@ export default function KitCard({ kit, onClick }: { kit: Kit; onClick?: () => vo
 
     return (
         <Card className="hover:bg-muted/50 flex cursor-pointer flex-col p-6 transition-colors" onClick={onClick}>
-            <div className="mb-4 flex items-center justify-start gap-2">
-                <div className="flex -space-x-6">
-                    {kit.maintainers.slice(0, 3).map((maintainer) => (
-                        <img
-                            key={maintainer.name}
-                            src={maintainer.avatar_url}
-                            alt={maintainer.name}
-                            className="border-background h-8 w-8 rounded-full border-2"
-                            title={maintainer.name}
-                        />
+            <div className="mb-2 text-left">
+                <h3 className="text-lg font-semibold">{parseKitName(kit.name)}</h3>
+                <div className="text-muted-foreground mt-1 flex flex-wrap gap-2 text-sm">
+                    {kit.maintainers.map((maintainer, index) => (
+                        <>
+                            <Link
+                                key={maintainer.name}
+                                href={`/kits?author=${encodeURIComponent(maintainer.name)}`}
+                                className="text-primary/80 hover:underline"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                {maintainer.name}
+                            </Link>
+                            {index < kit.maintainers.length - 1 && <span>, </span>}
+                        </>
                     ))}
-                    {kit.maintainers.length > 3 && (
-                        <div className="border-background bg-muted flex h-8 w-8 items-center justify-center rounded-full border-2 text-xs font-medium">
-                            +{kit.maintainers.length - 3}
-                        </div>
-                    )}
                 </div>
-                <h3 className="font-semibold">{parseKitName(kit.name)}</h3>
             </div>
-            <p className="text-muted-foreground mb-4 flex-1 text-left text-sm">
+            <p className="text-muted-foreground mb-4 line-clamp-2 flex-1 text-left text-sm">
                 {kit.description ?? 'This starter kit does not have a description.'}
             </p>
             <div className="flex items-center justify-between">

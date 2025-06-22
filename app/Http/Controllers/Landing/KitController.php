@@ -47,6 +47,7 @@ class KitController extends Controller
                 'tags' => $request->get('tags', []),
                 'stacks' => $request->get('stacks', []),
             ],
+            'author' => $request->get('author'),
         ]);
     }
 }
