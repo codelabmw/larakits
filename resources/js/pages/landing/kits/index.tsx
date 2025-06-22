@@ -23,9 +23,10 @@ interface Props {
         sort: string;
         order: string;
     };
+    author: string | null;
 }
 
-export default function Index({ kits, filters }: Props) {
+export default function Index({ kits, filters, author }: Props) {
     const [selectedKit, setSelectedKit] = useState<Kit | null>(null);
     const [search, setSearch] = useState(filters.search || '');
     const [selectedTags, setSelectedTags] = useState<string[]>(filters.tags || []);
@@ -102,11 +103,22 @@ export default function Index({ kits, filters }: Props) {
 
             <div className="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-2 py-8 sm:px-4">
                 {/* Header */}
-                <div className="mx-auto mb-8 max-w-xl py-8 text-center">
-                    <h1 className="mb-2 text-3xl font-bold tracking-wider">Browse starter kits</h1>
-                    <p className="text-muted-foreground">
-                        Find the perfect Laravel starter kit for your next project. You can narrow down your search by tags and stacks.
-                    </p>
+                <div className="mx-auto mb-8 max-w-3xl py-8 text-center">
+                    {author ? (
+                        <>
+                            <h1 className="mb-2 text-3xl font-bold tracking-wider">
+                                Starter kits by <span className="text-primary">{author}</span>
+                            </h1>
+                            <p className="text-muted-foreground">Viewing all starter kits created by {author}.</p>
+                        </>
+                    ) : (
+                        <>
+                            <h1 className="mb-2 text-3xl font-bold tracking-wider">Browse starter kits</h1>
+                            <p className="text-muted-foreground">
+                                Find the perfect Laravel starter kit for your next project. You can narrow down your search by tags and stacks.
+                            </p>
+                        </>
+                    )}
                 </div>
 
                 {/* Search and Filters */}
