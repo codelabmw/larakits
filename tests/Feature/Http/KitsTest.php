@@ -152,3 +152,19 @@ it('ignores invalid sort and order parameters', function (): void {
             ->where('kits.data.4.downloads', 1);
     });
 });
+
+test('can filter kits by author', function (): void {
+    // Arrange
+    [$kit] = Kit::factory()->count(10)->create();
+
+    // Act
+    $response = $this->get('/kits?author='.$kit->maintainers[0]['name']);
+
+    // Assert
+    $response->assertStatus(200);
+    $response->assertInertia(function (AssertableInertia $page): void {
+        $page->component('landing/kits/index')
+            ->has('kits')
+            ->count('kits.data', 1);
+    });
+});

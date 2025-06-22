@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Landing;
 
 use App\Contracts\Filter;
 use App\Http\Controllers\Controller;
+use App\Http\Filters\Kit\Author;
 use App\Http\Filters\Kit\Order;
 use App\Http\Filters\Kit\Search;
 use App\Http\Filters\Kit\Stack as StackFilter;
@@ -32,6 +33,7 @@ class KitController extends Controller
             TagFilter::class,
             StackFilter::class,
             Order::class,
+            Author::class,
         ];
 
         $kits = Pipeline::send($query)
