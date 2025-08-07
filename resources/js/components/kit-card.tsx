@@ -12,14 +12,14 @@ export default function KitCard({ kit, onClick }: { kit: Kit; onClick?: () => vo
     };
 
     return (
-        <Card className="hover:bg-muted/50 flex cursor-pointer flex-col p-6 transition-colors" onClick={onClick}>
+        <Card className="hover:bg-muted/50 flex h-60 cursor-pointer flex-col p-6 transition-colors" onClick={onClick}>
             <div className="mb-2 text-left">
                 <h3 className="text-lg font-semibold">{parseKitName(kit.name)}</h3>
                 <div className="text-muted-foreground mt-1 flex flex-wrap gap-2 text-sm">
                     {kit.maintainers.map((maintainer, index) => (
                         <>
                             <Link
-                                key={maintainer.name}
+                                key={maintainer.name + index}
                                 href={`/kits?author=${encodeURIComponent(maintainer.name)}`}
                                 className="text-primary/80 hover:underline"
                                 onClick={(e) => e.stopPropagation()}
@@ -46,8 +46,8 @@ export default function KitCard({ kit, onClick }: { kit: Kit; onClick?: () => vo
                     </span>
                 </div>
                 <div className="flex gap-1">
-                    {kit.tags.slice(0, 2).map((tag) => (
-                        <Badge key={tag.slug} variant="secondary" className="p-1.5 px-2 capitalize">
+                    {kit.tags.slice(0, 2).map((tag, index) => (
+                        <Badge key={tag.slug + index} variant="secondary" className="p-1.5 px-2 capitalize">
                             {tag.name}
                         </Badge>
                     ))}
