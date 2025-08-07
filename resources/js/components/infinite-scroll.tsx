@@ -58,13 +58,13 @@ function InfiniteScroll({ children, data, whileLoading, whileNoMoreData }: Infin
     return (
         <>
             {children}
-            <Deferred data={data} fallback={<>{whileLoading || <p className="text-center text-muted-foreground">Loading...</p>}</>}>
+            <Deferred data={data} fallback={<>{whileLoading || <p className="text-muted-foreground text-center">Loading...</p>}</>}>
                 {loading ? (
-                    <>{whileLoading || <p className="text-center text-muted-foreground">Loading...</p>}</>
+                    <>{whileLoading || <p className="text-muted-foreground text-center">Loading...</p>}</>
                 ) : page.has_more ? (
                     <WhenVisible onVisible={loadData} />
                 ) : (
-                    <>{whileNoMoreData || <p className="text-center text-muted-foreground">No more data</p>}</>
+                    <>{whileNoMoreData || <p className="text-muted-foreground text-center">No more data</p>}</>
                 )}
             </Deferred>
         </>
