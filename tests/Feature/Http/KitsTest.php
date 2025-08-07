@@ -15,8 +15,10 @@ it('returns a successful response', function (): void {
     $response->assertStatus(200);
     $response->assertInertia(function (AssertableInertia $page): void {
         $page->component('landing/kits/index')
-            ->has('kits');
+            ->missing('kits')
+            ->reloadOnly('kits', fn (AssertableInertia $reload): AssertableInertia => $reload->has('kits'));
     });
+
 });
 
 it('can filter kits by keyword', function (): void {
@@ -33,8 +35,9 @@ it('can filter kits by keyword', function (): void {
     $response->assertStatus(200);
     $response->assertInertia(function (AssertableInertia $page): void {
         $page->component('landing/kits/index')
-            ->has('kits')
-            ->count('kits.data', 1);
+            ->missing('kits')
+            ->reloadOnly('kits', fn (AssertableInertia $reload): AssertableInertia => $reload->has('kits')
+                ->count('kits.data', 1));
     });
 });
 
@@ -53,8 +56,9 @@ it('can filter kits by tags', function (): void {
     $response->assertStatus(200);
     $response->assertInertia(function (AssertableInertia $page): void {
         $page->component('landing/kits/index')
-            ->has('kits')
-            ->count('kits.data', 1);
+            ->missing('kits')
+            ->reloadOnly('kits', fn (AssertableInertia $reload): AssertableInertia => $reload->has('kits')
+                ->count('kits.data', 1));
     });
 });
 
@@ -73,8 +77,9 @@ it('can filter kits by stack', function (): void {
     $response->assertStatus(200);
     $response->assertInertia(function (AssertableInertia $page): void {
         $page->component('landing/kits/index')
-            ->has('kits')
-            ->count('kits.data', 1);
+            ->missing('kits')
+            ->reloadOnly('kits', fn (AssertableInertia $reload): AssertableInertia => $reload->has('kits')
+                ->count('kits.data', 1));
     });
 });
 
@@ -93,13 +98,14 @@ it('can sort kits by downloads', function (): void {
     $response->assertStatus(200);
     $response->assertInertia(function (AssertableInertia $page): void {
         $page->component('landing/kits/index')
-            ->has('kits')
-            ->count('kits.data', 5)
-            ->where('kits.data.0.downloads', 5)
-            ->where('kits.data.1.downloads', 4)
-            ->where('kits.data.2.downloads', 3)
-            ->where('kits.data.3.downloads', 2)
-            ->where('kits.data.4.downloads', 1);
+            ->missing('kits')
+            ->reloadOnly('kits', fn (AssertableInertia $reload): AssertableInertia => $reload->has('kits')
+                ->count('kits.data', 5)
+                ->where('kits.data.0.downloads', 5)
+                ->where('kits.data.1.downloads', 4)
+                ->where('kits.data.2.downloads', 3)
+                ->where('kits.data.3.downloads', 2)
+                ->where('kits.data.4.downloads', 1));
     });
 });
 
@@ -118,13 +124,14 @@ it('can sort kits by stars', function (): void {
     $response->assertStatus(200);
     $response->assertInertia(function (AssertableInertia $page): void {
         $page->component('landing/kits/index')
-            ->has('kits')
-            ->count('kits.data', 5)
-            ->where('kits.data.0.stars', 5)
-            ->where('kits.data.1.stars', 4)
-            ->where('kits.data.2.stars', 3)
-            ->where('kits.data.3.stars', 2)
-            ->where('kits.data.4.stars', 1);
+            ->missing('kits')
+            ->reloadOnly('kits', fn (AssertableInertia $reload): AssertableInertia => $reload->has('kits')
+                ->count('kits.data', 5)
+                ->where('kits.data.0.stars', 5)
+                ->where('kits.data.1.stars', 4)
+                ->where('kits.data.2.stars', 3)
+                ->where('kits.data.3.stars', 2)
+                ->where('kits.data.4.stars', 1));
     });
 });
 
@@ -143,13 +150,14 @@ it('ignores invalid sort and order parameters', function (): void {
     $response->assertStatus(200);
     $response->assertInertia(function (AssertableInertia $page): void {
         $page->component('landing/kits/index')
-            ->has('kits')
-            ->count('kits.data', 5)
-            ->where('kits.data.0.downloads', 5)
-            ->where('kits.data.1.downloads', 4)
-            ->where('kits.data.2.downloads', 3)
-            ->where('kits.data.3.downloads', 2)
-            ->where('kits.data.4.downloads', 1);
+            ->missing('kits')
+            ->reloadOnly('kits', fn (AssertableInertia $reload): AssertableInertia => $reload->has('kits')
+                ->count('kits.data', 5)
+                ->where('kits.data.0.downloads', 5)
+                ->where('kits.data.1.downloads', 4)
+                ->where('kits.data.2.downloads', 3)
+                ->where('kits.data.3.downloads', 2)
+                ->where('kits.data.4.downloads', 1));
     });
 });
 
@@ -164,7 +172,8 @@ test('can filter kits by author', function (): void {
     $response->assertStatus(200);
     $response->assertInertia(function (AssertableInertia $page): void {
         $page->component('landing/kits/index')
-            ->has('kits')
-            ->count('kits.data', 1);
+            ->missing('kits')
+            ->reloadOnly('kits', fn (AssertableInertia $reload): AssertableInertia => $reload->has('kits')
+                ->count('kits.data', 1));
     });
 });

@@ -1,3 +1,4 @@
+import { InfiniteScroll } from '@/components/infinite-scroll';
 import KitCard from '@/components/kit-card';
 import { KitDetailsSheet } from '@/components/kit-details-sheet';
 import { Button } from '@/components/ui/button';
@@ -6,8 +7,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { GuestLayout } from '@/layouts/guest-layout';
 import type { Kit, Paginator, Stack, Tag } from '@/types';
-import { Head, Link, router } from '@inertiajs/react';
-import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { Head, router } from '@inertiajs/react';
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { range } from 'lodash';
 import debounce from 'lodash/debounce';
 import { PackageSearchIcon } from 'lucide-react';
 import { useCallback, useState } from 'react';
@@ -171,47 +173,19 @@ export default function Index({ kits, filters, author }: Props) {
                     </div>
                 </div>
 
-                {kits.data.length > 0 ? (
-                    <>
-                        {/* Kits Grid */}
-                        <div className="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {kits === undefined ? (
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <Loading />
+                    </div>
+                ) : kits.data.length > 0 ? (
+                    <div className="mb-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <InfiniteScroll data="kits" whileLoading={<Loading />} whileNoMoreData={<EndOfList />}>
+                            {/* Kits Grid */}
                             {kits.data.map((kit) => (
                                 <KitCard key={kit.slug} kit={kit} onClick={() => setSelectedKit(kit)} />
                             ))}
-                        </div>
-
-                        {/* Results Summary & Pagination */}
-                        <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
-                            <div className="text-muted-foreground text-sm">
-                                Page {kits.current_page} of {kits.last_page}
-                            </div>
-                            <div className="flex w-full flex-wrap justify-center gap-2 sm:w-auto sm:justify-start">
-                                <Button asChild variant="outline">
-                                    <Link
-                                        href={kits.prev_page_url ?? ''}
-                                        className={`${kits.current_page === 1 ? 'pointer-events-none opacity-50' : ''}`}
-                                    >
-                                        <ChevronLeftIcon className="h-4 w-4" />
-                                    </Link>
-                                </Button>
-
-                                {kits.links.slice(1, -1).map((link) => (
-                                    <Button asChild key={link.url} variant={link.active ? 'default' : 'secondary'}>
-                                        <Link href={link.url ?? ''}>{link.label}</Link>
-                                    </Button>
-                                ))}
-
-                                <Button asChild variant="outline">
-                                    <Link
-                                        href={kits.next_page_url ?? ''}
-                                        className={`${kits.current_page === kits.last_page ? 'pointer-events-none opacity-50' : ''}`}
-                                    >
-                                        <ChevronRightIcon className="h-4 w-4" />
-                                    </Link>
-                                </Button>
-                            </div>
-                        </div>
-                    </>
+                        </InfiniteScroll>
+                    </div>
                 ) : (
                     <div className="mx-auto flex h-96 max-w-7xl items-center justify-center">
                         <div className="text-muted-foreground text-center">
@@ -232,5 +206,24 @@ export default function Index({ kits, filters, author }: Props) {
                 <KitDetailsSheet kit={selectedKit} onOpenChange={() => setSelectedKit(null)} />
             </div>
         </GuestLayout>
+    );
+}
+
+function Loading() {
+    return (
+        <>
+            {range(7).map((index) => (
+                <div key={index} className="bg-muted h-60 w-full animate-pulse rounded-xl"></div>
+            ))}
+        </>
+    );
+}
+
+function EndOfList() {
+    return (
+        <div className="bg-muted/40 grid h-60 w-full place-content-center rounded-lg border p-4">
+            <PackageSearchIcon className="text-muted-foreground mx-auto size-6" />
+            <p className="text-muted-foreground mt-1 text-center text-sm">No more kits to load at the moment.</p>
+        </div>
     );
 }

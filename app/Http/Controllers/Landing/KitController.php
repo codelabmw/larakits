@@ -12,6 +12,7 @@ use App\Http\Filters\Kit\Search;
 use App\Http\Filters\Kit\Stack as StackFilter;
 use App\Http\Filters\Kit\Tag as TagFilter;
 use App\Models\Kit;
+use Codelabmw\InfiniteScroll\Facades\InfiniteScroll;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Pipeline;
@@ -38,10 +39,9 @@ class KitController extends Controller
 
         $kits = Pipeline::send($query)
             ->through($filters)
-            ->then(fn (Builder $query) => $query->with(['stacks', 'tags'])->paginate()->withQueryString());
+            ->then(fn (Builder $query) => $query->with(['stacks', 'tags'])->cursorPaginate()->withQueryString());
 
-        return Inertia::render('landing/kits/index', [
-            'kits' => $kits,
+        $props = array_merge(InfiniteScroll::make('kits', $kits), [
             'filters' => [
                 'search' => $request->get('search'),
                 'tags' => $request->get('tags', []),
@@ -49,5 +49,7 @@ class KitController extends Controller
             ],
             'author' => $request->get('author'),
         ]);
+
+        return Inertia::render('landing/kits/index', $props);
     }
 }
