@@ -11,7 +11,7 @@ type Props = React.ComponentProps<'div'> & {
 };
 
 function SearchBox({ className, onSubmit, ...props }: Props) {
-    const [filter, setFilter] = useState<'Author' | 'General'>('Author');
+    const [filter, setFilter] = useState<'Author' | 'General'>('General');
     const searchInput = useRef<HTMLInputElement>(null);
 
     const changeFilter = (filter: 'Author' | 'General') => {
