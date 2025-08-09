@@ -1,5 +1,5 @@
 import { CookieBanner } from '@/components/cookie-banner';
-import { SearchBox } from '@/components/searchbox';
+import { SearchBox } from '@/components/search';
 import { ThemeToggle } from '@/components/theme-toggle';
 import {
     NavigationMenu,
@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { Link, router, usePage } from '@inertiajs/react';
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
-import { MenuIcon, XIcon } from 'lucide-react';
+import { MenuIcon, Search as SearchIcon, XIcon } from 'lucide-react';
 import numeral from 'numeral';
 import { PropsWithChildren, useState } from 'react';
 import logo from '../../assets/larakits-icon.svg';
@@ -80,6 +80,7 @@ const footerNavigation = {
 export function GuestLayout({ children, onSearch }: PropsWithChildren & { onSearch?: (query: string, filter?: 'Author' | 'General') => void }) {
     const { stars } = usePage<SharedData>().props;
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [searchExpanded, setSearchExpanded] = useState(false);
 
     const defaultSearch = (query: string, filter?: 'Author' | 'General') => {
         if (filter === 'Author') {
@@ -170,9 +171,42 @@ export function GuestLayout({ children, onSearch }: PropsWithChildren & { onSear
                         </div>
 
                         <div className="flex items-center gap-4 sm:gap-6">
-                            <SearchBox onSubmit={handleSearch} />
+                            {/* Desktop Search - Always visible on desktop */}
+                            <div className={cn('hidden md:block', searchExpanded && 'hidden')}>
+                                <SearchBox onSearch={handleSearch} />
+                            </div>
 
-                            <div className="h-5">
+                            {/* Mobile Search Toggle - Only visible on mobile */}
+                            <button 
+                                type="button" 
+                                className="md:hidden text-muted-foreground hover:text-foreground p-2 rounded-full"
+                                onClick={() => setSearchExpanded(true)}
+                                aria-label="Search"
+                            >
+                                <SearchIcon className="h-5 w-5" />
+                            </button>
+
+                            {/* Expanded Mobile Search - Only visible on mobile when expanded */}
+                            <div className={cn('md:hidden fixed inset-x-0 top-0 h-16 px-4 flex items-center bg-background/95 backdrop-blur z-50', !searchExpanded && 'hidden')}>
+                                <button 
+                                    type="button" 
+                                    className="text-muted-foreground hover:text-foreground p-2 -ml-2 mr-2"
+                                    onClick={() => setSearchExpanded(false)}
+                                    aria-label="Close search"
+                                >
+                                    <XIcon className="h-5 w-5" />
+                                </button>
+                                <div className="flex-1">
+                                    <SearchBox 
+                                        onSearch={(query, filter) => {
+                                            handleSearch(query, filter);
+                                        }}
+                                        className="w-full"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className={cn('h-5', searchExpanded && 'hidden')}>
                                 <Separator orientation="vertical" />
                             </div>
 
@@ -191,15 +225,17 @@ export function GuestLayout({ children, onSearch }: PropsWithChildren & { onSear
                             {/* Theme Toggle */}
                             <ThemeToggle />
 
-                            {/* Mobile Hamburger/Close Toggle */}
-                            <button
-                                type="button"
-                                className="text-muted-foreground hover:text-foreground focus:ring-ring inline-flex items-center justify-center rounded-full p-2 focus:ring-2 focus:outline-none md:hidden"
-                                aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-                                onClick={() => setMobileMenuOpen((open) => !open)}
-                            >
-                                {mobileMenuOpen ? <XIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
-                            </button>
+                            {/* Mobile Hamburger/Close Toggle - Hidden when search is expanded */}
+                            <div className={cn('md:hidden', searchExpanded && 'hidden')}>
+                                <button
+                                    type="button"
+                                    className="text-muted-foreground hover:text-foreground focus:ring-ring inline-flex items-center justify-center rounded-full p-2 focus:ring-2 focus:outline-none"
+                                    aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+                                    onClick={() => setMobileMenuOpen((open) => !open)}
+                                >
+                                    {mobileMenuOpen ? <XIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+                                </button>
+                            </div>
                         </div>
                     </div>
 

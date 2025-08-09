@@ -39,6 +39,7 @@ export default function Index({ kits, filters, author }: Props) {
             setSearch(query);
             updateFilters({ search: query });
         }
+        return true;
     };
 
     const updateFilters = useCallback(
@@ -52,7 +53,7 @@ export default function Index({ kits, filters, author }: Props) {
                     sort: params.sort ?? sort,
                     order: params.order ?? order,
                 },
-                { preserveState: true, preserveScroll: true, },
+                { preserveState: true, preserveScroll: true },
             );
         },
         [search, selectedTags, selectedStacks, sort, order],
@@ -110,7 +111,9 @@ export default function Index({ kits, filters, author }: Props) {
                         </>
                     ) : (
                         <>
-                            <h1 className="mb-2 text-3xl font-bold tracking-wider">Browse starter kits</h1>
+                            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-center">
+                                <h1 className="text-2xl font-bold tracking-tight">Starter Kits</h1>
+                            </div>
                             <p className="text-muted-foreground">
                                 Find the perfect Laravel starter kit for your next project. You can narrow down your search by tags and stacks.
                             </p>
@@ -170,7 +173,9 @@ export default function Index({ kits, filters, author }: Props) {
                     <div className="mx-auto flex h-96 max-w-7xl items-center justify-center">
                         <div className="text-muted-foreground text-center">
                             <div className="flex items-center justify-center">
-                                <PackageSearchIcon className="h-8 w-8" />
+                                <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                                    <h1 className="text-2xl font-bold tracking-tight">Starter Kits</h1>
+                                </div>
                             </div>
                             <p className="mt-2">No kits found at the moment! Try adjusting your filters.</p>
                             <div className="mt-4">
