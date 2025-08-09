@@ -1,6 +1,6 @@
 import { CookieBanner } from '@/components/cookie-banner';
+import { SearchBox } from '@/components/search';
 import { ThemeToggle } from '@/components/theme-toggle';
-import { Button } from '@/components/ui/button';
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -9,11 +9,12 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
+import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
-import { MenuIcon, XIcon } from 'lucide-react';
+import { MenuIcon, Search as SearchIcon, XIcon } from 'lucide-react';
 import numeral from 'numeral';
 import { PropsWithChildren, useState } from 'react';
 import logo from '../../assets/larakits-icon.svg';
@@ -48,6 +49,10 @@ const navigation = [
             },
         ],
     },
+    {
+        title: 'Show Support',
+        href: route('donate'),
+    },
 ];
 
 const footerNavigation = {
@@ -72,9 +77,34 @@ const footerNavigation = {
     ],
 };
 
-export function GuestLayout({ children }: PropsWithChildren) {
+export function GuestLayout({ children, onSearch }: PropsWithChildren & { onSearch?: (query: string, filter?: 'Author' | 'General') => void }) {
     const { stars } = usePage<SharedData>().props;
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [searchExpanded, setSearchExpanded] = useState(false);
+
+    const defaultSearch = (query: string, filter?: 'Author' | 'General') => {
+        if (filter === 'Author') {
+            router.visit(route('kits'), {
+                data: {
+                    author: query,
+                },
+            });
+        } else {
+            router.visit(route('kits'), {
+                data: {
+                    search: query,
+                },
+            });
+        }
+    };
+
+    const handleSearch = (query: string, filter?: 'Author' | 'General') => {
+        if (onSearch) {
+            onSearch(query, filter);
+        } else {
+            defaultSearch(query, filter);
+        }
+    };
 
     return (
         <>
@@ -97,7 +127,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
                                         {navigation.map((item) =>
                                             item.items ? (
                                                 <NavigationMenuItem key={item.title}>
-                                                    <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
+                                                    <NavigationMenuTrigger className="rounded-full">{item.title}</NavigationMenuTrigger>
                                                     <NavigationMenuContent>
                                                         <ul className="grid w-[300px] gap-3 p-4 md:w-[400px] md:grid-cols-2 lg:w-[500px]">
                                                             {item.items.map((subItem) => (
@@ -106,7 +136,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
                                                                         <Link
                                                                             href={subItem.href}
                                                                             className={cn(
-                                                                                'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block space-y-1 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none',
+                                                                                'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block space-y-1 rounded-full p-3 leading-none no-underline transition-colors outline-none select-none',
                                                                             )}
                                                                         >
                                                                             <div className="text-sm leading-none font-medium">{subItem.title}</div>
@@ -122,11 +152,11 @@ export function GuestLayout({ children }: PropsWithChildren) {
                                                 </NavigationMenuItem>
                                             ) : (
                                                 <NavigationMenuItem key={item.title}>
-                                                    <NavigationMenuLink asChild>
+                                                    <NavigationMenuLink className="rounded-full" asChild>
                                                         <Link
                                                             href={item.href}
                                                             className={cn(
-                                                                'group bg-background hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground data-[active]:bg-accent/50 inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none disabled:pointer-events-none disabled:opacity-50',
+                                                                'group bg-background hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground data-[active]:bg-accent/50 inline-flex h-10 w-max items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-colors focus:outline-none disabled:pointer-events-none disabled:opacity-50',
                                                             )}
                                                         >
                                                             {item.title}
@@ -141,12 +171,49 @@ export function GuestLayout({ children }: PropsWithChildren) {
                         </div>
 
                         <div className="flex items-center gap-4 sm:gap-6">
-                            {/* Donate */}
-                            <Button asChild variant="ghost" className="text-muted-foreground hover:text-foreground">
-                                <Link href={route('donate')} aria-label="Donate to Larakits">
-                                    Donate
-                                </Link>
-                            </Button>
+                            {/* Desktop Search - Always visible on desktop */}
+                            <div className={cn('hidden md:block', searchExpanded && 'hidden')}>
+                                <SearchBox onSearch={handleSearch} />
+                            </div>
+
+                            {/* Mobile Search Toggle - Only visible on mobile */}
+                            <button
+                                type="button"
+                                className="text-muted-foreground hover:text-foreground rounded-full p-2 md:hidden"
+                                onClick={() => setSearchExpanded(true)}
+                                aria-label="Search"
+                            >
+                                <SearchIcon className="h-5 w-5" />
+                            </button>
+
+                            {/* Expanded Mobile Search - Only visible on mobile when expanded */}
+                            <div
+                                className={cn(
+                                    'bg-background/95 fixed inset-x-0 top-0 z-50 flex h-16 items-center px-4 backdrop-blur md:hidden',
+                                    !searchExpanded && 'hidden',
+                                )}
+                            >
+                                <button
+                                    type="button"
+                                    className="text-muted-foreground hover:text-foreground mr-2 -ml-2 p-2"
+                                    onClick={() => setSearchExpanded(false)}
+                                    aria-label="Close search"
+                                >
+                                    <XIcon className="h-5 w-5" />
+                                </button>
+                                <div className="flex-1">
+                                    <SearchBox
+                                        onSearch={(query, filter) => {
+                                            handleSearch(query, filter);
+                                        }}
+                                        className="w-full"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className={cn('h-5', searchExpanded && 'hidden')}>
+                                <Separator orientation="vertical" />
+                            </div>
 
                             {/* GitHub */}
                             <a
@@ -163,15 +230,17 @@ export function GuestLayout({ children }: PropsWithChildren) {
                             {/* Theme Toggle */}
                             <ThemeToggle />
 
-                            {/* Mobile Hamburger/Close Toggle */}
-                            <button
-                                type="button"
-                                className="text-muted-foreground hover:text-foreground focus:ring-ring inline-flex items-center justify-center rounded-md p-2 focus:ring-2 focus:outline-none md:hidden"
-                                aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-                                onClick={() => setMobileMenuOpen((open) => !open)}
-                            >
-                                {mobileMenuOpen ? <XIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
-                            </button>
+                            {/* Mobile Hamburger/Close Toggle - Hidden when search is expanded */}
+                            <div className={cn('md:hidden', searchExpanded && 'hidden')}>
+                                <button
+                                    type="button"
+                                    className="text-muted-foreground hover:text-foreground focus:ring-ring inline-flex items-center justify-center rounded-full p-2 focus:ring-2 focus:outline-none"
+                                    aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+                                    onClick={() => setMobileMenuOpen((open) => !open)}
+                                >
+                                    {mobileMenuOpen ? <XIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -191,7 +260,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
                                                     <li key={subItem.title}>
                                                         <Link
                                                             href={subItem.href}
-                                                            className="text-muted-foreground block rounded-md text-base font-semibold"
+                                                            className="text-muted-foreground block rounded-full text-base font-semibold"
                                                             onClick={() => setMobileMenuOpen(false)}
                                                         >
                                                             {subItem.title}
@@ -204,7 +273,7 @@ export function GuestLayout({ children }: PropsWithChildren) {
                                         <Link
                                             key={item.title}
                                             href={item.href}
-                                            className="text-muted-foreground block rounded-md text-base font-semibold"
+                                            className="text-muted-foreground block rounded-full text-base font-semibold"
                                             onClick={() => setMobileMenuOpen(false)}
                                         >
                                             {item.title}

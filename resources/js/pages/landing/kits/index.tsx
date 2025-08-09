@@ -2,15 +2,11 @@ import { InfiniteScroll } from '@/components/infinite-scroll';
 import KitCard from '@/components/kit-card';
 import { KitDetailsSheet } from '@/components/kit-details-sheet';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
 import { GuestLayout } from '@/layouts/guest-layout';
 import type { Kit, Paginator, Stack, Tag } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { range } from 'lodash';
-import debounce from 'lodash/debounce';
 import { PackageSearchIcon } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import StackSheet from './partials/stack-sheet';
@@ -36,6 +32,16 @@ export default function Index({ kits, filters, author }: Props) {
     const [sort, setSort] = useState(filters.sort || 'downloads');
     const [order, setOrder] = useState(filters.order || 'desc');
 
+    const handleSearch = (query: string, filter: 'Author' | 'General' = 'General') => {
+        if (filter === 'Author') {
+            router.get('/kits', { author: query }, { preserveState: true, preserveScroll: true });
+        } else {
+            setSearch(query);
+            updateFilters({ search: query });
+        }
+        return true;
+    };
+
     const updateFilters = useCallback(
         (params: { search?: string; tags?: string[]; stacks?: string[]; sort?: string; order?: string }) => {
             router.get(
@@ -52,16 +58,6 @@ export default function Index({ kits, filters, author }: Props) {
         },
         [search, selectedTags, selectedStacks, sort, order],
     );
-
-    const debouncedSearch = useCallback(
-        debounce((value: string) => updateFilters({ search: value }), 300),
-        [updateFilters],
-    );
-
-    const handleSearch = (value: string) => {
-        setSearch(value);
-        debouncedSearch(value);
-    };
 
     const handleTagsChange = (tags: Tag[]) => {
         setSelectedTags(tags.map((tag) => tag.slug));
@@ -100,8 +96,8 @@ export default function Index({ kits, filters, author }: Props) {
     };
 
     return (
-        <GuestLayout>
-            <Head title="Browse Starter Kits" />
+        <GuestLayout onSearch={handleSearch}>
+            <Head title="Starter Kits" />
 
             <div className="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-2 py-8 sm:px-4">
                 {/* Header */}
@@ -115,7 +111,9 @@ export default function Index({ kits, filters, author }: Props) {
                         </>
                     ) : (
                         <>
-                            <h1 className="mb-2 text-3xl font-bold tracking-wider">Browse starter kits</h1>
+                            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-center">
+                                <h1 className="text-2xl font-bold tracking-tight">Starter Kits</h1>
+                            </div>
                             <p className="text-muted-foreground">
                                 Find the perfect Laravel starter kit for your next project. You can narrow down your search by tags and stacks.
                             </p>
@@ -124,15 +122,11 @@ export default function Index({ kits, filters, author }: Props) {
                 </div>
 
                 {/* Search and Filters */}
-                <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
                         <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
                             <TagsSheet onChanged={handleTagsChange} />
                             <StackSheet onChanged={handleStacksChange} />
-                        </div>
-
-                        <div className="hidden h-5 sm:block">
-                            <Separator orientation="vertical" />
                         </div>
 
                         <div className="flex flex-col items-center gap-3 sm:flex-row">
@@ -160,17 +154,6 @@ export default function Index({ kits, filters, author }: Props) {
                             </Select>
                         </div>
                     </div>
-
-                    <div className="relative order-first w-full sm:order-2 sm:w-[30%]">
-                        <MagnifyingGlassIcon className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-                        <Input
-                            type="search"
-                            placeholder="Search kits..."
-                            className="w-full pl-9"
-                            value={search}
-                            onChange={(e) => handleSearch(e.target.value)}
-                        />
-                    </div>
                 </div>
 
                 {kits === undefined ? (
@@ -190,7 +173,9 @@ export default function Index({ kits, filters, author }: Props) {
                     <div className="mx-auto flex h-96 max-w-7xl items-center justify-center">
                         <div className="text-muted-foreground text-center">
                             <div className="flex items-center justify-center">
-                                <PackageSearchIcon className="h-8 w-8" />
+                                <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                                    <h1 className="text-2xl font-bold tracking-tight">Starter Kits</h1>
+                                </div>
                             </div>
                             <p className="mt-2">No kits found at the moment! Try adjusting your filters.</p>
                             <div className="mt-4">
@@ -223,7 +208,7 @@ function EndOfList() {
     return (
         <div className="bg-muted/40 grid h-60 w-full place-content-center rounded-lg border p-4">
             <PackageSearchIcon className="text-muted-foreground mx-auto size-6" />
-            <p className="text-muted-foreground mt-1 text-center text-sm">No more kits to load at the moment.</p>
+            <p className="text-muted-foreground mt-1 text-center text-sm">End of results.</p>
         </div>
     );
 }
