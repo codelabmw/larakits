@@ -56,9 +56,20 @@ export default function Welcome({ trendingKits, recentKits }: Props) {
             <section className="relative flex min-h-[calc(100vh-4rem)] items-center px-2 sm:px-0">
                 <div className="container mx-auto">
                     <div className="mx-auto max-w-3xl text-center">
-                        <Badge variant="outline" className="text-muted-foreground mb-4 rounded-full px-5 py-3">
+                        <Badge variant="outline" className="text-muted-foreground mb-4 rounded-full px-5 py-2 tracking-widest">
                             <Rocket />
-                            <span>Introducing Larakits!</span>
+                            <span>
+                                Larakits <b>1.3</b> is here! What's{' '}
+                                <Button variant="link" className="px-0" asChild>
+                                    <a
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        href="https://github.com/codelabmw/larakits/blob/master/CHANGELOG.md"
+                                    >
+                                        new?
+                                    </a>
+                                </Button>
+                            </span>
                         </Badge>
                         <h1 className="mb-6 text-3xl font-light tracking-wider sm:text-5xl">
                             one more reason to <span className="block text-5xl font-bold capitalize sm:text-7xl md:text-9xl">ship faster</span>
