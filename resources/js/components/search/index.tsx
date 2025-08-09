@@ -14,12 +14,7 @@ interface SearchBoxProps extends React.ComponentProps<'div'> {
     className?: string;
 }
 
-export function SearchBox({ 
-    onSearch, 
-    initialFilter = 'General',
-    className,
-    ...props 
-}: SearchBoxProps) {
+export function SearchBox({ onSearch, initialFilter = 'General', className, ...props }: SearchBoxProps) {
     const [filter, setFilter] = useState<SearchFilter>(initialFilter);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -38,21 +33,17 @@ export function SearchBox({
     return (
         <div className={cn('relative', className)} {...props}>
             <form onSubmit={handleSubmit} className="w-full">
-                <Input
-                    ref={inputRef}
-                    placeholder="Search kits..."
-                    className="w-full pr-24 pl-10"
-                />
-                <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                
-                <div className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center">
+                <Input ref={inputRef} placeholder="Search kits..." className="w-full pr-24 pl-10" />
+                <SearchIcon className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+
+                <div className="absolute top-1/2 right-2 flex -translate-y-1/2 items-center">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button
                                 type="button"
                                 variant="ghost"
                                 size="sm"
-                                className="h-6 rounded-full px-2 text-xs font-normal text-muted-foreground hover:bg-accent hover:text-foreground"
+                                className="text-muted-foreground hover:bg-accent hover:text-foreground h-6 rounded-full px-2 text-xs font-normal"
                             >
                                 {filter}
                                 <CaretDownIcon className="ml-1 h-3 w-3" />

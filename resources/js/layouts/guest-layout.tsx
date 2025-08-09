@@ -87,14 +87,14 @@ export function GuestLayout({ children, onSearch }: PropsWithChildren & { onSear
             router.visit(route('kits'), {
                 data: {
                     author: query,
-                }
-            })
+                },
+            });
         } else {
             router.visit(route('kits'), {
                 data: {
                     search: query,
-                }
-            })
+                },
+            });
         }
     };
 
@@ -177,9 +177,9 @@ export function GuestLayout({ children, onSearch }: PropsWithChildren & { onSear
                             </div>
 
                             {/* Mobile Search Toggle - Only visible on mobile */}
-                            <button 
-                                type="button" 
-                                className="md:hidden text-muted-foreground hover:text-foreground p-2 rounded-full"
+                            <button
+                                type="button"
+                                className="text-muted-foreground hover:text-foreground rounded-full p-2 md:hidden"
                                 onClick={() => setSearchExpanded(true)}
                                 aria-label="Search"
                             >
@@ -187,17 +187,22 @@ export function GuestLayout({ children, onSearch }: PropsWithChildren & { onSear
                             </button>
 
                             {/* Expanded Mobile Search - Only visible on mobile when expanded */}
-                            <div className={cn('md:hidden fixed inset-x-0 top-0 h-16 px-4 flex items-center bg-background/95 backdrop-blur z-50', !searchExpanded && 'hidden')}>
-                                <button 
-                                    type="button" 
-                                    className="text-muted-foreground hover:text-foreground p-2 -ml-2 mr-2"
+                            <div
+                                className={cn(
+                                    'bg-background/95 fixed inset-x-0 top-0 z-50 flex h-16 items-center px-4 backdrop-blur md:hidden',
+                                    !searchExpanded && 'hidden',
+                                )}
+                            >
+                                <button
+                                    type="button"
+                                    className="text-muted-foreground hover:text-foreground mr-2 -ml-2 p-2"
                                     onClick={() => setSearchExpanded(false)}
                                     aria-label="Close search"
                                 >
                                     <XIcon className="h-5 w-5" />
                                 </button>
                                 <div className="flex-1">
-                                    <SearchBox 
+                                    <SearchBox
                                         onSearch={(query, filter) => {
                                             handleSearch(query, filter);
                                         }}
