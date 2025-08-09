@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.0] - 2025-08-09
+
+### Added
+
+- Added infinite scrolling to kits page
+- Added search functionality in navbar
+
+### Changed
+
+- Updated kits page to use navbar searchbox
+- Improved layout responsiveness across the application
+- Updated welcome page badge
+
 ## [1.2.0] - 2025-06-22
 
 ### Added
