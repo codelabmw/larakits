@@ -5,22 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.0.0] - 2025-05-13
+## [1.2.0] - 2025-06-22
 
 ### Added
 
-- Initial release
-
-## [1.0.1] - 2025-05-14
+- Added author filtering in kits page
 
 ### Changed
 
-- Default status of new tasks to "open" in fetch command.
-
-### Removed
-
-- Incorrect timelapse values for log activities in fetch command.
-- Removed unused timer class.
+- Updated fetch command to only log important events
 
 ## [1.1.0] - 2025-06-07
 
@@ -36,12 +29,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Optimized fetch command for efficiency
 - Improved user experience when showing filters and search results
 
-## [1.2.0] - 2025-06-22
-
-### Added
-
-- Added author filtering in kits page
+## [1.0.1] - 2025-05-14
 
 ### Changed
 
-- Updated fetch command to only log important events
+- Default status of new tasks to "open" in fetch command.
+
+### Removed
+
+- Incorrect timelapse values for log activities in fetch command.
+- Removed unused timer class.
+
+## [1.0.0] - 2025-05-13
+
+### Added
+
+- Initial release
